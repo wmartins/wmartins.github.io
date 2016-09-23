@@ -69,7 +69,8 @@ theme: wmartins
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: github.com/wmartins/wmartins.github.io
+  repo: https://github.com/wmartins/wmartins.github.io
+  branch: gh-pages
 
 github: https://github.com/wmartins
 twitter: https://twitter.com/wwwhmartins
