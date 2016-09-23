@@ -70,7 +70,7 @@ theme: wmartins
 deploy:
   type: git
   repo: https://github.com/wmartins/wmartins.github.io
-  branch: gh-pages
+  branch: master
 
 github: https://github.com/wmartins
 twitter: https://twitter.com/wwwhmartins
