@@ -1,0 +1,12 @@
+<ul>
+<% page.posts.each(post => { %>
+    <li itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
+        <a itemprop="headline" href="<%= post.path %>">
+            <%= post.title %>
+        </a>
+        <time itemprop="datePublished" datetime="<%= date_xml(post.date) %>">
+            <%= date(post.date, 'DD/MM/YYYY') %>
+        </time>
+    </li>
+<% }) %>
+</ul>

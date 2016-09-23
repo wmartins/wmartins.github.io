@@ -1,0 +1,43 @@
+<%
+    const github =
+        config.github ?
+        { text: 'github', href: config.github } :
+        []
+    ;
+
+    const twitter =
+        config.twitter ?
+        { text: 'twitter', href: config.twitter } :
+        []
+    ;
+
+    const linkedin =
+        config.linkedin ?
+        { text: 'linkedin', href: config.linkedin } :
+        []
+    ;
+
+    const social = [].concat(github, twitter, linkedin);
+%>
+<header class="MainHeadline" itemprop="headline">
+    <div class="Container Flex Flex--SpaceBetween Flex--AlignCenter">
+        <% if(is_home()) { %>
+        <h1 class="h1 m0">
+            <a class="color-inherit" href="<%- url_for() %>">
+                <%= config.title %>
+            </a>
+        </h1>
+        <% } else { %>
+        <p class="h1 m0">
+            <a class="color-inherit" href="<%- url_for() %>">
+                <%= config.title %>
+            </a>
+        </p>
+        <% } %>
+        <div>
+            <% social.forEach((s, i) => { %>
+            <a class="mr1" href="<%= s.href %>"><%= s.text %></a>
+            <% }) %>
+        </div>
+    </div>
+</header>
