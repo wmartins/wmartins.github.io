@@ -21,6 +21,13 @@ body {
         'Helvetica Neue',
         Helvetica,
         sans-serif;
+
+    background-color: #eeeeee;
+}
+
+ul {
+    padding-left: 0;
+    list-style: none;
 }
 
 .Container {
@@ -31,14 +38,30 @@ body {
 
 .MainHeadline {
     padding: 2em 0;
-    margin-bottom: 2em;
 
     border-bottom: 1px solid #dddddd;
-    background-color: #eeeeee;
 
     font-family:
         Georgia,
         serif;
+}
+
+.PostEntry {
+    padding: 2em 0;
+
+    background-color: #ffffff;
+    border-bottom: 1px solid #dddddd;
+}
+
+.PostEntry-Title {
+    font-size: 1.25em;
+    display: block;
+}
+
+.Page {
+    padding: 2em 0;
+
+    background-color: #ffffff;
 }
 
 .Flex {
@@ -60,7 +83,8 @@ h3,
 h4,
 h5,
 h6,
-p {
+p,
+ul {
     margin-top: 0;
     margin-bottom: 1em;
 }

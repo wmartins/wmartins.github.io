@@ -1,12 +1,14 @@
 <ul>
 <% page.posts.each(post => { %>
-    <li itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
-        <a itemprop="headline" href="<%= post.path %>">
-            <%= post.title %>
-        </a>
-        <time itemprop="datePublished" datetime="<%= date_xml(post.date) %>">
-            <%= date(post.date, 'DD/MM/YYYY') %>
-        </time>
+    <li class="PostEntry" itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
+        <div class="Container">
+            <a class="PostEntry-Title" itemprop="headline" href="<%= post.path %>">
+                <%= post.title %>
+            </a>
+            <time itemprop="datePublished" datetime="<%= date_xml(post.date) %>">
+                <%= date(post.date, 'DD/MM/YYYY') %>
+            </time>
+        </div>
     </li>
 <% }) %>
 </ul>
