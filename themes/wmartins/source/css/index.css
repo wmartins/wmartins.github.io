@@ -25,9 +25,10 @@ body {
     background-color: #eeeeee;
 }
 
-ul {
-    padding-left: 0;
-    list-style: none;
+code {
+    background-color: #dddddd;
+    padding: 3px 5px;
+    border-radius: 5px;
 }
 
 .Container {
@@ -62,6 +63,7 @@ ul {
     padding: 2em 0;
 
     background-color: #ffffff;
+    border-bottom: 1px solid #dddddd;
 }
 
 .Flex {

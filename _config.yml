@@ -76,3 +76,6 @@ google-analytics: UA-68493929-1
 github: https://github.com/wmartins
 twitter: https://twitter.com/wwwhmartins
 linkedin: https://linkedin.com/in/wwwhmartins
+
+marked:
+    breaks: true
