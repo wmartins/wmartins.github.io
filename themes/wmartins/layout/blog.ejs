@@ -1,8 +1,8 @@
 <ul>
-<% page.posts.each(post => { %>
+<% site.posts.each(post => { %>
     <li class="PostEntry" itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
         <div class="Container">
-            <a class="PostEntry-Title" itemprop="headline" href="<%= post.path %>">
+            <a class="PostEntry-Title" itemprop="headline" href="/<%= post.path %>">
                 <%= post.title %>
             </a>
             <time itemprop="datePublished" datetime="<%= date_xml(post.date) %>">
