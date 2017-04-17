@@ -10,13 +10,17 @@ I started programming when I was 14 (in Pascal) and never stopped! I can't see
 myself doing anything else.
 
 I'm currently working as a software developer at ADP, working with web
-technologies like **HTML**, **JavaScript (React)**, **CSS (PostCSS, SASS)**.
+technologies like **HTML**, **JavaScript (React)**, **CSS (PostCSS, SASS,
+Aphrodite)**.
 
 I'm also interested in things like:
 
 * LaTeX
-* Functional programming
+* Functional Programming
 * Clojure
+* Go (Golang)
+* Distributed Computing
+* System Design
 * Vim
 * Bash
 
