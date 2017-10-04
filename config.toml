@@ -1,0 +1,7 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "wwwhmartins"
+theme = "pixyll"
+
+[params]
+    google_analytics_id = "UA-68493929-1"
