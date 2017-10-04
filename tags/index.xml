@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>Tags on wwwhmartins </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>http://wmartins.github.io/tags/</link>
+    <language>en-us</language>
+    
+    
+    <updated>Tue, 03 Oct 2017 21:00:00 -03</updated>
+    
+    <item>
+      <title>Docker</title>
+      <link>http://wmartins.github.io/tags/docker/</link>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      
+      <guid>http://wmartins.github.io/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker Swarm</title>
+      <link>http://wmartins.github.io/tags/docker-swarm/</link>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      
+      <guid>http://wmartins.github.io/tags/docker-swarm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Grafana</title>
+      <link>http://wmartins.github.io/tags/grafana/</link>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      
+      <guid>http://wmartins.github.io/tags/grafana/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Influxdb</title>
+      <link>http://wmartins.github.io/tags/influxdb/</link>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      
+      <guid>http://wmartins.github.io/tags/influxdb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Monitoring</title>
+      <link>http://wmartins.github.io/tags/monitoring/</link>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      
+      <guid>http://wmartins.github.io/tags/monitoring/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Telegraf</title>
+      <link>http://wmartins.github.io/tags/telegraf/</link>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      
+      <guid>http://wmartins.github.io/tags/telegraf/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
+
