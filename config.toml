@@ -1,4 +1,4 @@
-baseURL = "http://wmartins.github.io"
+baseURL = "https://wmartins.github.io"
 languageCode = "en-us"
 title = "wwwhmartins"
 theme = "pixyll"
