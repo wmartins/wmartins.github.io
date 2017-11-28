@@ -3,7 +3,7 @@
   <channel>
       <title>Grafana on wwwhmartins </title>
       <generator uri="https://gohugo.io">Hugo</generator>
-    <link>http://wmartins.github.io/tags/grafana/</link>
+    <link>https://wmartins.github.io/tags/grafana/</link>
     <language>en-us</language>
     
     
@@ -11,10 +11,10 @@
     
     <item>
       <title>Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf</title>
-      <link>http://wmartins.github.io/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/</link>
+      <link>https://wmartins.github.io/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/</link>
       <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
       
-      <guid>http://wmartins.github.io/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/</guid>
+      <guid>https://wmartins.github.io/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/</guid>
       <description>Monitoring your infrastructure is one of the most important aspects of successfully launching a product. It&amp;rsquo;s really important to know when your machines/applications are under heavy load. Moreover, if it happens, you would want to quickly know what&amp;rsquo;s going on and what you can do to recover your infrastructure.
 This blog post explains how you can configure setup a monitoring stack easily using Docker Swarm, Grafana, InfluxDB and Telegraf.</description>
     </item>

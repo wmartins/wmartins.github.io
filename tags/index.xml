@@ -3,7 +3,7 @@
   <channel>
       <title>Tags on wwwhmartins </title>
       <generator uri="https://gohugo.io">Hugo</generator>
-    <link>http://wmartins.github.io/tags/</link>
+    <link>https://wmartins.github.io/tags/</link>
     <language>en-us</language>
     
     
@@ -11,64 +11,64 @@
     
     <item>
       <title>Docker</title>
-      <link>http://wmartins.github.io/tags/docker/</link>
+      <link>https://wmartins.github.io/tags/docker/</link>
       <pubDate>Tue, 28 Nov 2017 21:09:43 -0300</pubDate>
       
-      <guid>http://wmartins.github.io/tags/docker/</guid>
+      <guid>https://wmartins.github.io/tags/docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker Swarm</title>
-      <link>http://wmartins.github.io/tags/docker-swarm/</link>
+      <link>https://wmartins.github.io/tags/docker-swarm/</link>
       <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
       
-      <guid>http://wmartins.github.io/tags/docker-swarm/</guid>
+      <guid>https://wmartins.github.io/tags/docker-swarm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Grafana</title>
-      <link>http://wmartins.github.io/tags/grafana/</link>
+      <link>https://wmartins.github.io/tags/grafana/</link>
       <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
       
-      <guid>http://wmartins.github.io/tags/grafana/</guid>
+      <guid>https://wmartins.github.io/tags/grafana/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Influxdb</title>
-      <link>http://wmartins.github.io/tags/influxdb/</link>
+      <link>https://wmartins.github.io/tags/influxdb/</link>
       <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
       
-      <guid>http://wmartins.github.io/tags/influxdb/</guid>
+      <guid>https://wmartins.github.io/tags/influxdb/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Monitoring</title>
-      <link>http://wmartins.github.io/tags/monitoring/</link>
+      <link>https://wmartins.github.io/tags/monitoring/</link>
       <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
       
-      <guid>http://wmartins.github.io/tags/monitoring/</guid>
+      <guid>https://wmartins.github.io/tags/monitoring/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Orchestration</title>
-      <link>http://wmartins.github.io/tags/orchestration/</link>
+      <link>https://wmartins.github.io/tags/orchestration/</link>
       <pubDate>Tue, 28 Nov 2017 21:09:43 -0300</pubDate>
       
-      <guid>http://wmartins.github.io/tags/orchestration/</guid>
+      <guid>https://wmartins.github.io/tags/orchestration/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Telegraf</title>
-      <link>http://wmartins.github.io/tags/telegraf/</link>
+      <link>https://wmartins.github.io/tags/telegraf/</link>
       <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
       
-      <guid>http://wmartins.github.io/tags/telegraf/</guid>
+      <guid>https://wmartins.github.io/tags/telegraf/</guid>
       <description></description>
     </item>
     
