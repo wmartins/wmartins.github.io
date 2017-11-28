@@ -3,7 +3,7 @@ title: "What I Learned by Early Adopting Docker"
 date: 2017-11-28T21:09:43-03:00
 author: "William Martins"
 tags: ["docker", "orchestration"]
-draft: true
+draft: false
 ---
 
 The year is 2015, I started working as software engineer in this new team that
