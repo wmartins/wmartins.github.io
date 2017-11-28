@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>Posts on wwwhmartins </title>
+      <title>Orchestration on wwwhmartins </title>
       <generator uri="https://gohugo.io">Hugo</generator>
-    <link>http://wmartins.github.io/post/</link>
+    <link>http://wmartins.github.io/tags/orchestration/</link>
     <language>en-us</language>
     
     
@@ -17,16 +17,6 @@
       <guid>http://wmartins.github.io/2017/11/what-i-learned-by-early-adopting-docker/</guid>
       <description>The year is 2015, I started working as software engineer in this new team that was focused on delivering new experiences with top notch technology. This was also an year when microservices began to be a thing, and, with that, Docker being the de facto containerization tool.
 At this time, Docker was on release 1.6 or 1.7, and few people were using it to deploy applications. Lots of those were POCs, and most of the blog posts included some &amp;ldquo;strange&amp;rdquo; things (not the Netflix title) there, like the fig command (which became docker-compose), and lots of lines in yml code.</description>
-    </item>
-    
-    <item>
-      <title>Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf</title>
-      <link>http://wmartins.github.io/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/</link>
-      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
-      
-      <guid>http://wmartins.github.io/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/</guid>
-      <description>Monitoring your infrastructure is one of the most important aspects of successfully launching a product. It&amp;rsquo;s really important to know when your machines/applications are under heavy load. Moreover, if it happens, you would want to quickly know what&amp;rsquo;s going on and what you can do to recover your infrastructure.
-This blog post explains how you can configure setup a monitoring stack easily using Docker Swarm, Grafana, InfluxDB and Telegraf.</description>
     </item>
     
   </channel>

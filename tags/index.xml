@@ -7,12 +7,12 @@
     <language>en-us</language>
     
     
-    <updated>Tue, 03 Oct 2017 21:00:00 -03</updated>
+    <updated>Tue, 28 Nov 2017 21:09:43 -0300</updated>
     
     <item>
       <title>Docker</title>
       <link>http://wmartins.github.io/tags/docker/</link>
-      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      <pubDate>Tue, 28 Nov 2017 21:09:43 -0300</pubDate>
       
       <guid>http://wmartins.github.io/tags/docker/</guid>
       <description></description>
@@ -51,6 +51,15 @@
       <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
       
       <guid>http://wmartins.github.io/tags/monitoring/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Orchestration</title>
+      <link>http://wmartins.github.io/tags/orchestration/</link>
+      <pubDate>Tue, 28 Nov 2017 21:09:43 -0300</pubDate>
+      
+      <guid>http://wmartins.github.io/tags/orchestration/</guid>
       <description></description>
     </item>
     

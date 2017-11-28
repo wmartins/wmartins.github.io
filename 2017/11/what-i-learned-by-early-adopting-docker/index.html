@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>What I Learned by Early Adopting Docker - wwwhmartins</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://wmartins.github.io/2017/11/what-i-learned-by-early-adopting-docker/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://wmartins.github.io/css/combined-min.css">
+
+</head>
+<body class="">
+
+<div class="site-wrap">
+  <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://wmartins.github.io" class="site-title">wwwhmartins</a>
+      <nav class="site-nav right">
+      <a href="http://wmartins.github.io/about/">About</a>
+<a href="http://wmartins.github.io/tags/">Tags</a>
+<a href="http://wmartins.github.io/contact/">Contact</a>
+</form>
+
+      </nav>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</header>
+
+  <div class="post p2 p-responsive wrap" role="main">
+    <div class="measure">
+      <div class="post-header mb2">
+        <h1 class="py2">What I Learned by Early Adopting Docker</h1>
+        <span class="post-meta">Nov 28, 2017 by William Martins</span><br>
+        
+      </div>
+
+      <article class="post-content">
+      
+
+<p>The year is 2015, I started working as software engineer in this new team that
+was focused on delivering new experiences with top notch technology. This was
+also an year when microservices began to be a thing, and, with that, Docker
+being the <em>de facto</em> containerization tool.</p>
+
+<p>At this time, Docker was on release <code>1.6</code> or <code>1.7</code>, and few people were using it
+to deploy applications. Lots of those were POCs, and most of the blog posts
+included some &ldquo;strange&rdquo; things (not the Netflix title) there, like the <code>fig</code>
+command (which became <code>docker-compose</code>), and lots of lines in <code>yml</code> code.</p>
+
+<p>It was a time where most of the &ldquo;real world problems&rdquo; were still being found for
+Docker deployments. Things like networking, orchestration, high availability,
+and so on. So, we made a few bad decisions that made us learn a lot (at least
+what not to do), but that we would like someone had told us that were bad ideas.</p>
+
+<p>This blog post will cover some of those bad decisions, explaining why they&rsquo;re
+bad, and what we should&rsquo;ve done.</p>
+
+<h2 id="outlining-the-application">Outlining the Application</h2>
+
+<p>Our application, in a high level, was designed to be high available, which means
+that, at least, we needed to run our application in more than one machine. That
+said, we needed to be able to run replicas of containers, and provide a
+mechanism to use those replicas in the best way we can.</p>
+
+<p>In our case, we decided to use <a href="https://openresty.org/en/"><strong>OpenResty</strong></a> (Nginx
++ Lua Scripts) as a reverse proxy/API gateway/load balancer, balancing the
+traffic between the containers. Something like that:</p>
+
+<pre><code class="language-conf">upstream first-microservice {
+    server &lt;FIRST-SERVER-IP&gt;:8877;
+    server &lt;SECOND-SERVER-IP&gt;:8877;
+}
+</code></pre>
+
+<p>After we decided what goes where, we then took two bad decisions: orchestrate
+the application using <a href="https://jenkins.io/"><strong>Jenkins</strong></a> and creating a
+<code>configuration</code> volume, which I&rsquo;ll cover in next sections.</p>
+
+<h2 id="orchestrating-using-jenkins">Orchestrating Using Jenkins</h2>
+
+<p><strong>Jenkins</strong> is an awesome tool. It does its job really well:</p>
+
+<blockquote>
+<p>The leading open source <strong>automation</strong> server, Jenkins provides hundreds of
+plugins to support building, deploying and automating any project.</p>
+</blockquote>
+
+<p>As you see, it&rsquo;s an <strong>automation</strong> server. Putting it in another way, it&rsquo;s
+<strong>not</strong> an orchestration server. But, for some reason, we thought it was.</p>
+
+<p>So, our deployment jobs now had the IPs of all our machines, containing a Groovy
+script to associate an IP with container names (in order to know what to
+deploy). Then, a generic deploy job just grabbed the IP, the names, ssh&rsquo;d into
+the machines and <em>voila</em>, let <code>docker-compose up -d &lt;CONTAINERS&gt;</code> do its job.</p>
+
+<p>It seems good, right? It felt good. It really did, but it started to become hard
+to manage. Every new microservice we added, we needed to edit this Jenkins job
+and add the new microservice in <strong>all</strong> environments (we have 2 QA environments,
+1 <em>production like</em> environment and 1 production environment). And, there was <strong>no
+space for mistakes</strong> here. If you edit it wrong, your service will go to the
+wrong machine, and the application might not work. Also, if you put, for
+example, two applications that consume lots of memory in the same machine, you
+might compromise this machine, just because you chose the wrong place to put
+your microservice.</p>
+
+<p>So, as I said before, we found out that Jenkins is not an orchestration tool.
+It doesn&rsquo;t handle unhealthy services/machines, it doesn&rsquo;t handle dynamic
+adding/removing replicas, it doesn&rsquo;t monitor your replicas. It just automates
+stuff.</p>
+
+<p>Now, the plan is to move this responsibility from Jenkins to <strong>Docker Swarm</strong>,
+which will also gives us other cool features that fix more of our problems.</p>
+
+<p>There are other tools, like <strong>Kubernetes</strong> and <strong>Nomad</strong>, that also solves this
+in a fashion way.</p>
+
+<h2 id="no-service-discovery-hardcoded-ips">No Service Discovery/Hardcoded IPs</h2>
+
+<p>Service discovery is one of the most important aspects of a successful
+microservices architecture. Without it, you&rsquo;ll struggle when adding/removing
+replicas from the application.</p>
+
+<p>We found out that after having some problems on some of our machines (our
+infrastructure team had an outage on a datacenter, which took half of our
+machines down). In that time, we wanted to add more replicas to make the
+application high available again. It was really hard to do:</p>
+
+<ol>
+<li>Editing IPs in Jenkins and config files</li>
+<li>Going in Jenkins jobs to modify where to deploy stuff</li>
+<li>Deploy and check if everything is running fine</li>
+</ol>
+
+<p>Then, after the machines went up again, we needed to do the reverse process,
+editing files, modifying Jenkins and deploying, all over again.</p>
+
+<p>It&rsquo;s not that hard to setup a <code>DNS</code> or a service discovery system. So, don&rsquo;t let
+the &ldquo;lets ship it soon&rdquo; make you do things that will only cause you trouble. Or,
+if you do, at least know what you need to do to make it right.</p>
+
+<h2 id="configuration-as-a-shared-volume">Configuration as a Shared Volume</h2>
+
+<p>All applications, at some point, need some kind of configuration. Most likely,
+the application, when in production, will need to behave differently than in the
+local machine, or in a low level (testing) environment. This requires us to have
+some level of <strong>configuration management</strong>.</p>
+
+<p>Back at that time, the way we solved it was to create a <strong>configuration
+volume</strong>, that is a simple Docker container that we use to store configuration
+files per environment. Then, at deployment time, we just grab the correct
+configuration container and we deploy it using <code>--volumes-from</code> directive.</p>
+
+<p>It seemed to be a good idea, but we started realizing that it doesn&rsquo;t scale.
+First of all, we were coupling all microservices with this configuration
+container, and we needed to always remember to edit the files in it. Second, our
+microservices weren&rsquo;t really standalone, as we couldn&rsquo;t run it without running
+this other container together. Third, if two containers used the version
+<code>2.1.0</code> of the configuration container, they would end up using exactly the same
+files. Putting it in another way, if, by mistake, one container edits the wrong
+file, it could affect the other container. To finish, it starts to be really
+hard to manage which is the correct configuration version to run with each
+microservice.</p>
+
+<p>There are some ways to do it correctly. One of the easiest is to use
+<strong>environment variables</strong> for all those configuration objects. If the
+application requires a string to connect to the database, provide a
+<code>DB_CONNECTION_STRING</code> env var and so on.</p>
+
+<p>The other way of using it is to use a <strong>configuration management tool</strong> that let
+you externalize your configuration. Tools like <strong>Consul</strong> with its key-value
+storage solve that for you. The only downside is that you&rsquo;ll need to modify your
+applications to connect to that tool to grab the values. The cool thing about
+it is that you can, in the middle of the day, change some configuration and,
+if your code supports it, your application will notice that and will adapt
+itself. It&rsquo;s really nice.</p>
+
+<h2 id="wrapping-up">Wrapping Up</h2>
+
+<p>It was really hard to early adopt Docker. We made a few poor decisions that
+we&rsquo;re not proud of. Also, those decisions made our jobs pretty hard. If, at that
+time, we discussed more and researched more, we would probably doing things
+better.</p>
+
+<p>That said, my advice if you&rsquo;re adopting Docker (but that can be used to
+anything) is to study a lot, discuss in forums and experiment with it. Try to
+implement all your use cases and think what you&rsquo;ll need when running in
+production, and check if you have the tools and knowledge to make you go
+comfortably to production.</p>
+
+<p>Hope it was useful!</p>
+
+      </article>
+
+      <p class="post-meta">Tags:&nbsp;
+        
+            
+            <a href="http://wmartins.github.io/tags/docker">docker</a>
+        
+            ,&nbsp;
+            <a href="http://wmartins.github.io/tags/orchestration">orchestration</a>
+        
+      </p>
+
+      
+
+    </div>
+  </div>
+</div>
+    <footer class="footer">
+      <div class="p2 wrap">
+        <div class="measure mt1 center">
+      <nav class="social-icons icons">
+<a class="fa fa-rss rss" href="/index.xml"></a>
+
+</nav>
+
+          <small>
+            Copyright &#169; 2017<br>
+            Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
+          </small>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68493929-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+
