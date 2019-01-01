@@ -1,7 +1,7 @@
 baseURL = "https://wmartins.github.io"
 languageCode = "en-us"
 title = "wwwhmartins"
-theme = "pixyll"
+theme = "hugo-theme-pixyll"
 
 [params]
     google_analytics_id = "UA-68493929-1"
