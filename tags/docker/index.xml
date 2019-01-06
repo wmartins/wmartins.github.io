@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>Docker on wwwhmartins </title>
-      <generator uri="https://gohugo.io">Hugo</generator>
+    <title>Docker on wwwhmartins</title>
     <link>https://wmartins.github.io/tags/docker/</link>
+    <description>Recent content in Docker on wwwhmartins</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Tue, 28 Nov 2017 21:09:43 -0300</lastBuildDate>
     
+	<atom:link href="https://wmartins.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
-    <updated>Tue, 28 Nov 2017 21:09:43 -0300</updated>
     
     <item>
       <title>What I Learned by Early Adopting Docker</title>
@@ -22,7 +24,7 @@ At this time, Docker was on release 1.6 or 1.7, and few people were using it to 
     <item>
       <title>Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf</title>
       <link>https://wmartins.github.io/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/</link>
-      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -0300</pubDate>
       
       <guid>https://wmartins.github.io/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/</guid>
       <description>Monitoring your infrastructure is one of the most important aspects of successfully launching a product. It&amp;rsquo;s really important to know when your machines/applications are under heavy load. Moreover, if it happens, you would want to quickly know what&amp;rsquo;s going on and what you can do to recover your infrastructure.
@@ -31,4 +33,3 @@ This blog post explains how you can configure setup a monitoring stack easily us
     
   </channel>
 </rss>
-

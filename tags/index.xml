@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>Tags on wwwhmartins </title>
-      <generator uri="https://gohugo.io">Hugo</generator>
+    <title>Tags on wwwhmartins</title>
     <link>https://wmartins.github.io/tags/</link>
+    <description>Recent content in Tags on wwwhmartins</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Thu, 03 Jan 2019 00:19:19 -0200</lastBuildDate>
+    
+	<atom:link href="https://wmartins.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
-    <updated>Tue, 28 Nov 2017 21:09:43 -0300</updated>
+    <item>
+      <title>Async Javascript</title>
+      <link>https://wmartins.github.io/tags/async-javascript/</link>
+      <pubDate>Thu, 03 Jan 2019 00:19:19 -0200</pubDate>
+      
+      <guid>https://wmartins.github.io/tags/async-javascript/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Docker</title>
@@ -21,7 +32,7 @@
     <item>
       <title>Docker Swarm</title>
       <link>https://wmartins.github.io/tags/docker-swarm/</link>
-      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -0300</pubDate>
       
       <guid>https://wmartins.github.io/tags/docker-swarm/</guid>
       <description></description>
@@ -30,7 +41,7 @@
     <item>
       <title>Grafana</title>
       <link>https://wmartins.github.io/tags/grafana/</link>
-      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -0300</pubDate>
       
       <guid>https://wmartins.github.io/tags/grafana/</guid>
       <description></description>
@@ -39,7 +50,7 @@
     <item>
       <title>Influxdb</title>
       <link>https://wmartins.github.io/tags/influxdb/</link>
-      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -0300</pubDate>
       
       <guid>https://wmartins.github.io/tags/influxdb/</guid>
       <description></description>
@@ -48,7 +59,7 @@
     <item>
       <title>Monitoring</title>
       <link>https://wmartins.github.io/tags/monitoring/</link>
-      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -0300</pubDate>
       
       <guid>https://wmartins.github.io/tags/monitoring/</guid>
       <description></description>
@@ -64,9 +75,18 @@
     </item>
     
     <item>
+      <title>React</title>
+      <link>https://wmartins.github.io/tags/react/</link>
+      <pubDate>Thu, 03 Jan 2019 00:19:19 -0200</pubDate>
+      
+      <guid>https://wmartins.github.io/tags/react/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Telegraf</title>
       <link>https://wmartins.github.io/tags/telegraf/</link>
-      <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
+      <pubDate>Tue, 03 Oct 2017 21:00:00 -0300</pubDate>
       
       <guid>https://wmartins.github.io/tags/telegraf/</guid>
       <description></description>
@@ -74,4 +94,3 @@
     
   </channel>
 </rss>
-

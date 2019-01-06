@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>Orchestration on wwwhmartins </title>
-      <generator uri="https://gohugo.io">Hugo</generator>
+    <title>Orchestration on wwwhmartins</title>
     <link>https://wmartins.github.io/tags/orchestration/</link>
+    <description>Recent content in Orchestration on wwwhmartins</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Tue, 28 Nov 2017 21:09:43 -0300</lastBuildDate>
     
+	<atom:link href="https://wmartins.github.io/tags/orchestration/index.xml" rel="self" type="application/rss+xml" />
     
-    <updated>Tue, 28 Nov 2017 21:09:43 -0300</updated>
     
     <item>
       <title>What I Learned by Early Adopting Docker</title>
@@ -21,4 +23,3 @@ At this time, Docker was on release 1.6 or 1.7, and few people were using it to 
     
   </channel>
 </rss>
-

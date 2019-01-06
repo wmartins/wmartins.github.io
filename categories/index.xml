@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>Categories on wwwhmartins </title>
-      <generator uri="https://gohugo.io">Hugo</generator>
+    <title>Categories on wwwhmartins</title>
     <link>https://wmartins.github.io/categories/</link>
+    <description>Recent content in Categories on wwwhmartins</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
+	<atom:link href="https://wmartins.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
-    <updated>Mon, 01 Jan 0001 00:00:00 UTC</updated>
     
   </channel>
 </rss>
-
