@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>A deep dive into children in Vue - wwwhmartins</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="https://wmartins.github.io/2019/05/a-deep-dive-into-children-in-vue/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://wmartins.github.io/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="https://wmartins.github.io/tipuesearch/tipuesearch.css">
+
+</head>
+<body class="">
+
+<div class="site-wrap">
+  <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://wmartins.github.io" class="site-title">wwwhmartins</a>
+      <nav class="site-nav right">
+      <a href="https://wmartins.github.io/about/">About</a>
+<a href="https://wmartins.github.io/tags/">Tags</a>
+<a href="https://wmartins.github.io/contact/">Contact</a>
+</form>
+
+      </nav>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</header>
+
+  <div class="post p2 p-responsive wrap" role="main">
+    <div class="measure">
+      <div class="post-header mb2">
+        <h1 class="py2">A deep dive into children in Vue</h1>
+        <span class="post-meta">May 16, 2019 by William Martins</span><br>
+        
+      </div>
+
+      <article class="post-content">
+      
+
+<p>I got myself inspired by Max Stoiber in his <a href="https://mxstbr.blog/2017/02/react-children-deepdive/"><strong>A deep dive into children in
+React</strong></a> to create this
+post about Vue children. So, credits on the title to him. If you&rsquo;re into React,
+check out his post, it has lots of nice information on React children.</p>
+
+<h2 id="motivation">Motivation</h2>
+
+<p>I have started working with Vue a few months ago and it has been really nice.
+After working with React for some years, it&rsquo;s nice to experience something new.</p>
+
+<p>I&rsquo;m writing this post because there are some patterns that I used in React and I
+miss in Vue. In this case, this post will cover manipulating children elements
+in Vue components.</p>
+
+<p>This is really straightforward to do with React. So, I&rsquo;ll try to cover some
+parts of Vue that enables us to do something similar as done in React.</p>
+
+<p>The fantastic part is that Vue is really well thought (congratulations to all
+maintainers for that) and really simple, so, we can manipulate Vue objects in an
+easy way to achieve what we need.</p>
+
+<h3 id="about-react-children">About React children</h3>
+
+<p>If you come from a non React background and want to know more about its children
+concept, please refer to their documentation on that:</p>
+
+<ul>
+<li><a href="https://reactjs.org/docs/react-api.html#reactchildren"><code>React.Children</code></a></li>
+</ul>
+
+<h2 id="what-are-children">What are children</h2>
+
+<p>First of all, to be on the same page, we&rsquo;ll call <code>children</code> elements all
+elements rendered inside any given Vue component. Here are some examples:</p>
+
+<pre><code class="language-vue">&lt;template&gt;
+    &lt;Parent&gt;
+        &lt;div&gt;This is a child&lt;/div&gt;
+        &lt;Child /&gt; &lt;!-- This is also a child --&gt;
+        &lt;span&gt;Another child&lt;/div&gt;
+    &lt;/Parent&gt;
+&lt;/template&gt;
+</code></pre>
+
+<p>Every single element that is put inside another one can be considered a child
+element. It doesn&rsquo;t matter if it is a custom component, a tag or some text.</p>
+
+<p>There&rsquo;s only one detail to the statement above:
+<a href="https://vuejs.org/v2/guide/components-slots.html"><code>Vue Slots</code></a> work in a
+different manner based on whether a component is
+<a href="https://vuejs.org/v2/guide/render-function.html#Functional-Components"><code>functional</code></a>
+or not (we&rsquo;ll get to that later).</p>
+
+<h2 id="creating-templates-with-children-support">Creating templates with children support</h2>
+
+<p>To create elements that have children support we can simply use the <code>&lt;slot /&gt;</code>
+tag in our components.</p>
+
+<p>For example, imagine we&rsquo;re creating a dynamic <code>&lt;Button&gt;</code> component that receives
+its children. We can define the component template like this:</p>
+
+<pre><code class="language-vue">&lt;template&gt;
+    &lt;button&gt;
+        &lt;slot /&gt;
+    &lt;/button&gt;
+&lt;/template&gt;
+</code></pre>
+
+<p>And, use it like this:</p>
+
+<pre><code class="language-vue">&lt;template&gt;
+    &lt;Button&gt;
+        Content goes here
+    &lt;/Button&gt;
+&lt;/template&gt;
+</code></pre>
+
+<p>This will render a button with <code>Content goes here</code> content.</p>
+
+<p>Please note that you can add anything &ldquo;renderable&rdquo; inside <code>&lt;slot&gt;</code>. In the
+example above we rendered a simple text, but you can render a <code>&lt;div&gt;</code>, a
+<code>&lt;CustomComponent&gt;</code> and so on.</p>
+
+<h2 id="vue-render-process">Vue render process</h2>
+
+<p>Before we continue, it&rsquo;s interesting to know a little bit how Vue render process
+works. Basically, whenever you write a template, Vue compiles it to a
+<a href="https://vuejs.org/v2/guide/render-function.html">render function</a>. As said in
+<a href="https://vuejs.org/v2/guide/render-function.html#Template-Compilation">template
+compilation</a>
+part:</p>
+
+<blockquote>
+<p>You may be interested to know that Vue’s templates actually compile to render
+functions. This is an implementation detail you usually don’t need to know
+about, but if you’d like to see how specific template features are compiled,
+you may find it interesting.</p>
+</blockquote>
+
+<p>This knowledge will be useful from now on, as we can use this to manipulate our
+children elements.</p>
+
+<h2 id="manipulating-children-elements">Manipulating children elements</h2>
+
+<p>Sadly Vue doesn&rsquo;t provide a way to manipulate children using the <code>&lt;template&gt;</code>
+tag. For example, using React one would do:</p>
+
+<pre><code class="language-jsx">const Component = ({ children }) =&gt; (
+    &lt;div&gt;
+        {React.Children.map(children, (child, i) =&gt; {
+            // do whatever I want with `child`
+
+            return child
+        })}
+    &lt;/div&gt;
+)
+</code></pre>
+
+<p>In Vue, we can leverage the use of
+<a href="https://vuejs.org/v2/guide/render-function.html#createElement-Arguments"><code>createElement</code></a>
+and render functions. So, we will <strong>not</strong> write a <code>&lt;template&gt;</code> for our
+components, as now we&rsquo;ll render the template manually.</p>
+
+<p>As a minimal boilerplate, if you want to manipulate children with Vue, you
+should do:</p>
+
+<pre><code class="language-vue">&lt;script&gt;
+export default {
+    functional: true,
+
+    render(createElement, context) {
+        const $children = context.children
+
+        const children = $children.map((child, i) =&gt; {
+            // do whatever I want with `child`
+
+            return child
+        })
+
+        return createElement('div', children)
+    }
+}
+&lt;/script&gt;
+</code></pre>
+
+<p>Please note that, as we&rsquo;re using <a href="https://vuejs.org/v2/guide/render-function.html#Functional-Components">functional
+components</a>,
+in this case <code>context.children</code> contains all given children, no matter if user
+specified <code>slots</code>. For example, imagine that we&rsquo;re rendering the following
+children inside our component:</p>
+
+<pre><code class="language-vue">&lt;template&gt;
+    &lt;Component&gt;
+        &lt;div&gt;Child 1&lt;/div&gt;
+        &lt;div slot=&quot;slot1&quot;&gt;Child 2&lt;/div&gt;
+    &lt;/Component&gt;
+&lt;/template&gt;
+</code></pre>
+
+<p>In this case, <code>context.children</code> contains both <code>Child 1</code> and <code>Child 2</code>. If you
+want to have all slots separated, you can use <code>context.slots()</code> function. This
+will return an object like:</p>
+
+<pre><code class="language-js">{
+    default: Array[VNode],
+    slot1: Array[VNode]
+}
+</code></pre>
+
+<h3 id="when-not-using-functional-components">When not using functional components</h3>
+
+<p>I don&rsquo;t see why not use functional components in those cases, however, if you
+really need to, it becomes a little bit harder and <em>unstable</em> to access children
+components.</p>
+
+<p>First of all, you&rsquo;ll rely on <code>this</code> to access data. Second, you&rsquo;ll need to
+access some private properties of the Vue instance, which is not really good
+(they&rsquo;re not documented in the &ldquo;public api&rdquo; -
+<a href="https://vuejs.org/v2/api/#Instance-Properties)">https://vuejs.org/v2/api/#Instance-Properties)</a>, as if Vue core team decides to
+change them, your code will break. Here&rsquo;s an example:</p>
+
+<pre><code class="language-vue">export default {
+    render(createElement) {
+        const children = this.$options._renderChildren // a &quot;private&quot; property
+
+        return createElement('div', children)
+    }
+}
+</code></pre>
+
+<p>In the same way, you can also access <code>this.$slots</code> to get all slots.</p>
+
+<h2 id="working-example">Working example</h2>
+
+<p>I created a simple example to illustrate those situations. Please go to
+<a href="https://codesandbox.io/s/vue-template-ny5hg?fontsize=14">https://codesandbox.io/s/vue-template-ny5hg?fontsize=14</a> and check it out. There,
+I&rsquo;ll have two components: one using <code>functional</code> components and other using
+regular components.</p>
+
+<h2 id="what-can-i-do-with-that">What can I do with that?</h2>
+
+<p>Well, mostly of those manipulations will be done in a higher level abstraction.
+For example, imagine you need to filter out all <code>&lt;Other&gt;</code> component instances,
+you can do something like that:</p>
+
+<pre><code class="language-vue">&lt;script&gt;
+import Other from './Other.vue'
+export default {
+  functional: true,
+
+  render(createElement, { children }) {
+    return createElement(&quot;div&quot;, children.filter(child =&gt; {
+      const { componentOptions = {} } = child
+      console.log(child, componentOptions.Ctor, Other._Ctor[0])
+
+      return componentOptions.Ctor !== Other._Ctor[0]
+    }));
+  }
+};
+&lt;/script&gt;
+</code></pre>
+
+<p>(It&rsquo;s a little bit ugly, I know)</p>
+
+<p>Another example is when you need to inject some properties. For example, take
+the great Reach&rsquo;s Tabs component: <a href="https://ui.reach.tech/tabs/">https://ui.reach.tech/tabs/</a>. It&rsquo;s a generic
+Tab component that enables the user to place <code>&lt;TabList&gt;</code> (the tab navigation)
+and <code>&lt;TabPanels&gt;</code> wherever user wants. But, to do that, we need to have a smart
+wrapper component to do this for us.</p>
+
+<p>For example, take this template:</p>
+
+<pre><code>&lt;template&gt;
+    &lt;div&gt;
+        &lt;Tabs&gt;
+            &lt;TabList&gt;
+                &lt;Tab&gt;Tab 1&lt;/Tab&gt;
+                &lt;Tab&gt;Tab 2&lt;/Tab&gt;
+            &lt;/TabList&gt;
+
+            &lt;TabPanels&gt;
+                &lt;TabPanel&gt;Tab panel 1&lt;/TabPanel&gt;
+                &lt;TabPanel&gt;Tab panel 2&lt;/TabPanel&gt;
+            &lt;/TabPanels&gt;
+        &lt;/Tabs&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+
+<p>In this case, <code>&lt;Tabs&gt;</code> can be &ldquo;smart&rdquo; and inject properties/callbacks to
+children components, allowing <code>&lt;TabList&gt;</code> and <code>&lt;TabPanels&gt;</code> to know which tab is
+currently active, handle tab change and so on.</p>
+
+<h2 id="references">References</h2>
+
+<p>While browsing for help on that subject, I&rsquo;ve found some relevant discussions
+that you may find interesting on further readings:</p>
+
+<ul>
+<li><a href="https://forum.vuejs.org/t/loop-through-elements-passed-into-slot/6558">https://forum.vuejs.org/t/loop-through-elements-passed-into-slot/6558</a></li>
+<li><a href="https://forum.vuejs.org/t/loop-with-v-for-slots-default/20646/2">https://forum.vuejs.org/t/loop-with-v-for-slots-default/20646/2</a></li>
+</ul>
+
+<p>There&rsquo;s also an abstraction that allows you to move this logic to your
+<code>&lt;template&gt;</code>, however, I don&rsquo;t really know if I like that, but it might help
+you:</p>
+
+<ul>
+<li><a href="https://www.npmjs.com/package/vue-wrap">https://www.npmjs.com/package/vue-wrap</a></li>
+</ul>
+
+      </article>
+
+      <p class="post-meta">Tags:&nbsp;
+        
+            
+            <a href="https://wmartins.github.io/tags/vue">vue</a>
+        
+            ,&nbsp;
+            <a href="https://wmartins.github.io/tags/funcional%20components">funcional components</a>
+        
+            ,&nbsp;
+            <a href="https://wmartins.github.io/tags/vue%20children">vue children</a>
+        
+      </p>
+
+      
+
+    </div>
+  </div>
+</div>
+    <footer class="footer">
+      <div class="p2 wrap">
+        <div class="measure mt1 center">
+      <nav class="social-icons icons">
+<a class="fa fa-rss rss" href="/index.xml"></a>
+
+</nav>
+
+          <small>
+            Copyright &#169; 2017<br>
+            Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
+          </small>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68493929-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+
