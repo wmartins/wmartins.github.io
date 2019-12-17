@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>vue children on wwwhmartins</title>
@@ -17,8 +17,8 @@
       <pubDate>Thu, 16 May 2019 22:53:40 -0300</pubDate>
       
       <guid>https://wmartins.github.io/2019/05/a-deep-dive-into-children-in-vue/</guid>
-      <description>I got myself inspired by Max Stoiber in his A deep dive into children in React to create this post about Vue children. So, credits on the title to him. If you&amp;rsquo;re into React, check out his post, it has lots of nice information on React children.
-Motivation I have started working with Vue a few months ago and it has been really nice. After working with React for some years, it&amp;rsquo;s nice to experience something new.</description>
+      <description>I got myself inspired by Max Stoiber in his A deep dive into children in React to create this post about Vue children. So, credits on the title to him. If you&#39;re into React, check out his post, it has lots of nice information on React children.
+Motivation I have started working with Vue a few months ago and it has been really nice. After working with React for some years, it&#39;s nice to experience something new.</description>
     </item>
     
   </channel>

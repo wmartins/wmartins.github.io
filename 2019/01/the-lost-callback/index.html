@@ -51,215 +51,174 @@
       </div>
 
       <article class="post-content">
-      
-
-<p>In the past few days I was investigating a really tricky issue in one of our
-React components. I decided to cover it here because I&rsquo;ve found the problem
+      <p>In the past few days I was investigating a really tricky issue in one of our
+React components. I decided to cover it here because I've found the problem
 interesting and, surprisingly, easy to fix after finding out the root cause.</p>
-
 <h1 id="the-component">The Component</h1>
-
-<p>First, it&rsquo;s nice to outline a little bit about the component itself. It&rsquo;s a
+<p>First, it's nice to outline a little bit about the component itself. It's a
 really simple react component that does the following things:</p>
-
 <ol>
 <li>When the component mounts, inserts a <code>&lt;script&gt;</code> tag on the page to load an
 external dependency</li>
 <li>When this script is loaded, instantiate a new instance of this external
 dependency</li>
-<li>Renders correctly both when script is loaded and when it isn&rsquo;t</li>
+<li>Renders correctly both when script is loaded and when it isn't</li>
 <li>When removing the component, destroys the external dependency instance</li>
 </ol>
-
 <p>So, that said, lets jump into the parts that make it happen.</p>
-
 <p>First, we have the script loader function, which is pretty straightforward:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">addScriptToPage</span>(<span style="color:#a6e22e">callback</span>, <span style="color:#a6e22e">src</span>) {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">script</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;script&#39;</span>);
 
-<pre><code class="language-js">function addScriptToPage(callback, src) {
-    const script = document.createElement('script');
+    <span style="color:#a6e22e">script</span>.<span style="color:#a6e22e">defer</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+    <span style="color:#a6e22e">script</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">callback</span>;
+    <span style="color:#a6e22e">script</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">src</span>;
 
-    script.defer = true;
-    script.onload = callback;
-    script.src = src;
-
-    document.body.appendChild(script);
+    document.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">script</span>);
 }
-</code></pre>
+</code></pre></div><p>The component itself is also pretty straightforward:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TheComponent</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Component</span> {
+    <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">props</span>) {
+        <span style="color:#66d9ef">super</span>(<span style="color:#a6e22e">props</span>);
 
-<p>The component itself is also pretty straightforward:</p>
-
-<pre><code class="language-jsx">class TheComponent extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            externalDependency: null,
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> {
+            <span style="color:#a6e22e">externalDependency</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">null</span>,
         };
     }
 
-    componentWillMount() {
-        addScriptToPage(() =&gt; {
-            const externalDependency = new ExternalDependency();
-            externalDependency.create();
+    <span style="color:#a6e22e">componentWillMount</span>() {
+        <span style="color:#a6e22e">addScriptToPage</span>(() =&gt; {
+            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">externalDependency</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ExternalDependency</span>();
+            <span style="color:#a6e22e">externalDependency</span>.<span style="color:#a6e22e">create</span>();
 
-            this.setState({
-                externalDependency,
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">setState</span>({
+                <span style="color:#a6e22e">externalDependency</span>,
             });
-        }, 'external.js');
+        }, <span style="color:#e6db74">&#39;external.js&#39;</span>);
     }
 
-    componentWillUnmount() {
-        const { externalDependency } = this.state;
+    <span style="color:#a6e22e">componentWillUnmount</span>() {
+        <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">externalDependency</span> } <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>;
 
-        externalDependency &amp;&amp; externalDependency.destroy();
+        <span style="color:#a6e22e">externalDependency</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">externalDependency</span>.<span style="color:#a6e22e">destroy</span>();
     }
 
-    render() {
-        const { externalDependency } = this.state;
-        const value = externalDependency
-            ?  externalDependency.doStuff()
-            : 'NOT LOADED YET';
+    <span style="color:#a6e22e">render</span>() {
+        <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">externalDependency</span> } <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>;
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">externalDependency</span>
+            <span style="color:#f92672">?</span>  <span style="color:#a6e22e">externalDependency</span>.<span style="color:#a6e22e">doStuff</span>()
+            <span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;NOT LOADED YET&#39;</span>;
 
-        return &lt;h1&gt;External value: {value}&lt;/h1&gt;;
+        <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">h1</span>&gt;<span style="color:#a6e22e">External</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">value</span>}&lt;/<span style="color:#f92672">h1</span>&gt;;
     }
 }
 
-class App extends Component {
-    constructor(props) {
-        super(props);
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Component</span> {
+    <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">props</span>) {
+        <span style="color:#66d9ef">super</span>(<span style="color:#a6e22e">props</span>);
 
-        this.state = {
-            hide: false,
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> {
+            <span style="color:#a6e22e">hide</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
         };
     }
 
-    componentWillMount() {
-        setTimeout(() =&gt; {
-            this.setState(() =&gt; ({
-                hide: true,
+    <span style="color:#a6e22e">componentWillMount</span>() {
+        <span style="color:#a6e22e">setTimeout</span>(() =&gt; {
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">setState</span>(() =&gt; ({
+                <span style="color:#a6e22e">hide</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
             }));
-        }, 0);
+        }, <span style="color:#ae81ff">0</span>);
     }
 
-    render() {
-        if (this.state.hide) {
-            return null;
+    <span style="color:#a6e22e">render</span>() {
+        <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">hide</span>) {
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
         }
 
-        return &lt;TheComponent /&gt;;
+        <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">TheComponent</span> /&gt;;
     }
 }
-</code></pre>
-
-<p>The external dependency, for all the purposes, is just a library. In our case,
+</code></pre></div><p>The external dependency, for all the purposes, is just a library. In our case,
 the real one listens to some events and some other stuff. For this post,
 consider the following external dependency:</p>
-
-<pre><code class="language-js">function ExternalDependency() {
-    return {
-        create: () =&gt; {
-            window.EXTERNAL = 'EXTERNAL';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">ExternalDependency</span>() {
+    <span style="color:#66d9ef">return</span> {
+        <span style="color:#a6e22e">create</span><span style="color:#f92672">:</span> () =&gt; {
+            window.<span style="color:#a6e22e">EXTERNAL</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;EXTERNAL&#39;</span>;
         },
 
-        doStuff: () =&gt; {
-            return 10;
+        <span style="color:#a6e22e">doStuff</span><span style="color:#f92672">:</span> () =&gt; {
+            <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">10</span>;
         },
 
-        destroy: () =&gt; {
-            delete window.EXTERNAL;
+        <span style="color:#a6e22e">destroy</span><span style="color:#f92672">:</span> () =&gt; {
+            <span style="color:#66d9ef">delete</span> window.<span style="color:#a6e22e">EXTERNAL</span>;
         },
     };
 }
-</code></pre>
-
-<h1 id="the-problem">The Problem</h1>
-
+</code></pre></div><h1 id="the-problem">The Problem</h1>
 <p>The problem given was the following:</p>
-
 <blockquote>
 <p>When we include the component on the page and, right afterwards remove it from
 the page, the component throws an error and the page stops working.</p>
 </blockquote>
-
 <p>Alongside with the error description, we also had the following log:</p>
-
 <pre><code>TypeError: this.state.externalDependency is null
-</code></pre>
-
-<h1 id="the-test-setup">The Test Setup</h1>
-
+</code></pre><h1 id="the-test-setup">The Test Setup</h1>
 <p>So, in order to test this problem, we need to simulate this &ldquo;right afterwards&rdquo;
-behavior. To do so, we&rsquo;ll render the component on the page, set a timeout (a
+behavior. To do so, we'll render the component on the page, set a timeout (a
 short one) and remove the component from the screen.</p>
-
 <p>Consider the following code:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Component</span> {
+    <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">props</span>) {
+        <span style="color:#66d9ef">super</span>(<span style="color:#a6e22e">props</span>);
 
-<pre><code class="language-jsx">class App extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            hide: false,
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> {
+            <span style="color:#a6e22e">hide</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
         };
     }
 
-    componentWillMount() {
-        setTimeout(() =&gt; {
-            this.setState(() =&gt; ({
-                hide: true,
+    <span style="color:#a6e22e">componentWillMount</span>() {
+        <span style="color:#a6e22e">setTimeout</span>(() =&gt; {
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">setState</span>(() =&gt; ({
+                <span style="color:#a6e22e">hide</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
             }));
-        }, 0);
+        }, <span style="color:#ae81ff">0</span>);
     }
 
-    render() {
-        if (this.state.hide) {
-            return null;
+    <span style="color:#a6e22e">render</span>() {
+        <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">hide</span>) {
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
         }
 
-        return &lt;TheComponent /&gt;;
+        <span style="color:#66d9ef">return</span> &lt;<span style="color:#f92672">TheComponent</span> /&gt;;
     }
 }
-</code></pre>
-
-<h1 id="the-investigation">The Investigation</h1>
-
-<p><strong>Disclaimer:</strong> now that I&rsquo;m explaining this in a blog post, the problem seems
+</code></pre></div><h1 id="the-investigation">The Investigation</h1>
+<p><strong>Disclaimer:</strong> now that I'm explaining this in a blog post, the problem seems
 obvious to me. I think this is because the code shown here is really simplified. The real code has some messy parts, some reducers and lots of code that only
 made the investigation progress harder.</p>
-
 <p>Looking at the code, we can see that the only place where
 <code>this.state.externalDependency</code> can cause this error is inside
 <code>componentWillUnmount</code>, because it starts as <code>null</code>. So, what happens is that
-the script hasn&rsquo;t finished loading and we&rsquo;re trying to destroy the instance
-(that doesn&rsquo;t exist yet).</p>
-
+the script hasn't finished loading and we're trying to destroy the instance
+(that doesn't exist yet).</p>
 <p>So, it might be tempting to do the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">externalDependency</span> } <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>;
 
-<pre><code class="language-js">const { externalDependency } = this.state;
-
-if (externalDependency) {
-    externalDependency.destroy();
+<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">externalDependency</span>) {
+    <span style="color:#a6e22e">externalDependency</span>.<span style="color:#a6e22e">destroy</span>();
 }
-</code></pre>
-
-<p>It will make the page stop breaking, as now we don&rsquo;t have a <code>TypeError</code>,
+</code></pre></div><p>It will make the page stop breaking, as now we don't have a <code>TypeError</code>,
 however, we will start having this error:</p>
-
 <pre><code>Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
-</code></pre>
-
-<p>You might think that it&rsquo;s only a <code>Warning</code> and we&rsquo;re good to go, however, that&rsquo;s
+</code></pre><p>You might think that it's only a <code>Warning</code> and we're good to go, however, that's
 not how things work. Now, we <strong>never</strong> call <code>externalDependency.destroy()</code>, so,
 we never clear the changes done by <code>externalDependency</code>. In fact, if we now
-check <code>window.EXTERNAL</code>, we&rsquo;ll have it with the value <code>&quot;EXTERNAL&quot;</code>.</p>
-
-<pre><code class="language-js">window.EXTERNAL; // &quot;EXTERNAL&quot;
-</code></pre>
-
-<h2 id="making-it-clear">Making It Clear</h2>
-
-<p>So, let&rsquo;s recap what&rsquo;s going on, before exploring the solution:</p>
-
+check <code>window.EXTERNAL</code>, we'll have it with the value <code>&quot;EXTERNAL&quot;</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">window.<span style="color:#a6e22e">EXTERNAL</span>; <span style="color:#75715e">// &#34;EXTERNAL&#34;
+</span></code></pre></div><h2 id="making-it-clear">Making It Clear</h2>
+<p>So, let's recap what's going on, before exploring the solution:</p>
 <ol>
 <li>The component is rendered on the page</li>
 <li>The script pointing to <code>external.js</code> is created on the page, a callback is
@@ -267,7 +226,7 @@ registered to, when the script loads, instantiate an instance of
 <code>ExternalDependency</code></li>
 <li>The component is removed</li>
 <li>The <code>componentWillUnmount</code> is triggered (not calling
-<code>externalDependency.destroy()</code>, as it wasn&rsquo;t instantiated so far)</li>
+<code>externalDependency.destroy()</code>, as it wasn't instantiated so far)</li>
 <li>The component is removed from the DOM</li>
 <li>The script finishes loading</li>
 <li>The callback defined in <code>2.</code> is executed</li>
@@ -275,103 +234,76 @@ registered to, when the script loads, instantiate an instance of
 <li>The component tries to <code>setState</code> in an unmounted component, which explains
 the error before</li>
 </ol>
-
 <h1 id="the-solution">The Solution</h1>
-
 <p>While it can be tempting to put something on <code>componentWillUnmount</code>, like a
-<code>setState</code> or so, it is not correct and also doesn&rsquo;t make sense.
+<code>setState</code> or so, it is not correct and also doesn't make sense.
 <code>componentWillUnmount</code> is called when the component is just about to be removed,
-there&rsquo;s no &ldquo;hey React, wait a little bit so I can make some stuff here
+there's no &ldquo;hey React, wait a little bit so I can make some stuff here
 and I let you know when you can remove me&rdquo;. Also, setting a state on a component
-to be unmounted doesn&rsquo;t make sense, as this component is being removed, it will
+to be unmounted doesn't make sense, as this component is being removed, it will
 not render again nor go to any other <code>lifecycle</code> methods.</p>
-
 <h2 id="solution-1-know-when-unmounted">Solution 1: Know When Unmounted</h2>
-
-<p>One solution that I particularly <strong>don&rsquo;t like</strong> is to have an instance property in
+<p>One solution that I particularly <strong>don't like</strong> is to have an instance property in
 your component that allows you to know if the component is being unmounted.
 Something like that:</p>
-
-<pre><code class="language-js">componentWillUnmount() {
-    this.isUnmounted = true;
-    /* ... remaining code ... */
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">componentWillUnmount</span>() {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">isUnmounted</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+    <span style="color:#75715e">/* ... remaining code ... */</span>
 }
-</code></pre>
-
-<p>Then, add a guard condition in your code to avoid the callback to run in this
+</code></pre></div><p>Then, add a guard condition in your code to avoid the callback to run in this
 case:</p>
-
-<pre><code class="language-js">addScriptToPage(() =&gt; {
-    if (this.isUnmounted) return
-    /* ... remaining code ... */
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">addScriptToPage</span>(() =&gt; {
+    <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">isUnmounted</span>) <span style="color:#66d9ef">return</span>
+    <span style="color:#75715e">/* ... remaining code ... */</span>
 })
-</code></pre>
-
-<p>This works, however, imagine that in some new update, the React team decides to
+</code></pre></div><p>This works, however, imagine that in some new update, the React team decides to
 clear all instance properties (our <code>isUnmounted</code> included). We now have our
-memory leak again. Basically, with this solution, we&rsquo;re relying on React to set
+memory leak again. Basically, with this solution, we're relying on React to set
 a property for us and set it in the correct moment, which gives us less control
 of our code flow.</p>
-
 <h2 id="solution-2-control-when-to-execute-the-onload-callback">Solution 2: Control When to Execute the <code>onload</code> Callback</h2>
-
 <p>Our final solution and, in my opinion, a most elegant one, is to have an option
 to cancel the execution of our script loader. Our problem is that the <code>onload</code>
 callback is being called after the component is unmounted, so, if we never call
-this callback, we&rsquo;ll not have this problem.</p>
-
+this callback, we'll not have this problem.</p>
 <p>In this case, we can do something like that:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">addScriptToPage</span>(<span style="color:#a6e22e">callback</span>, <span style="color:#a6e22e">src</span>) {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">script</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#39;script&#39;</span>);
 
-<pre><code class="language-js">function addScriptToPage(callback, src) {
-    const script = document.createElement('script');
+    <span style="color:#a6e22e">script</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">src</span>;
+    <span style="color:#a6e22e">script</span>.<span style="color:#a6e22e">defer</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+    <span style="color:#a6e22e">script</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">callback</span>;
 
-    script.src = src;
-    script.defer = true;
-    script.onload = callback;
+    document.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">appendChild</span>(<span style="color:#a6e22e">script</span>);
 
-    document.body.appendChild(script);
-
-    return {
-        cancelOnLoad: () =&gt; script.onload = null,
+    <span style="color:#66d9ef">return</span> {
+        <span style="color:#a6e22e">cancelOnLoad</span><span style="color:#f92672">:</span> () =&gt; <span style="color:#a6e22e">script</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>,
     };
 }
-</code></pre>
-
-<p>Now, in our component, we need to hold a reference to this returned object when
+</code></pre></div><p>Now, in our component, we need to hold a reference to this returned object when
 calling <code>addScriptToPage</code>:</p>
-
-<pre><code class="language-js">componentWillMount() {
-    const scriptLoader = addScriptToPage(() =&gt; {/* remaining code */});
-    this.setState({ scriptLoader });
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">componentWillMount</span>() {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">scriptLoader</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">addScriptToPage</span>(() =&gt; {<span style="color:#75715e">/* remaining code */</span>});
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">setState</span>({ <span style="color:#a6e22e">scriptLoader</span> });
 }
-</code></pre>
-
-<p>Then, when unmounting, we just call <code>cancelOnLoad</code>:</p>
-
-<pre><code class="language-js">componentWillUnmount() {
-    /* remaining code */
-    this.state.scriptLoader.cancelOnLoad();
+</code></pre></div><p>Then, when unmounting, we just call <code>cancelOnLoad</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">componentWillUnmount</span>() {
+    <span style="color:#75715e">/* remaining code */</span>
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">scriptLoader</span>.<span style="color:#a6e22e">cancelOnLoad</span>();
 }
-</code></pre>
-
-<p>This is a lot better, as now we manage this flow. For example, it&rsquo;s also
+</code></pre></div><p>This is a lot better, as now we manage this flow. For example, it's also
 possible to remove the previously defined script (and save some bytes of our
 users data):</p>
-
-<pre><code class="language-js">return {
-    cancelOnLoad: () =&gt; {
-        script.onload = null;
-        document.body.removeChild(script);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">return</span> {
+    <span style="color:#a6e22e">cancelOnLoad</span><span style="color:#f92672">:</span> () =&gt; {
+        <span style="color:#a6e22e">script</span>.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+        document.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">removeChild</span>(<span style="color:#a6e22e">script</span>);
     },
 };
-</code></pre>
-
-<h1 id="finishing">Finishing</h1>
-
+</code></pre></div><h1 id="finishing">Finishing</h1>
 <p>I think this problem was really interesting to show me how a simple script
-loader can become a hard problem to debug if we don&rsquo;t think correctly in the
+loader can become a hard problem to debug if we don't think correctly in the
 flow which our code is executed.</p>
-
 <p>Also, always remember to cancel/clear stuff, specially the async ones, to avoid
 having those kind of problems.</p>
 

@@ -51,42 +51,31 @@
       </div>
 
       <article class="post-content">
-      
-
-<p>Monitoring your infrastructure is one of the most important aspects of
-successfully launching a product. It&rsquo;s really important to know when your
+      <p>Monitoring your infrastructure is one of the most important aspects of
+successfully launching a product. It's really important to know when your
 machines/applications are under heavy load. Moreover, if it happens, you would
-want to quickly know what&rsquo;s going on and what you can do to recover your
+want to quickly know what's going on and what you can do to recover your
 infrastructure.</p>
-
 <p>This blog post explains how you can configure setup a monitoring stack easily
 using <a href="https://docs.docker.com/engine/swarm/"><strong>Docker Swarm</strong></a>,
 <a href="https://github.com/grafana/grafana"><strong>Grafana</strong></a>,
 <a href="https://github.com/influxdata/influxdb"><strong>InfluxDB</strong></a> and
 <a href="https://github.com/influxdata/telegraf"><strong>Telegraf</strong></a>.</p>
-
 <h2 id="docker-swarm">Docker Swarm</h2>
-
 <p>This tutorial requires you to be running a <strong>Swarm cluster</strong>. You can also setup
 this monitoring infrastructure without using Swarm, but it might become hard to
 manage when you add or remove nodes on your cluster.</p>
-
 <blockquote>
 <p>You can achieve the same using another deployment/orchestration tool, like
 <a href="https://www.nomadproject.io/"><strong>Nomad</strong></a>.</p>
 </blockquote>
-
-<p>We&rsquo;ll be using the version <strong>3.3</strong> of <code>docker-compose.yml</code> file.</p>
-
+<p>We'll be using the version <strong>3.3</strong> of <code>docker-compose.yml</code> file.</p>
 <h2 id="telegraf">Telegraf</h2>
-
 <p><a href="https://github.com/influxdata/telegraf"><strong>Telegraf</strong></a> is an awesome tool to
 extract metrics.</p>
-
 <p>You can customize what data to extract and how <strong>Telegraf</strong> will do that by
-providing a <code>telegraf.conf</code> file. The one we&rsquo;ll be using is this one:</p>
-
-<pre><code class="language-conf">[[inputs.net]]
+providing a <code>telegraf.conf</code> file. The one we'll be using is this one:</p>
+<pre><code class="language-conf" data-lang="conf">[[inputs.net]]
   interfaces = [&quot;eth0,eth1,lo&quot;]
 
 [[inputs.cpu]]
@@ -124,24 +113,18 @@ providing a <code>telegraf.conf</code> file. The one we&rsquo;ll be using is thi
   retention_policy = &quot;&quot;
   write_consistency = &quot;any&quot;
   timeout = &quot;5s&quot;
-</code></pre>
-
-<p>If you want to get the default <strong>Telegraf</strong> config (with all options commented)
+</code></pre><p>If you want to get the default <strong>Telegraf</strong> config (with all options commented)
 you can use the following command to get it:</p>
-
-<pre><code class="language-bash">docker pull telegraf:1.4.0-alpine
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker pull telegraf:1.4.0-alpine
 docker run --rm telegraf:1.4.0-alpine telegraf config &gt; telegraf.conf
-</code></pre>
-
-<p>After getting a <code>telegraf.conf</code> file, we&rsquo;re able to define our service
+</code></pre></div><p>After getting a <code>telegraf.conf</code> file, we're able to define our service
 configuration in <code>docker-compose.yml</code>:</p>
-
-<pre><code class="language-yml">version: &quot;3.3&quot;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">version: <span style="color:#e6db74">&#34;3.3&#34;</span>
 
 services:
   telegraf:
-    image: telegraf:1.4.0
-    hostname: &quot;{{.Node.ID}}&quot;
+    image: telegraf:<span style="color:#ae81ff">1.4</span><span style="color:#ae81ff">.0</span>
+    hostname: <span style="color:#e6db74">&#34;{{.Node.ID}}&#34;</span>
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     configs:
@@ -153,45 +136,31 @@ services:
 configs:
   telegraf.conf:
     file: ./telegraf/telegraf.conf
-</code></pre>
-
-<p>It&rsquo;s pretty simple. The trick here is to add <code>deploy mode</code> as <strong><code>global</code></strong>. This
-will make <strong>Telegraf</strong> run on every machine in <strong>Swarm</strong> cluster, and that&rsquo;s how
-we&rsquo;re going to be able to monitor the cluster machines.</p>
-
+</code></pre></div><p>It's pretty simple. The trick here is to add <code>deploy mode</code> as <strong><code>global</code></strong>. This
+will make <strong>Telegraf</strong> run on every machine in <strong>Swarm</strong> cluster, and that's how
+we're going to be able to monitor the cluster machines.</p>
 <blockquote>
-<p>We&rsquo;re not using Telegraf&rsquo;s Alpine image because Alpine doesn&rsquo;t include
+<p>We're not using Telegraf's Alpine image because Alpine doesn't include
 all the dependencies to be able to collect <code>[[inputs.system]]</code>.</p>
 </blockquote>
-
 <h2 id="influxdb">InfluxDB</h2>
-
 <p><a href="https://github.com/influxdata/influxdb"><strong>InfluxDB</strong></a> is a time series database
 that allows us to store the metrics provided by <strong>Telegraf</strong>.</p>
-
-<p>As <strong>InfluxDB</strong> is our database, we&rsquo;ll first need to define where it would be
-located. As we&rsquo;ll need the data to be persistent, it&rsquo;s a bad idea to have the
+<p>As <strong>InfluxDB</strong> is our database, we'll first need to define where it would be
+located. As we'll need the data to be persistent, it's a bad idea to have the
 database popping out in different places (and, as a consequence, losing the
-data if it&rsquo;s deployed to a newer place). So, grab one of your swarm nodes and
+data if it's deployed to a newer place). So, grab one of your swarm nodes and
 add a label to it:</p>
-
-<pre><code class="language-bash">docker node update --label-add influxdb=true &lt;NODE-ID&gt;
-</code></pre>
-
-<p>This will add the node <code>influxdb</code> with value as <code>true</code> to the node <code>NODE-ID</code>.
-It&rsquo;ll be used to know where we can add <code>influxdb</code> container.</p>
-
-<p>Then, we&rsquo;ll also be able to provide a configuration file, named <code>influxdb.conf</code>.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker node update --label-add influxdb<span style="color:#f92672">=</span>true &lt;NODE-ID&gt;
+</code></pre></div><p>This will add the node <code>influxdb</code> with value as <code>true</code> to the node <code>NODE-ID</code>.
+It'll be used to know where we can add <code>influxdb</code> container.</p>
+<p>Then, we'll also be able to provide a configuration file, named <code>influxdb.conf</code>.
 <strong>InfluxDB</strong> also provides a way to get a config file template by running:</p>
-
-<pre><code class="language-bash">docker run --rm influxdb:1.3.5-alpine influxd config &gt; influxdb.conf
-</code></pre>
-
-<p>Then, we can declare the <code>influxdb</code> service:</p>
-
-<pre><code class="language-yml">services:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run --rm influxdb:1.3.5-alpine influxd config &gt; influxdb.conf
+</code></pre></div><p>Then, we can declare the <code>influxdb</code> service:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">services:
   influxdb:
-    image: influxdb:1.3.5-alpine
+    image: influxdb:<span style="color:#ae81ff">1.3</span><span style="color:#ae81ff">.5</span>-alpine
     configs:
       - source: influxdb.conf
         target: /etc/influxdb/influxdb.conf
@@ -200,16 +169,13 @@ It&rsquo;ll be used to know where we can add <code>influxdb</code> container.</p
     deploy:
       placement:
         constraints:
-          - node.labels.influxdb == true
+          - node.labels.influxdb == <span style="color:#66d9ef">true</span>
 
 configs:
   influxdb.conf:
     file: ./influxdb/influxdb.conf
-</code></pre>
-
-<p>We&rsquo;ll use the following <code>influxdb.conf</code> file:</p>
-
-<pre><code class="language-conf">[meta]
+</code></pre></div><p>We'll use the following <code>influxdb.conf</code> file:</p>
+<pre><code class="language-conf" data-lang="conf">[meta]
   dir = &quot;/var/lib/influxdb/meta&quot;
   retention-autocreate = true
   logging-enabled = true
@@ -245,89 +211,63 @@ configs:
   realm = &quot;InfluxDB&quot;
   unix-socket-enabled = false
   bind-socket = &quot;/var/run/influxdb.sock&quot;
-</code></pre>
-
-<h2 id="grafana">Grafana</h2>
-
-<p>We&rsquo;ll use <strong>Grafana</strong> to visualize data coming from <strong>InfluxDB</strong>.</p>
-
-<p>First, we&rsquo;ll need to choose a node where we&rsquo;ll be running <strong>Grafana</strong>. After that,
+</code></pre><h2 id="grafana">Grafana</h2>
+<p>We'll use <strong>Grafana</strong> to visualize data coming from <strong>InfluxDB</strong>.</p>
+<p>First, we'll need to choose a node where we'll be running <strong>Grafana</strong>. After that,
 we need to update its label in order to deploy grafana to the correct host:</p>
-
-<pre><code class="language-bash">docker node update --label-add grafana=true &lt;NODE-ID&gt;
-</code></pre>
-
-<p><strong>Grafana</strong> service is pretty straightforward to configure, we just need to add its
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker node update --label-add grafana<span style="color:#f92672">=</span>true &lt;NODE-ID&gt;
+</code></pre></div><p><strong>Grafana</strong> service is pretty straightforward to configure, we just need to add its
 service to <code>docker-compose.yml</code>:</p>
-
-<pre><code class="language-yml">services:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">services:
   grafana:
-    image: grafana/grafana:4.5.2
+    image: grafana/grafana:<span style="color:#ae81ff">4.5</span><span style="color:#ae81ff">.2</span>
     ports:
-      - 3000:3000
+      - <span style="color:#ae81ff">3000</span>:<span style="color:#ae81ff">3000</span>
     volumes:
       - /data/grafana:/var/lib/grafana
     deploy:
       placement:
         constraints:
-          - node.labels.grafana == true
-</code></pre>
-
-<h2 id="deployment-time">Deployment Time!</h2>
-
-<p>It&rsquo;s time to deploy our monitoring stack. To do so, we&rsquo;ll use <code>docker stack</code>
+          - node.labels.grafana == <span style="color:#66d9ef">true</span>
+</code></pre></div><h2 id="deployment-time">Deployment Time!</h2>
+<p>It's time to deploy our monitoring stack. To do so, we'll use <code>docker stack</code>
 command:</p>
-
-<pre><code class="language-bash">docker stack deploy -c docker-compose.yml MONITORING
-</code></pre>
-
-<p>You can check if your stack is running by typing:</p>
-
-<pre><code class="language-bash">docker stack services MONITORING
-</code></pre>
-
-<p>You should see something like the following:</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker stack deploy -c docker-compose.yml MONITORING
+</code></pre></div><p>You can check if your stack is running by typing:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker stack services MONITORING
+</code></pre></div><p>You should see something like the following:</p>
 <pre><code>ID                  NAME                  MODE                REPLICAS            IMAGE                   PORTS
 a9l5bzodswai        MONITORING_grafana    replicated          1/1                 grafana/grafana:4.5.2   *:3000-&gt;3000/tcp
 vmrob3iveofr        MONITORING_telegraf   global              1/1                 telegraf:1.4.0-alpine
 wllxmffrsxd7        MONITORING_influxdb   replicated          1/1                 influxdb:1.3.5-alpine
-</code></pre>
-
-<h3 id="configuring-grafana">Configuring Grafana</h3>
-
-<p>Now, it&rsquo;s time to configure a new <code>Data Source</code>. Go to <strong>Grafana</strong> admin page
-(<a href="http://localhost:3000">http://localhost:3000</a>) and create a new <code>Data Source</code> with the following
+</code></pre><h3 id="configuring-grafana">Configuring Grafana</h3>
+<p>Now, it's time to configure a new <code>Data Source</code>. Go to <strong>Grafana</strong> admin page
+(http://localhost:3000) and create a new <code>Data Source</code> with the following
 fields:</p>
-
 <ul>
 <li>Name: <code>InfluxDB</code></li>
 <li>Type: <code>InfluxDB</code></li>
 <li>Http settings:
-
 <ul>
 <li>Url: <code>http://influxdb:8086</code> (<code>Swarm</code> provides a DNS for us)</li>
 <li>Access: <code>proxy</code></li>
-</ul></li>
+</ul>
+</li>
 <li>InfluxDB Details:
-
 <ul>
 <li>Database: <code>telegraf</code></li>
-</ul></li>
 </ul>
-
-<p>Then, we can create our dashboards and add data to them. If you don&rsquo;t know where
+</li>
+</ul>
+<p>Then, we can create our dashboards and add data to them. If you don't know where
 to start, there are some nice dashboards in <a href="https://grafana.com/dashboards">https://grafana.com/dashboards</a>. The
 following dashboards are nice ones to use with <strong>Docker Swarm</strong>:</p>
-
 <ul>
 <li><a href="https://grafana.com/dashboards/1443">https://grafana.com/dashboards/1443</a></li>
 <li><a href="https://grafana.com/dashboards/1150">https://grafana.com/dashboards/1150</a></li>
 </ul>
-
-<p>Now, you&rsquo;ll have a nice and powerful monitoring stack for your Docker containers
+<p>Now, you'll have a nice and powerful monitoring stack for your Docker containers
 and for your machines!</p>
-
 <p>Hope you enjoyed!</p>
 
       </article>

@@ -14,8 +14,8 @@
       <pubDate>Thu, 16 May 2019 22:53:40 -03</pubDate>
       
       <guid>https://wmartins.github.io/2019/05/a-deep-dive-into-children-in-vue/</guid>
-      <description>I got myself inspired by Max Stoiber in his A deep dive into children in React to create this post about Vue children. So, credits on the title to him. If you&amp;rsquo;re into React, check out his post, it has lots of nice information on React children.
-Motivation I have started working with Vue a few months ago and it has been really nice. After working with React for some years, it&amp;rsquo;s nice to experience something new.</description>
+      <description>I got myself inspired by Max Stoiber in his A deep dive into children in React to create this post about Vue children. So, credits on the title to him. If you&#39;re into React, check out his post, it has lots of nice information on React children.
+Motivation I have started working with Vue a few months ago and it has been really nice. After working with React for some years, it&#39;s nice to experience something new.</description>
     </item>
     
     <item>
@@ -24,9 +24,9 @@ Motivation I have started working with Vue a few months ago and it has been real
       <pubDate>Thu, 03 Jan 2019 00:19:19 -02</pubDate>
       
       <guid>https://wmartins.github.io/2019/01/the-lost-callback/</guid>
-      <description>In the past few days I was investigating a really tricky issue in one of our React components. I decided to cover it here because I&amp;rsquo;ve found the problem interesting and, surprisingly, easy to fix after finding out the root cause.
-The Component First, it&amp;rsquo;s nice to outline a little bit about the component itself. It&amp;rsquo;s a really simple react component that does the following things:
- When the component mounts, inserts a &amp;lt;script&amp;gt; tag on the page to load an external dependency When this script is loaded, instantiate a new instance of this external dependency Renders correctly both when script is loaded and when it isn&amp;rsquo;t When removing the component, destroys the external dependency instance  So, that said, lets jump into the parts that make it happen.</description>
+      <description>In the past few days I was investigating a really tricky issue in one of our React components. I decided to cover it here because I&#39;ve found the problem interesting and, surprisingly, easy to fix after finding out the root cause.
+The Component First, it&#39;s nice to outline a little bit about the component itself. It&#39;s a really simple react component that does the following things:
+ When the component mounts, inserts a &amp;lt;script&amp;gt; tag on the page to load an external dependency When this script is loaded, instantiate a new instance of this external dependency Renders correctly both when script is loaded and when it isn&#39;t When removing the component, destroys the external dependency instance  So, that said, lets jump into the parts that make it happen.</description>
     </item>
     
     <item>
@@ -45,8 +45,9 @@ At this time, Docker was on release 1.6 or 1.7, and few people were using it to 
       <pubDate>Tue, 03 Oct 2017 21:00:00 -03</pubDate>
       
       <guid>https://wmartins.github.io/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/</guid>
-      <description>Monitoring your infrastructure is one of the most important aspects of successfully launching a product. It&amp;rsquo;s really important to know when your machines/applications are under heavy load. Moreover, if it happens, you would want to quickly know what&amp;rsquo;s going on and what you can do to recover your infrastructure.
-This blog post explains how you can configure setup a monitoring stack easily using Docker Swarm, Grafana, InfluxDB and Telegraf.</description>
+      <description>Monitoring your infrastructure is one of the most important aspects of successfully launching a product. It&#39;s really important to know when your machines/applications are under heavy load. Moreover, if it happens, you would want to quickly know what&#39;s going on and what you can do to recover your infrastructure.
+This blog post explains how you can configure setup a monitoring stack easily using Docker Swarm, Grafana, InfluxDB and Telegraf.
+Docker Swarm This tutorial requires you to be running a Swarm cluster.</description>
     </item>
     
     <item>
@@ -57,8 +58,8 @@ This blog post explains how you can configure setup a monitoring stack easily us
       <guid>https://wmartins.github.io/about/</guid>
       <description>About If you are seeing this, you probably want to know more about me. So, as Roling Stones would say
  &amp;ldquo;Please allow me to introduce myself&amp;rdquo;:
- My name is William Martins and I&amp;rsquo;m a computer scientist who loves to code new stuff and who believes that the web is the way.
-I started programming when I was 14 (in Pascal) and never stopped! I can&amp;rsquo;t see myself doing anything else.</description>
+ My name is William Martins and I&#39;m a computer scientist who loves to code new stuff and who believes that the web is the way.
+I started programming when I was 14 (in Pascal) and never stopped! I can&#39;t see myself doing anything else.</description>
     </item>
     
     <item>
@@ -67,7 +68,7 @@ I started programming when I was 14 (in Pascal) and never stopped! I can&amp;rsq
       <pubDate>Mon, 01 Jan 0001 00:00:00 UTC</pubDate>
       
       <guid>https://wmartins.github.io/contact/</guid>
-      <description> Contact  Drop me a line at wwwhmartins at gmail dot com GitHub - https://github.com/wmartins Twitter - https://twitter.com/wwwhmartins Linkedin - https://www.linkedin.com/in/wwwhmartins  </description>
+      <description>Contact  Drop me a line at wwwhmartins at gmail dot com GitHub - https://github.com/wmartins Twitter - https://twitter.com/wwwhmartins Linkedin - https://www.linkedin.com/in/wwwhmartins  </description>
     </item>
     
   </channel>
