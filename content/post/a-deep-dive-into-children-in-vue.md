@@ -2,7 +2,7 @@
 title: "A deep dive into children in Vue"
 author: "William Martins"
 date: 2019-05-16T22:53:40-03:00
-tags: ["vue", "funcional components", "vue children"]
+tags: ["vue", "functional components", "vue children"]
 ---
 
 I got myself inspired by Max Stoiber in his [**A deep dive into children in
