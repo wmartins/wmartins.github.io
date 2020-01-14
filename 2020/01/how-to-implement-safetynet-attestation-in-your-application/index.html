@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>How to Implement SafetyNet Attestation in Your Application - wwwhmartins</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="https://wmartins.github.io/2020/01/how-to-implement-safetynet-attestation-in-your-application/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="https://wmartins.github.io/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="https://wmartins.github.io/tipuesearch/tipuesearch.css">
+
+</head>
+<body class="">
+
+<div class="site-wrap">
+  <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://wmartins.github.io" class="site-title">wwwhmartins</a>
+      <nav class="site-nav right">
+      <a href="https://wmartins.github.io/about/">About</a>
+<a href="https://wmartins.github.io/tags/">Tags</a>
+<a href="https://wmartins.github.io/contact/">Contact</a>
+</form>
+
+      </nav>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</header>
+
+  <div class="post p2 p-responsive wrap" role="main">
+    <div class="measure">
+      <div class="post-header mb2">
+        <h1 class="py2">How to Implement SafetyNet Attestation in Your Application</h1>
+        <span class="post-meta">Jan 13, 2020 by William Martins</span><br>
+        
+      </div>
+
+      <article class="post-content">
+      <p>This post is just a collection of information about how to implement
+<a href="https://developer.android.com/training/safetynet/attestation">SafetyNet Attestation
+API</a> in
+your application.</p>
+<p>This whole thing started weeks ago after my team was researching a way
+to block suspicious requests that were occurring in our authentication
+API. There were lots of different users trying to log in, from different
+IP addresses/ranges. We already had a
+<a href="https://en.wikipedia.org/wiki/Web_application_firewall">WAF</a> set up,
+however, in this scenario, this was not effective. We think that there
+had been a data breach with lots of users and passwords, therefore,
+attackers were using these information to try a <em>lucky guess</em> in our
+API, almost like a brute-force attack.</p>
+<p>Our first attempt was to use
+<a href="https://developer.android.com/training/safetynet/recaptcha">reCAPTCHA</a>
+as our mechanism to block those requests. However, we've found that user
+experience using this mechanism was really bad, as reCAPTCHA is an
+intrusive approach (even though it has an invisible option). After some
+research, we decided to give a try to use SafetyNet Attestation API.</p>
+<h2 id="how-safetynet-attestation-api-replaces-recaptcha">How SafetyNet Attestation API replaces reCAPTCHA?</h2>
+<p>In our scenario, the problem we were trying to solve was to separate
+malicious attacks from real login attempts from our clients. In other
+words, we wanted to know if a login attempt was occurring from an
+automation script or from a <em>real</em> device.</p>
+<p>Therefore, when we know we have a <em>real</em> device, we allow the user to
+log in, otherwise, we just block the request.</p>
+<h2 id="safetynet-attestation-api-implementation-device">SafetyNet Attestation API implementation: device</h2>
+<p>I'll not get into lots of details about the device implementation,
+however, it's pretty straightforward:
+<a href="https://developer.android.com/training/safetynet/attestation#request-attestation-step">https://developer.android.com/training/safetynet/attestation#request-attestation-step</a>.</p>
+<h2 id="safetynet-attestation-api-implementation-token-verification">SafetyNet Attestation API implementation: token verification</h2>
+<p>First and foremost, you need to have in mind that the token verification
+<strong>is up to you</strong>. There are some tutorials and even a <a href="https://github.com/googlesamples/android-play-safetynet/blob/d7513a54e2f28c0dcd7f8d8d0fa03adb5d87b91a/server/csharp/OnlineVerify.cs#L45-L46">code in google
+samples</a>
+that verifies the token for you using an online API. However, this
+should <strong>not be your production approach</strong>.</p>
+<p>In order to verify the token, we must first understand what this token
+represents. The token is a
+<a href="https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-36">JWS</a>
+token. If you want, you'll be able to parse this token using simple
+<code>jwt</code> tools. For example, one may use <a href="https://jwt.io/">https://jwt.io/</a> debugger to get
+the token information, or use any standard <code>jwt</code> implementation.</p>
+<p>A valid SafetyNet token will have a header that looks like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;RS256&#34;</span>,
+  <span style="color:#f92672">&#34;x5c&#34;</span>: [
+    <span style="color:#e6db74">&#34;signing certificate as base64 goes here&#34;</span>,
+    <span style="color:#e6db74">&#34;issuer certificate as base64 goes here&#34;</span>
+  ]
+}
+</code></pre></div><p>And it will have a payload that looks like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;timestampMs&#34;</span>: <span style="color:#ae81ff">9860437986543</span>,
+  <span style="color:#f92672">&#34;nonce&#34;</span>: <span style="color:#e6db74">&#34;R2Rra24fVm5xa2Mg&#34;</span>,
+  <span style="color:#f92672">&#34;apkPackageName&#34;</span>: <span style="color:#e6db74">&#34;com.package.name.of.requesting.app&#34;</span>,
+  <span style="color:#f92672">&#34;apkCertificateDigestSha256&#34;</span>: [<span style="color:#e6db74">&#34;base64 encoded, SHA-256 hash of the
+</span><span style="color:#e6db74">                                  certificate used to sign requesting app&#34;</span>],
+  <span style="color:#f92672">&#34;ctsProfileMatch&#34;</span>: <span style="color:#66d9ef">true</span>,
+  <span style="color:#f92672">&#34;basicIntegrity&#34;</span>: <span style="color:#66d9ef">true</span>,
+}
+</code></pre></div><p>If you want, you can have the payload representation as follows (in
+Go):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Attestation response from Google SafetyNet Attestation API
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Attestation</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">TimestampMs</span>                <span style="color:#66d9ef">int64</span>    <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;timestampMs&#34;</span><span style="color:#e6db74">`</span>                <span style="color:#75715e">// time when response was generated by Google&#39;s servers
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Nonce</span>                      <span style="color:#66d9ef">string</span>   <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;nonce&#34;</span><span style="color:#e6db74">`</span>                      <span style="color:#75715e">// single use token
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">ApkPackageName</span>             <span style="color:#66d9ef">string</span>   <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;apkPackageName&#34;</span><span style="color:#e6db74">`</span>             <span style="color:#75715e">// calling app&#39;s package name
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">ApkCertificateDigestSha256</span> []<span style="color:#66d9ef">string</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;apkCertificateDigestSha256&#34;</span><span style="color:#e6db74">`</span> <span style="color:#75715e">// base64 encoded representation of SHA-256 hash of the calling app signing certificate
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">CtsProfileMatch</span>            <span style="color:#66d9ef">bool</span>     <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;ctsProfileMatch&#34;</span><span style="color:#e6db74">`</span>            <span style="color:#75715e">// stricter veredict of device integrity
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">BasicIntegrity</span>             <span style="color:#66d9ef">bool</span>     <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;basicIntegrity&#34;</span><span style="color:#e6db74">`</span>             <span style="color:#75715e">// a more lenient veredict of device integrity
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Error</span>                      <span style="color:#66d9ef">string</span>   <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;error&#34;</span><span style="color:#e6db74">`</span>                      <span style="color:#75715e">// error occured from API request
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Advice</span>                     <span style="color:#66d9ef">string</span>   <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;advice&#34;</span><span style="color:#e6db74">`</span>                     <span style="color:#75715e">// suggestion on how to get device back into a good state
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>Now you're wondering what you should do with that information. <a href="https://github.com/googlesamples/android-play-safetynet/issues/21">And
+you're not
+alone</a>.
+There are many pieces of information and you must decide what to use.</p>
+<p>One thing that is really important to be done is to verify if the
+token is valid. You can do that using standard <code>jws</code> tools. If you
+search for terms like <em>jws</em> and <em>jose</em> you might find some tools for
+your preferred language. If you're using Go, you can use
+<a href="https://godoc.org/gopkg.in/square/go-jose.v2"><code>go-jose</code></a>. Here goes an
+example on how to check the validity of a JWS token:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Validate</span>(<span style="color:#a6e22e">token</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#a6e22e">signedAttestation</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">jose</span>.<span style="color:#a6e22e">ParseSigned</span>(<span style="color:#a6e22e">token</span>)
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;error on parse signed attestation: %s&#34;</span>, <span style="color:#a6e22e">err</span>)
+	}
+}
+</code></pre></div><p>After that, you need to check if that message was signed by Google
+itself. If you saw before, we have a
+<a href="https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-36#section-4.1.6"><code>x5c</code></a>
+property on the header. This information says two things: first, who
+signed the JWS token itself. Second, who signed the certificate that
+signed the JWS token. In other words, it's a <a href="https://tools.ietf.org/html/rfc5280">certificate
+chain</a>.</p>
+<p>There are lots of solutions for validating a certificate chain. If
+you're using Go and <code>go-jose</code>, it's pretty straightforward to do that:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ValidateSafetyNetAttesationToken</span>(<span style="color:#a6e22e">token</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#75715e">// remaining code
+</span><span style="color:#75715e"></span>
+	<span style="color:#75715e">// uses default system root CAs to validate
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">opts</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">x509</span>.<span style="color:#a6e22e">VerifyOptions</span>{}
+	<span style="color:#a6e22e">certs</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">signedAttestation</span>.<span style="color:#a6e22e">Signatures</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">Header</span>.<span style="color:#a6e22e">Certificates</span>(<span style="color:#a6e22e">opts</span>)
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;error on validating certificates: %s&#34;</span>, <span style="color:#a6e22e">err</span>)
+	}
+}
+</code></pre></div><p>Now that you know that the message is really sent by Google, the next
+step is to get its payload. The payload can be used to check device
+integrity (for example, to check if the phone is not rooted). Here is an
+example on how to do that:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ValidateSafetyNetAttesationToken</span>(<span style="color:#a6e22e">token</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#75715e">// remaining code
+</span><span style="color:#75715e"></span>
+	<span style="color:#a6e22e">attestationPayload</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">signedAttestation</span>.<span style="color:#a6e22e">Verify</span>(<span style="color:#a6e22e">certs</span>[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">PublicKey</span>)
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;error on verifying attestation: %s&#34;</span>, <span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#a6e22e">attestation</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Attestation</span>{}
+
+	<span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Unmarshal</span>(<span style="color:#a6e22e">attestationPayload</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">attestation</span>)
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%+v\n&#34;</span>, <span style="color:#a6e22e">attestation</span>)
+}
+</code></pre></div><p>Now, it's up to you to do whatever you want. I recommend to check if all
+the fields match the values you expect. Some ideas:</p>
+<ul>
+<li>Verify if <code>apkCertificateDigestSha256</code> matches the fingerprint of the
+certificate that was used to sign the app (only your team should have
+the private key to do that)</li>
+<li>Verify if <code>apkPackageName</code> matches the package that should call the
+Attestation API</li>
+<li>Verify the value from <a href="https://developer.android.com/training/safetynet/attestation#potential-integrity-verdicts"><code>basicIntegrity</code> and
+<code>ctsProfileMatch</code></a></li>
+<li>Verify if the provided timestamp is in a specific range/time limit
+(for example, consider it expired if generated 10 minutes ago)</li>
+<li>I couldn't find a practical case for using the <code>nonce</code>, however, you
+can use it to match if the information given by the client is what you
+expected. This, combined with some cryptography strategy, makes it
+even harder for an attacker to &ldquo;guess&rdquo; the nonce</li>
+</ul>
+<p>Hope you find it helpful!</p>
+
+      </article>
+
+      <p class="post-meta">Tags:&nbsp;
+        
+            
+            <a href="https://wmartins.github.io/tags/Android">Android</a>
+        
+            ,&nbsp;
+            <a href="https://wmartins.github.io/tags/SafetyNet">SafetyNet</a>
+        
+            ,&nbsp;
+            <a href="https://wmartins.github.io/tags/Attestation">Attestation</a>
+        
+            ,&nbsp;
+            <a href="https://wmartins.github.io/tags/ReCATPCHA%20Alternative">ReCATPCHA Alternative</a>
+        
+            ,&nbsp;
+            <a href="https://wmartins.github.io/tags/Security">Security</a>
+        
+      </p>
+
+      
+
+    </div>
+  </div>
+</div>
+    <footer class="footer">
+      <div class="p2 wrap">
+        <div class="measure mt1 center">
+      <nav class="social-icons icons">
+<a class="fa fa-rss rss" href="/index.xml"></a>
+
+</nav>
+
+          <small>
+            Copyright &#169; 2017<br>
+            Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
+          </small>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68493929-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

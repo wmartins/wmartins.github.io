@@ -6,7 +6,17 @@
     <language>en-us</language>
     
     
-    <updated>Thu, 16 May 2019 22:53:40 -03</updated>
+    <updated>Mon, 13 Jan 2020 22:50:00 -03</updated>
+    
+    <item>
+      <title>How to Implement SafetyNet Attestation in Your Application</title>
+      <link>https://wmartins.github.io/2020/01/how-to-implement-safetynet-attestation-in-your-application/</link>
+      <pubDate>Mon, 13 Jan 2020 22:50:00 -03</pubDate>
+      
+      <guid>https://wmartins.github.io/2020/01/how-to-implement-safetynet-attestation-in-your-application/</guid>
+      <description>This post is just a collection of information about how to implement SafetyNet Attestation API in your application.
+This whole thing started weeks ago after my team was researching a way to block suspicious requests that were occurring in our authentication API. There were lots of different users trying to log in, from different IP addresses/ranges. We already had a WAF set up, however, in this scenario, this was not effective.</description>
+    </item>
     
     <item>
       <title>A deep dive into children in Vue</title>

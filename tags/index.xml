@@ -6,10 +6,55 @@
     <description>Recent content in Tags on wwwhmartins</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 16 May 2019 22:53:40 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jan 2020 22:50:00 -0300</lastBuildDate>
     
 	<atom:link href="https://wmartins.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android</title>
+      <link>https://wmartins.github.io/tags/android/</link>
+      <pubDate>Mon, 13 Jan 2020 22:50:00 -0300</pubDate>
+      
+      <guid>https://wmartins.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Attestation</title>
+      <link>https://wmartins.github.io/tags/attestation/</link>
+      <pubDate>Mon, 13 Jan 2020 22:50:00 -0300</pubDate>
+      
+      <guid>https://wmartins.github.io/tags/attestation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ReCATPCHA Alternative</title>
+      <link>https://wmartins.github.io/tags/recatpcha-alternative/</link>
+      <pubDate>Mon, 13 Jan 2020 22:50:00 -0300</pubDate>
+      
+      <guid>https://wmartins.github.io/tags/recatpcha-alternative/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SafetyNet</title>
+      <link>https://wmartins.github.io/tags/safetynet/</link>
+      <pubDate>Mon, 13 Jan 2020 22:50:00 -0300</pubDate>
+      
+      <guid>https://wmartins.github.io/tags/safetynet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>https://wmartins.github.io/tags/security/</link>
+      <pubDate>Mon, 13 Jan 2020 22:50:00 -0300</pubDate>
+      
+      <guid>https://wmartins.github.io/tags/security/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>functional components</title>
