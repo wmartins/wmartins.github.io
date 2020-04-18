@@ -1,5 +1,11 @@
 build:
-	hugo
+	npm run build
+
+clean:
+	npm run clean
+
+develop:
+	npm run develop
 
 publish: build
 	git checkout master
