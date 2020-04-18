@@ -1,0 +1,39 @@
+{
+  "name": "wmartins.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@theme-ui/presets": "^0.3.0",
+    "gatsby": "^2.20.24",
+    "gatsby-plugin-react-helmet": "^3.2.5",
+    "gatsby-plugin-theme-ui": "^0.3.0",
+    "gatsby-remark-prismjs": "^3.4.4",
+    "gatsby-source-filesystem": "^2.2.4",
+    "gatsby-transformer-remark": "^2.7.3",
+    "prismjs": "^1.20.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-helmet": "^6.0.0",
+    "theme-ui": "^0.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wmartins/wmartins.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wmartins/wmartins.github.io/issues"
+  },
+  "homepage": "https://github.com/wmartins/wmartins.github.io#readme"
+}

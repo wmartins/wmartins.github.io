@@ -1,5 +1,6 @@
-# About
-
+---
+title: "About"
+---
 If you are seeing this, you probably want to know more about me. So, as Roling
 Stones would say
 
@@ -26,5 +27,5 @@ I'm also interested in things like:
 * Vim
 * Bash
 
-If you want to get in touch, check how you can [contact]({{<ref "contact.md">}})
+If you want to get in touch, check how you can [contact](/contact)
 me.
