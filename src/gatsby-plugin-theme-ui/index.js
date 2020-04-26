@@ -31,6 +31,10 @@ export default merge({}, base, {
 
     hr: {
       color: 'muted'
+    },
+
+    a: {
+      display: 'inline-block'
     }
   },
 
