@@ -1,3 +1,5 @@
 Makefile
 themes/
 public/
+node_modules
+.cache
