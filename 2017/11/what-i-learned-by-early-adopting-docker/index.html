@@ -1,71 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>What I Learned by Early Adopting Docker - wwwhmartins</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <meta name="keywords" content="">
-  <link rel="canonical" href="https://wmartins.github.io/2017/11/what-i-learned-by-early-adopting-docker/">
-
-  
-  
-
-  
-  
-
-  
-  
-
-  <link rel="stylesheet" type="text/css" href="https://wmartins.github.io/css/combined-min.css">
-  <link rel="stylesheet" type="text/css" href="https://wmartins.github.io/tipuesearch/tipuesearch.css">
-
-</head>
-<body class="">
-
-<div class="site-wrap">
-  <header class="site-header px2 px-responsive">
-  <div class="mt2 wrap">
-    <div class="measure">
-      <a href="https://wmartins.github.io" class="site-title">wwwhmartins</a>
-      <nav class="site-nav right">
-      <a href="https://wmartins.github.io/about/">About</a>
-<a href="https://wmartins.github.io/tags/">Tags</a>
-<a href="https://wmartins.github.io/contact/">Contact</a>
-</form>
-
-      </nav>
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</header>
-
-  <div class="post p2 p-responsive wrap" role="main">
-    <div class="measure">
-      <div class="post-header mb2">
-        <h1 class="py2">What I Learned by Early Adopting Docker</h1>
-        <span class="post-meta">Nov 28, 2017 by William Martins</span><br>
-        
-      </div>
-
-      <article class="post-content">
-      <p>The year is 2015, I started working as software engineer in this new team that
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.85333577aa7dbfd7b7d3.css">code[class*=language-],pre[class*=language-]{color:#657b83;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}code[class*=language-]::selection,code[class*=language-] ::selection,pre[class*=language-]::selection,pre[class*=language-] ::selection{background:#073642}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto;border-radius:.3em}:not(pre)>code[class*=language-],pre[class*=language-]{background-color:#fdf6e3}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#93a1a1}.token.punctuation{color:#586e75}.token.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#268bd2}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string,.token.url{color:#2aa198}.token.entity{color:#657b83;background:#eee8d5}.token.atrule,.token.attr-value,.token.keyword{color:#859900}.token.class-name,.token.function{color:#b58900}.token.important,.token.regex,.token.variable{color:#cb4b16}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}</style><meta name="generator" content="Gatsby 2.20.24"/><title data-react-helmet="true">What I Learned by Early Adopting Docker | wwwhmartins</title><meta data-react-helmet="true" name="description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:title" content="What I Learned by Early Adopting Docker"/><meta data-react-helmet="true" property="og:description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:type" content="website"/><link as="script" rel="preload" href="/webpack-runtime-3dc641e32efa0d68cabf.js"/><link as="script" rel="preload" href="/framework-37b45856124a722f0eb5.js"/><link as="script" rel="preload" href="/styles-1bb458fe328f2ce5df8e.js"/><link as="script" rel="preload" href="/app-8505660a796be44af213.js"/><link as="script" rel="preload" href="/8404b144cf2ad46e7de17bf4d936317e474a8ae6-7c7ec56f86e20063ce79.js"/><link as="script" rel="preload" href="/component---src-templates-blog-post-js-24dbe2447771bd760dc7.js"/><link as="fetch" rel="preload" href="/page-data/2017/11/what-i-learned-by-early-adopting-docker/page-data.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/page-data/app-data.json" crossorigin="anonymous"/></head><body><script>(function() { try {
+  var mode = localStorage.getItem('theme-ui-color-mode');
+  if (!mode) return
+  document.body.classList.add('theme-ui-' + mode);
+} catch (e) {} })();</script><div id="___gatsby"><style data-emotion-css="c4f9ew">body{color:var(--theme-ui-colors-text,#000);background-color:var(--theme-ui-colors-background,#fff);}</style><style data-emotion-css="1q7li8i">*{box-sizing:border-box;}body{margin:0;font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:18px;}</style><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><style data-emotion-css="u1ld3h">.css-u1ld3h{box-sizing:border-box;margin:0;min-width:0;width:100%;max-width:1024px;margin-left:auto;margin-right:auto;padding:32px;}</style><div class="css-u1ld3h"><style data-emotion-css="ty4jjz">.css-ty4jjz{font-family:Georgia,serif;line-height:1.5;font-weight:400;}.css-ty4jjz root{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:18px;}.css-ty4jjz h1{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:32px;}.css-ty4jjz h2{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:24px;}.css-ty4jjz h3{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:20px;}.css-ty4jjz h4{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:16px;}.css-ty4jjz h5{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:14px;}.css-ty4jjz h6{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:12px;}.css-ty4jjz p{color:var(--theme-ui-colors-text,#000);font-family:Georgia,serif;font-weight:400;line-height:1.5;}.css-ty4jjz a{color:var(--theme-ui-colors-primary,#07c);}.css-ty4jjz pre{font-family:Menlo,monospace;overflow-x:auto;}.css-ty4jjz pre code{color:inherit;}.css-ty4jjz code{font-family:Menlo,monospace;font-size:inherit;}.css-ty4jjz table{width:100%;border-collapse:separate;border-spacing:0;}.css-ty4jjz th{text-align:left;border-bottom-style:solid;}.css-ty4jjz td{text-align:left;border-bottom-style:solid;}.css-ty4jjz img{max-width:100%;}.css-ty4jjz time{color:gray;font-size:14px;}.css-ty4jjz hr{color:var(--theme-ui-colors-muted,#eeeeee);}</style><div class="css-ty4jjz"><header><style data-emotion-css="13sy603">.css-13sy603{box-sizing:border-box;margin:0;min-width:0;padding-bottom:32px;}</style><nav class="css-13sy603"><style data-emotion-css="1a8yp2e">.css-1a8yp2e{box-sizing:border-box;margin:0;min-width:0;padding-right:32px;}</style><a class="css-1a8yp2e" href="/">wwwhmartins</a><a class="css-1a8yp2e" href="/tags">tags</a><a class="css-1a8yp2e" href="/about">about</a><a class="css-1a8yp2e" href="/contact">contact</a></nav></header><style data-emotion-css="1q5mv8c">.css-1q5mv8c{box-sizing:border-box;margin:0;min-width:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-weight:700;line-height:1.125;}</style><h1 class="css-1q5mv8c">What I Learned by Early Adopting Docker</h1><div><p>The year is 2015, I started working as software engineer in this new team that
 was focused on delivering new experiences with top notch technology. This was
 also an year when microservices began to be a thing, and, with that, Docker
 being the <em>de facto</em> containerization tool.</p>
-<p>At this time, Docker was on release <code>1.6</code> or <code>1.7</code>, and few people were using it
+<p>At this time, Docker was on release <code class="language-text">1.6</code> or <code class="language-text">1.7</code>, and few people were using it
 to deploy applications. Lots of those were POCs, and most of the blog posts
-included some &ldquo;strange&rdquo; things (not the Netflix title) there, like the <code>fig</code>
-command (which became <code>docker-compose</code>), and lots of lines in <code>yml</code> code.</p>
-<p>It was a time where most of the &ldquo;real world problems&rdquo; were still being found for
+included some "strange" things (not the Netflix title) there, like the <code class="language-text">fig</code>
+command (which became <code class="language-text">docker-compose</code>), and lots of lines in <code class="language-text">yml</code> code.</p>
+<p>It was a time where most of the "real world problems" were still being found for
 Docker deployments. Things like networking, orchestration, high availability,
 and so on. So, we made a few bad decisions that made us learn a lot (at least
 what not to do), but that we would like someone had told us that were bad ideas.</p>
 <p>This blog post will cover some of those bad decisions, explaining why they're
 bad, and what we should've done.</p>
-<h2 id="outlining-the-application">Outlining the Application</h2>
+<h2>Outlining the Application</h2>
 <p>Our application, in a high level, was designed to be high available, which means
 that, at least, we needed to run our application in more than one machine. That
 said, we needed to be able to run replicas of containers, and provide a
@@ -75,14 +26,14 @@ mechanism to use those replicas in the best way we can.</p>
 <li>Lua Scripts) as a reverse proxy/API gateway/load balancer, balancing the
 traffic between the containers. Something like that:</li>
 </ul>
-<pre><code class="language-conf" data-lang="conf">upstream first-microservice {
+<div class="gatsby-highlight" data-language="conf"><pre class="language-conf"><code class="language-conf">upstream first-microservice {
     server &lt;FIRST-SERVER-IP&gt;:8877;
     server &lt;SECOND-SERVER-IP&gt;:8877;
-}
-</code></pre><p>After we decided what goes where, we then took two bad decisions: orchestrate
+}</code></pre></div>
+<p>After we decided what goes where, we then took two bad decisions: orchestrate
 the application using <a href="https://jenkins.io/"><strong>Jenkins</strong></a> and creating a
-<code>configuration</code> volume, which I'll cover in next sections.</p>
-<h2 id="orchestrating-using-jenkins">Orchestrating Using Jenkins</h2>
+<code class="language-text">configuration</code> volume, which I'll cover in next sections.</p>
+<h2>Orchestrating Using Jenkins</h2>
 <p><strong>Jenkins</strong> is an awesome tool. It does its job really well:</p>
 <blockquote>
 <p>The leading open source <strong>automation</strong> server, Jenkins provides hundreds of
@@ -93,7 +44,7 @@ plugins to support building, deploying and automating any project.</p>
 <p>So, our deployment jobs now had the IPs of all our machines, containing a Groovy
 script to associate an IP with container names (in order to know what to
 deploy). Then, a generic deploy job just grabbed the IP, the names, ssh'd into
-the machines and <em>voila</em>, let <code>docker-compose up -d &lt;CONTAINERS&gt;</code> do its job.</p>
+the machines and <em>voila</em>, let <code class="language-text">docker-compose up -d &lt;CONTAINERS&gt;</code> do its job.</p>
 <p>It seems good, right? It felt good. It really did, but it started to become hard
 to manage. Every new microservice we added, we needed to edit this Jenkins job
 and add the new microservice in <strong>all</strong> environments (we have 2 QA environments,
@@ -111,7 +62,7 @@ stuff.</p>
 which will also gives us other cool features that fix more of our problems.</p>
 <p>There are other tools, like <strong>Kubernetes</strong> and <strong>Nomad</strong>, that also solves this
 in a fashion way.</p>
-<h2 id="no-service-discoveryhardcoded-ips">No Service Discovery/Hardcoded IPs</h2>
+<h2>No Service Discovery/Hardcoded IPs</h2>
 <p>Service discovery is one of the most important aspects of a successful
 microservices architecture. Without it, you'll struggle when adding/removing
 replicas from the application.</p>
@@ -126,10 +77,10 @@ application high available again. It was really hard to do:</p>
 </ol>
 <p>Then, after the machines went up again, we needed to do the reverse process,
 editing files, modifying Jenkins and deploying, all over again.</p>
-<p>It's not that hard to setup a <code>DNS</code> or a service discovery system. So, don't let
-the &ldquo;lets ship it soon&rdquo; make you do things that will only cause you trouble. Or,
+<p>It's not that hard to setup a <code class="language-text">DNS</code> or a service discovery system. So, don't let
+the "lets ship it soon" make you do things that will only cause you trouble. Or,
 if you do, at least know what you need to do to make it right.</p>
-<h2 id="configuration-as-a-shared-volume">Configuration as a Shared Volume</h2>
+<h2>Configuration as a Shared Volume</h2>
 <p>All applications, at some point, need some kind of configuration. Most likely,
 the application, when in production, will need to behave differently than in the
 local machine, or in a low level (testing) environment. This requires us to have
@@ -137,13 +88,13 @@ some level of <strong>configuration management</strong>.</p>
 <p>Back at that time, the way we solved it was to create a <strong>configuration
 volume</strong>, that is a simple Docker container that we use to store configuration
 files per environment. Then, at deployment time, we just grab the correct
-configuration container and we deploy it using <code>--volumes-from</code> directive.</p>
+configuration container and we deploy it using <code class="language-text">--volumes-from</code> directive.</p>
 <p>It seemed to be a good idea, but we started realizing that it doesn't scale.
 First of all, we were coupling all microservices with this configuration
 container, and we needed to always remember to edit the files in it. Second, our
 microservices weren't really standalone, as we couldn't run it without running
 this other container together. Third, if two containers used the version
-<code>2.1.0</code> of the configuration container, they would end up using exactly the same
+<code class="language-text">2.1.0</code> of the configuration container, they would end up using exactly the same
 files. Putting it in another way, if, by mistake, one container edits the wrong
 file, it could affect the other container. To finish, it starts to be really
 hard to manage which is the correct configuration version to run with each
@@ -151,7 +102,7 @@ microservice.</p>
 <p>There are some ways to do it correctly. One of the easiest is to use
 <strong>environment variables</strong> for all those configuration objects. If the
 application requires a string to connect to the database, provide a
-<code>DB_CONNECTION_STRING</code> env var and so on.</p>
+<code class="language-text">DB_CONNECTION_STRING</code> env var and so on.</p>
 <p>The other way of using it is to use a <strong>configuration management tool</strong> that let
 you externalize your configuration. Tools like <strong>Consul</strong> with its key-value
 storage solve that for you. The only downside is that you'll need to modify your
@@ -159,7 +110,7 @@ applications to connect to that tool to grab the values. The cool thing about
 it is that you can, in the middle of the day, change some configuration and,
 if your code supports it, your application will notice that and will adapt
 itself. It's really nice.</p>
-<h2 id="wrapping-up">Wrapping Up</h2>
+<h2>Wrapping Up</h2>
 <p>It was really hard to early adopt Docker. We made a few poor decisions that
 we're not proud of. Also, those decisions made our jobs pretty hard. If, at that
 time, we discussed more and researched more, we would probably doing things
@@ -169,60 +120,4 @@ anything) is to study a lot, discuss in forums and experiment with it. Try to
 implement all your use cases and think what you'll need when running in
 production, and check if you have the tools and knowledge to make you go
 comfortably to production.</p>
-<p>Hope it was useful!</p>
-
-      </article>
-
-      <p class="post-meta">Tags:&nbsp;
-        
-            
-            <a href="https://wmartins.github.io/tags/docker">docker</a>
-        
-            ,&nbsp;
-            <a href="https://wmartins.github.io/tags/orchestration">orchestration</a>
-        
-      </p>
-
-      
-
-    </div>
-  </div>
-</div>
-    <footer class="footer">
-      <div class="p2 wrap">
-        <div class="measure mt1 center">
-      <nav class="social-icons icons">
-<a class="fa fa-rss rss" href="/index.xml"></a>
-
-</nav>
-
-          <small>
-            Copyright &#169; 2017<br>
-            Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
-          </small>
-        </div>
-      </div>
-    </footer>
-
-    
-    <script src="/js/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-    
-    
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-68493929-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-
-
-</body>
-</html>
-
+<p>Hope it was useful!</p></div><style data-emotion-css="1jvijmd">.css-1jvijmd{box-sizing:border-box;margin:0;min-width:0;color:gray;margin:0;margin-top:8px;margin-bottom:8px;border:0;border-bottom:1px solid;color:var(--theme-ui-colors-muted,#eeeeee);}</style><hr class="css-1jvijmd"/>Tags:<style data-emotion-css="1k3micg">.css-1k3micg{box-sizing:border-box;margin:0;min-width:0;padding-left:8px;}</style><a class="css-1k3micg" href="/tags/docker">docker</a><a class="css-1k3micg" href="/tags/orchestration">orchestration</a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/2017/11/what-i-learned-by-early-adopting-docker/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-8505660a796be44af213.js"],"component---src-pages-index-js":["/component---src-pages-index-js-f985db201d527af6af5c.js"],"component---src-pages-tags-js":["/component---src-pages-tags-js-bb6069ca8e5b60e8d89a.js"],"component---src-templates-blog-post-js":["/component---src-templates-blog-post-js-24dbe2447771bd760dc7.js"],"component---src-templates-tags-js":["/component---src-templates-tags-js-c9d19b7cde892151dba8.js"]};/*]]>*/</script><script src="/component---src-templates-blog-post-js-24dbe2447771bd760dc7.js" async=""></script><script src="/8404b144cf2ad46e7de17bf4d936317e474a8ae6-7c7ec56f86e20063ce79.js" async=""></script><script src="/app-8505660a796be44af213.js" async=""></script><script src="/styles-1bb458fe328f2ce5df8e.js" async=""></script><script src="/framework-37b45856124a722f0eb5.js" async=""></script><script src="/webpack-runtime-3dc641e32efa0d68cabf.js" async=""></script></body></html>
