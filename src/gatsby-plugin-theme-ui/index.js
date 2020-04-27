@@ -17,7 +17,7 @@ export default merge({}, base, {
 
   styles: {
     root: {
-      fontSize: 18
+      fontSize: 20
     },
 
     h1: {
@@ -35,6 +35,10 @@ export default merge({}, base, {
 
     a: {
       display: 'inline-block'
+    },
+
+    nav: {
+      fontSize: 18
     }
   },
 

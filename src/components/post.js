@@ -18,7 +18,9 @@ export default ({
     <Link to={slug}>
       <Heading as="h3" pb="1">{title}</Heading>
     </Link>
-    <time>{date}</time>
+    <div>
+      <time>{date}</time>
+    </div>
     <Text py="2">{children}</Text>
   </Box>
 )
