@@ -13,13 +13,15 @@ const Tags = ({ tags }) => {
   return (
     <>
       <Divider />
-      Tags:
+      <Box as="span" pr="2">
+        Tags:
+      </Box>
       {tags.map(tag =>
         <Box
           as={Link}
           key={tag}
           to={`/tags/${kebabCase(tag)}`}
-          pl="2"
+          pr="2"
         >
           {tag}
         </Box>
