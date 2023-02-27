@@ -18,15 +18,28 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === 'MarkdownRemark') {
+    const langRegExp = /post\/(\w{2}-\w{2})/
+    const matches = node.fileAbsolutePath.match(langRegExp) || []
+
+    const lang = matches[1] || "en-us"
+
+    const basePath = lang === "en-us" ? "post/en-us": "post"
+
     const slug = getSlug({
       node,
-      slug: createFilePath({ node, getNode, basePath: 'post' })
+      slug: createFilePath({ node, getNode, basePath })
     })
 
     createNodeField({
       node,
       name: 'slug',
       value: slug
+    })
+
+    createNodeField({
+      node,
+      name: 'lang',
+      value: lang
     })
   }
 }
@@ -41,6 +54,7 @@ exports.createPages = async ({ graphql, actions }) => {
           node {
             fields {
               slug
+              lang
             }
 
             frontmatter {
@@ -61,7 +75,8 @@ exports.createPages = async ({ graphql, actions }) => {
       path: node.fields.slug,
       component: path.resolve('./src/templates/blog-post.js'),
       context: {
-        slug: node.fields.slug
+        slug: node.fields.slug,
+        lang: node.fields.lang,
       }
     })
   })

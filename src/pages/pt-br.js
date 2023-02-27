@@ -12,8 +12,8 @@ export default ({
     }
   }
 }) => (
-  <Layout>
-    <SEO title="All posts" />
+  <Layout lang="pt-br">
+    <SEO title="Todas as postagens" />
 
     {edges.map(({ node }) => (
       <Post
@@ -33,7 +33,7 @@ export const query = graphql`
     allMarkdownRemark(
       filter: {
         fileAbsolutePath: {
-          regex: "/post/en-us/"
+          regex: "/post/pt-br/"
         }
       }
 

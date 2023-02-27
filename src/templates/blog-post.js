@@ -7,11 +7,11 @@ import Layout from '../components/layout'
 import SEO from '../components/seo'
 import Tags from '../components/tags'
 
-export default ({ data }) => {
+export default ({ data, pageContext: { lang } }) => {
   const post = data.markdownRemark
 
   return (
-    <Layout>
+    <Layout lang={lang}>
       <SEO title={post.frontmatter.title} />
       {post.frontmatter.title ?
         <Heading as="h1">{post.frontmatter.title}</Heading> :

@@ -3,7 +3,34 @@ import { Link, useStaticQuery, graphql } from 'gatsby'
 
 import { Box, Container, BaseStyles } from 'theme-ui'
 
-export default ({ children }) => {
+const menu = (lang) => {
+  const enUS = [{
+    title: "pt-br",
+    path: "/pt-br",
+  }, {
+    title: "tags",
+    path: "/tags",
+  }, {
+    title: "about",
+    path: "/about",
+  }, {
+    title: "contact",
+    path: "/contact",
+  }]
+
+  const ptBR = [{
+    title: "en-us",
+    path: "/",
+  }]
+
+  if (lang === "pt-br") {
+    return ptBR
+  }
+
+  return enUS
+}
+
+export default ({ children, lang }) => {
   const data = useStaticQuery(
     graphql`
       query {
@@ -25,15 +52,9 @@ export default ({ children }) => {
               <Box as={Link} to="/" pr="4">
                 {data.site.siteMetadata.title}
               </Box>
-              <Box as={Link} to="/tags" pr="4">
-                tags
-              </Box>
-              <Box as={Link} to="/about" pr="4">
-                about
-              </Box>
-              <Box as={Link} to="/contact" pr="4">
-                contact
-              </Box>
+              {menu(lang).map(({ title, path }) => {
+                return <Box as={Link} to={path} pr="4">{title}</Box>
+              })}
             </Box>
           </header>
           {children}
