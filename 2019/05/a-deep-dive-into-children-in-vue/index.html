@@ -1,8 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.85333577aa7dbfd7b7d3.css">code[class*=language-],pre[class*=language-]{color:#657b83;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}code[class*=language-]::selection,code[class*=language-] ::selection,pre[class*=language-]::selection,pre[class*=language-] ::selection{background:#073642}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto;border-radius:.3em}:not(pre)>code[class*=language-],pre[class*=language-]{background-color:#fdf6e3}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#93a1a1}.token.punctuation{color:#586e75}.token.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#268bd2}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string,.token.url{color:#2aa198}.token.entity{color:#657b83;background:#eee8d5}.token.atrule,.token.attr-value,.token.keyword{color:#859900}.token.class-name,.token.function{color:#b58900}.token.important,.token.regex,.token.variable{color:#cb4b16}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}</style><meta name="generator" content="Gatsby 2.20.24"/><title data-react-helmet="true">A deep dive into children in Vue | wwwhmartins</title><meta data-react-helmet="true" name="description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:title" content="A deep dive into children in Vue"/><meta data-react-helmet="true" property="og:description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:type" content="website"/><link as="script" rel="preload" href="/webpack-runtime-23591cc8e0ec01743664.js"/><link as="script" rel="preload" href="/framework-37b45856124a722f0eb5.js"/><link as="script" rel="preload" href="/styles-1bb458fe328f2ce5df8e.js"/><link as="script" rel="preload" href="/app-b71fb930d96e0b01e779.js"/><link as="script" rel="preload" href="/8404b144cf2ad46e7de17bf4d936317e474a8ae6-7c7ec56f86e20063ce79.js"/><link as="script" rel="preload" href="/component---src-templates-blog-post-js-16696327739dce1d292a.js"/><link as="fetch" rel="preload" href="/page-data/2019/05/a-deep-dive-into-children-in-vue/page-data.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/page-data/app-data.json" crossorigin="anonymous"/></head><body><script>(function() { try {
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 5.7.0"/><meta data-react-helmet="true" name="description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:title" content="A deep dive into children in Vue"/><meta data-react-helmet="true" property="og:description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:type" content="website"/><style data-href="/styles.57de05492b7d786fd5ad.css" data-identity="gatsby-global-css">code[class*=language-],pre[class*=language-]{word-wrap:normal;color:#657b83;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;-webkit-hyphens:none;hyphens:none;line-height:1.5;tab-size:4;text-align:left;white-space:pre;word-break:normal;word-spacing:normal}code[class*=language-] ::selection,code[class*=language-]::selection,pre[class*=language-] ::selection,pre[class*=language-]::selection{background:#073642}pre[class*=language-]{border-radius:.3em;margin:.5em 0;overflow:auto;padding:1em}:not(pre)>code[class*=language-],pre[class*=language-]{background-color:#fdf6e3}:not(pre)>code[class*=language-]{border-radius:.3em;padding:.1em}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#93a1a1}.token.punctuation{color:#586e75}.token.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#268bd2}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string,.token.url{color:#2aa198}.token.entity{background:#eee8d5;color:#657b83}.token.atrule,.token.attr-value,.token.keyword{color:#859900}.token.class-name,.token.function{color:#b58900}.token.important,.token.regex,.token.variable{color:#cb4b16}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}</style><title data-react-helmet="true">A deep dive into children in Vue | wwwhmartins</title></head><body><script>(function() { try {
   var mode = localStorage.getItem('theme-ui-color-mode');
   if (!mode) return
-  document.body.classList.add('theme-ui-' + mode);
-} catch (e) {} })();</script><div id="___gatsby"><style data-emotion-css="c4f9ew">body{color:var(--theme-ui-colors-text,#000);background-color:var(--theme-ui-colors-background,#fff);}</style><style data-emotion-css="l12f6i">*{box-sizing:border-box;}body{margin:0;font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}</style><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><style data-emotion-css="u1ld3h">.css-u1ld3h{box-sizing:border-box;margin:0;min-width:0;width:100%;max-width:1024px;margin-left:auto;margin-right:auto;padding:32px;}</style><div class="css-u1ld3h"><style data-emotion-css="uijd1d">.css-uijd1d{font-family:Georgia,serif;line-height:1.5;font-weight:400;}.css-uijd1d root{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}.css-uijd1d h1{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:32px;}.css-uijd1d h2{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:24px;}.css-uijd1d h3{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:20px;}.css-uijd1d h4{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:16px;}.css-uijd1d h5{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:14px;}.css-uijd1d h6{color:var(--theme-ui-colors-text,#000);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:12px;}.css-uijd1d p{color:var(--theme-ui-colors-text,#000);font-family:Georgia,serif;font-weight:400;line-height:1.5;}.css-uijd1d a{color:var(--theme-ui-colors-primary,#07c);display:inline-block;}.css-uijd1d pre{font-family:Menlo,monospace;overflow-x:auto;}.css-uijd1d pre code{color:inherit;}.css-uijd1d code{font-family:Menlo,monospace;font-size:inherit;}.css-uijd1d table{width:100%;border-collapse:separate;border-spacing:0;}.css-uijd1d th{text-align:left;border-bottom-style:solid;}.css-uijd1d td{text-align:left;border-bottom-style:solid;}.css-uijd1d img{max-width:100%;}.css-uijd1d time{color:gray;font-size:14px;}.css-uijd1d hr{color:var(--theme-ui-colors-muted,#eeeeee);}.css-uijd1d nav{font-size:18px;}</style><div class="css-uijd1d"><header><style data-emotion-css="13sy603">.css-13sy603{box-sizing:border-box;margin:0;min-width:0;padding-bottom:32px;}</style><nav class="css-13sy603"><style data-emotion-css="1a8yp2e">.css-1a8yp2e{box-sizing:border-box;margin:0;min-width:0;padding-right:32px;}</style><a class="css-1a8yp2e" href="/">wwwhmartins</a><a class="css-1a8yp2e" href="/tags">tags</a><a class="css-1a8yp2e" href="/about">about</a><a class="css-1a8yp2e" href="/contact">contact</a></nav></header><style data-emotion-css="1q5mv8c">.css-1q5mv8c{box-sizing:border-box;margin:0;min-width:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-weight:700;line-height:1.125;}</style><h1 class="css-1q5mv8c">A deep dive into children in Vue</h1><div><p>I got myself inspired by Max Stoiber in his <a href="https://mxstbr.blog/2017/02/react-children-deepdive/"><strong>A deep dive into children in
+  document.documentElement.classList.add('theme-ui-' + mode);
+} catch (e) {} })();</script><div id="___gatsby"><style data-emotion="css-global 178ef4d">html{--theme-ui-colors-text:#000;--theme-ui-colors-background:#fff;--theme-ui-colors-primary:#07c;--theme-ui-colors-secondary:#30c;--theme-ui-colors-muted:#eeeeee;color:var(--theme-ui-colors-text);background-color:var(--theme-ui-colors-background);}</style><style data-emotion="css-global 1pdwylt">*{box-sizing:border-box;}html{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}body{margin:0;}</style><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><style data-emotion="css 1vtz2d0">.css-1vtz2d0{box-sizing:border-box;margin:0;min-width:0;width:100%;max-width:1024px;margin-left:auto;margin-right:auto;padding:32px;}</style><div class="css-1vtz2d0"><style data-emotion="css 1ukt34d">.css-1ukt34d{font-family:Georgia,serif;line-height:1.5;font-weight:400;}.css-1ukt34d pre{font-family:Menlo,monospace;overflow-x:auto;}.css-1ukt34d pre code{color:inherit;}.css-1ukt34d root{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}.css-1ukt34d h1{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:32px;}.css-1ukt34d h2{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:24px;}.css-1ukt34d h3{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:20px;}.css-1ukt34d h4{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:16px;}.css-1ukt34d h5{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:14px;}.css-1ukt34d h6{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:12px;}.css-1ukt34d p{color:var(--theme-ui-colors-text);font-family:Georgia,serif;font-weight:400;line-height:1.5;}.css-1ukt34d a{color:var(--theme-ui-colors-primary);display:inline-block;}.css-1ukt34d code{font-family:Menlo,monospace;font-size:inherit;}.css-1ukt34d table{width:100%;border-collapse:separate;border-spacing:0;}.css-1ukt34d th{text-align:left;border-bottom-style:solid;}.css-1ukt34d td{text-align:left;border-bottom-style:solid;}.css-1ukt34d img{max-width:100%;}.css-1ukt34d time{color:gray;font-size:14px;}.css-1ukt34d hr{color:var(--theme-ui-colors-muted);}.css-1ukt34d nav{font-size:18px;}</style><div class="css-1ukt34d"><header><style data-emotion="css uk0prh">.css-uk0prh{box-sizing:border-box;margin:0;min-width:0;padding-bottom:32px;}</style><nav class="css-uk0prh"><style data-emotion="css 1d0s3vx">.css-1d0s3vx{box-sizing:border-box;margin:0;min-width:0;padding-right:32px;}</style><a class="css-1d0s3vx" href="/">wwwhmartins</a><a class="css-1d0s3vx" href="/pt-br/">pt-br</a><a class="css-1d0s3vx" href="/tags/">tags</a><a class="css-1d0s3vx" href="/about/">about</a><a class="css-1d0s3vx" href="/contact/">contact</a></nav></header><style data-emotion="css rnntme">.css-rnntme{box-sizing:border-box;margin:0;min-width:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-weight:700;line-height:1.125;}</style><h1 class="css-rnntme">A deep dive into children in Vue</h1><div><p>I got myself inspired by Max Stoiber in his <a href="https://mxstbr.blog/2017/02/react-children-deepdive/"><strong>A deep dive into children in
 React</strong></a> to create this
 post about Vue children. So, credits on the title to him. If you're into React,
 check out his post, it has lots of nice information on React children.</p>
@@ -41,9 +41,9 @@ different manner based on whether a component is
 <a href="https://vuejs.org/v2/guide/render-function.html#Functional-Components"><code class="language-text">functional</code></a>
 or not (we'll get to that later).</p>
 <h2>Creating templates with children support</h2>
-<p>To create elements that have children support we can simply use the <code class="language-text">&lt;slot /&gt;</code>
+<p>To create elements that have children support we can simply use the <code class="language-text">&lt;slot /></code>
 tag in our components.</p>
-<p>For example, imagine we're creating a dynamic <code class="language-text">&lt;Button&gt;</code> component that receives
+<p>For example, imagine we're creating a dynamic <code class="language-text">&lt;Button></code> component that receives
 its children. We can define the component template like this:</p>
 <div class="gatsby-highlight" data-language="vue"><pre class="language-vue"><code class="language-vue">&lt;template&gt;
     &lt;button&gt;
@@ -57,9 +57,9 @@ its children. We can define the component template like this:</p>
     &lt;/Button&gt;
 &lt;/template&gt;</code></pre></div>
 <p>This will render a button with <code class="language-text">Content goes here</code> content.</p>
-<p>Please note that you can add anything "renderable" inside <code class="language-text">&lt;slot&gt;</code>. In the
-example above we rendered a simple text, but you can render a <code class="language-text">&lt;div&gt;</code>, a
-<code class="language-text">&lt;CustomComponent&gt;</code> and so on.</p>
+<p>Please note that you can add anything "renderable" inside <code class="language-text">&lt;slot></code>. In the
+example above we rendered a simple text, but you can render a <code class="language-text">&lt;div></code>, a
+<code class="language-text">&lt;CustomComponent></code> and so on.</p>
 <h2>Vue render process</h2>
 <p>Before we continue, it's interesting to know a little bit how Vue render process
 works. Basically, whenever you write a template, Vue compiles it to a
@@ -76,7 +76,7 @@ you may find it interesting.</p>
 <p>This knowledge will be useful from now on, as we can use this to manipulate our
 children elements.</p>
 <h2>Manipulating children elements</h2>
-<p>Sadly Vue doesn't provide a way to manipulate children using the <code class="language-text">&lt;template&gt;</code>
+<p>Sadly Vue doesn't provide a way to manipulate children using the <code class="language-text">&lt;template></code>
 tag. For example, using React one would do:</p>
 <div class="gatsby-highlight" data-language="jsx"><pre class="language-jsx"><code class="language-jsx"><span class="token keyword">const</span> <span class="token function-variable function">Component</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> children <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token plain-text">
@@ -89,7 +89,7 @@ tag. For example, using React one would do:</p>
 <span class="token punctuation">)</span></code></pre></div>
 <p>In Vue, we can leverage the use of
 <a href="https://vuejs.org/v2/guide/render-function.html#createElement-Arguments"><code class="language-text">createElement</code></a>
-and render functions. So, we will <strong>not</strong> write a <code class="language-text">&lt;template&gt;</code> for our
+and render functions. So, we will <strong>not</strong> write a <code class="language-text">&lt;template></code> for our
 components, as now we'll render the template manually.</p>
 <p>As a minimal boilerplate, if you want to manipulate children with Vue, you
 should do:</p>
@@ -126,7 +126,7 @@ want to have all slots separated, you can use <code class="language-text">contex
 will return an object like:</p>
 <div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token punctuation">{</span>
     <span class="token keyword">default</span><span class="token operator">:</span> Array<span class="token punctuation">[</span>VNode<span class="token punctuation">]</span><span class="token punctuation">,</span>
-    slot1<span class="token operator">:</span> Array<span class="token punctuation">[</span>VNode<span class="token punctuation">]</span>
+    <span class="token literal-property property">slot1</span><span class="token operator">:</span> Array<span class="token punctuation">[</span>VNode<span class="token punctuation">]</span>
 <span class="token punctuation">}</span></code></pre></div>
 <h3>When not using functional components</h3>
 <p>I don't see why not use functional components in those cases, however, if you
@@ -152,7 +152,7 @@ I'll have two components: one using <code class="language-text">functional</code
 regular components.</p>
 <h2>What can I do with that?</h2>
 <p>Well, mostly of those manipulations will be done in a higher level abstraction.
-For example, imagine you need to filter out all <code class="language-text">&lt;Other&gt;</code> component instances,
+For example, imagine you need to filter out all <code class="language-text">&lt;Other></code> component instances,
 you can do something like that:</p>
 <div class="gatsby-highlight" data-language="vue"><pre class="language-vue"><code class="language-vue">&lt;script&gt;
 import Other from &#39;./Other.vue&#39;
@@ -172,27 +172,27 @@ export default {
 <p>(It's a little bit ugly, I know)</p>
 <p>Another example is when you need to inject some properties. For example, take
 the great Reach's Tabs component: <a href="https://ui.reach.tech/tabs/">https://ui.reach.tech/tabs/</a>. It's a generic
-Tab component that enables the user to place <code class="language-text">&lt;TabList&gt;</code> (the tab navigation)
-and <code class="language-text">&lt;TabPanels&gt;</code> wherever user wants. But, to do that, we need to have a smart
+Tab component that enables the user to place <code class="language-text">&lt;TabList></code> (the tab navigation)
+and <code class="language-text">&lt;TabPanels></code> wherever user wants. But, to do that, we need to have a smart
 wrapper component to do this for us.</p>
 <p>For example, take this template:</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&lt;template&gt;
-    &lt;div&gt;
-        &lt;Tabs&gt;
-            &lt;TabList&gt;
-                &lt;Tab&gt;Tab 1&lt;/Tab&gt;
-                &lt;Tab&gt;Tab 2&lt;/Tab&gt;
-            &lt;/TabList&gt;
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&lt;template>
+    &lt;div>
+        &lt;Tabs>
+            &lt;TabList>
+                &lt;Tab>Tab 1&lt;/Tab>
+                &lt;Tab>Tab 2&lt;/Tab>
+            &lt;/TabList>
 
-            &lt;TabPanels&gt;
-                &lt;TabPanel&gt;Tab panel 1&lt;/TabPanel&gt;
-                &lt;TabPanel&gt;Tab panel 2&lt;/TabPanel&gt;
-            &lt;/TabPanels&gt;
-        &lt;/Tabs&gt;
-    &lt;/div&gt;
-&lt;/template&gt;</code></pre></div>
-<p>In this case, <code class="language-text">&lt;Tabs&gt;</code> can be "smart" and inject properties/callbacks to
-children components, allowing <code class="language-text">&lt;TabList&gt;</code> and <code class="language-text">&lt;TabPanels&gt;</code> to know which tab is
+            &lt;TabPanels>
+                &lt;TabPanel>Tab panel 1&lt;/TabPanel>
+                &lt;TabPanel>Tab panel 2&lt;/TabPanel>
+            &lt;/TabPanels>
+        &lt;/Tabs>
+    &lt;/div>
+&lt;/template></code></pre></div>
+<p>In this case, <code class="language-text">&lt;Tabs></code> can be "smart" and inject properties/callbacks to
+children components, allowing <code class="language-text">&lt;TabList></code> and <code class="language-text">&lt;TabPanels></code> to know which tab is
 currently active, handle tab change and so on.</p>
 <h2>References</h2>
 <p>While browsing for help on that subject, I've found some relevant discussions
@@ -202,8 +202,14 @@ that you may find interesting on further readings:</p>
 <li><a href="https://forum.vuejs.org/t/loop-with-v-for-slots-default/20646/2">https://forum.vuejs.org/t/loop-with-v-for-slots-default/20646/2</a></li>
 </ul>
 <p>There's also an abstraction that allows you to move this logic to your
-<code class="language-text">&lt;template&gt;</code>, however, I don't really know if I like that, but it might help
+<code class="language-text">&lt;template></code>, however, I don't really know if I like that, but it might help
 you:</p>
 <ul>
 <li><a href="https://www.npmjs.com/package/vue-wrap">https://www.npmjs.com/package/vue-wrap</a></li>
-</ul></div><style data-emotion-css="1jvijmd">.css-1jvijmd{box-sizing:border-box;margin:0;min-width:0;color:gray;margin:0;margin-top:8px;margin-bottom:8px;border:0;border-bottom:1px solid;color:var(--theme-ui-colors-muted,#eeeeee);}</style><hr class="css-1jvijmd"/><style data-emotion-css="bfk5c8">.css-bfk5c8{box-sizing:border-box;margin:0;min-width:0;padding-right:8px;}</style><span class="css-bfk5c8">Tags:</span><a class="css-bfk5c8" href="/tags/vue">vue</a><a class="css-bfk5c8" href="/tags/functional-components">functional components</a><a class="css-bfk5c8" href="/tags/vue-children">vue children</a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/2019/05/a-deep-dive-into-children-in-vue/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-b71fb930d96e0b01e779.js"],"component---src-pages-index-js":["/component---src-pages-index-js-012a4466067d24326a1c.js"],"component---src-pages-tags-js":["/component---src-pages-tags-js-bb6069ca8e5b60e8d89a.js"],"component---src-templates-blog-post-js":["/component---src-templates-blog-post-js-16696327739dce1d292a.js"],"component---src-templates-tags-js":["/component---src-templates-tags-js-c9d19b7cde892151dba8.js"]};/*]]>*/</script><script src="/component---src-templates-blog-post-js-16696327739dce1d292a.js" async=""></script><script src="/8404b144cf2ad46e7de17bf4d936317e474a8ae6-7c7ec56f86e20063ce79.js" async=""></script><script src="/app-b71fb930d96e0b01e779.js" async=""></script><script src="/styles-1bb458fe328f2ce5df8e.js" async=""></script><script src="/framework-37b45856124a722f0eb5.js" async=""></script><script src="/webpack-runtime-23591cc8e0ec01743664.js" async=""></script></body></html>
+</ul></div><style data-emotion="css 1uw3pr2">.css-1uw3pr2{box-sizing:border-box;margin:0;min-width:0;color:gray;margin:0;margin-top:8px;margin-bottom:8px;border:0;border-bottom:1px solid;color:var(--theme-ui-colors-muted);}</style><hr class="css-1uw3pr2"/><style data-emotion="css byxfcu">.css-byxfcu{box-sizing:border-box;margin:0;min-width:0;padding-right:8px;}</style><span class="css-byxfcu">Tags:</span><a class="css-byxfcu" href="/tags/vue/">vue</a><a class="css-byxfcu" href="/tags/functional-components/">functional components</a><a class="css-byxfcu" href="/tags/vue-children/">vue children</a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/2019/05/a-deep-dive-into-children-in-vue/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
+          <script
+            id="gatsby-chunk-mapping"
+          >
+            window.___chunkMapping="{\"app\":[\"/app-57b003fd7b23c8f2ad18.js\"],\"component---src-pages-index-js\":[\"/component---src-pages-index-js-5dd0bd936a691a402316.js\"],\"component---src-pages-pt-br-js\":[\"/component---src-pages-pt-br-js-1cbd449ba74af0aae89a.js\"],\"component---src-pages-tags-js\":[\"/component---src-pages-tags-js-99f6939fb57601e8199e.js\"],\"component---src-templates-blog-post-js\":[\"/component---src-templates-blog-post-js-d91eeca9d398a9f6feca.js\"],\"component---src-templates-tags-js\":[\"/component---src-templates-tags-js-8983d4e3ed8bf7f4878b.js\"]}";
+          </script>
+        <script>window.___webpackCompilationHash="628fa4490e3bd180ac46";</script><script src="/webpack-runtime-9bbb8793a34204347fc9.js" async></script><script src="/framework-dd512b8a69737a109d3a.js" async></script><script src="/app-57b003fd7b23c8f2ad18.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
