@@ -54,5 +54,4 @@ Uma nota mental para mim mesmo para o futuro desse site é:
 - Considerar migrar de Gatsby para Next
 - Reorganizar os arquivos e pastas
 - Considerar migrar a codebase para TypeScript
-- Verificar como formatar as datas para as postagens também terem as datas
-internacionalizadas
+- Verificar como formatar as datas para as postagens também terem as datas internacionalizadas
