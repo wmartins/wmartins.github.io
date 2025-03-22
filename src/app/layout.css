@@ -1,0 +1,21 @@
+html {
+  font-family:
+    "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, serif;
+  font-size: 20px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: #faf9f6;
+  color: #212121;
+}
+
+a {
+  color: #0074d9;
+  text-decoration: none;
+}
+
+pre {
+  max-width: 100%;
+  overflow-x: scroll;
+}

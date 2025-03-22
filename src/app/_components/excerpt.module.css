@@ -1,0 +1,13 @@
+.link {
+  text-decoration: none;
+  color: #424242;
+}
+
+.title {
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+.excerpt {
+  border-bottom: 1px dotted #d5d8dc;
+}
