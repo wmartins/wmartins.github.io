@@ -1,166 +1,225 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 5.7.0"/><meta data-react-helmet="true" name="description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:title" content="A deep dive into children in Vue"/><meta data-react-helmet="true" property="og:description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:type" content="website"/><style data-href="/styles.57de05492b7d786fd5ad.css" data-identity="gatsby-global-css">code[class*=language-],pre[class*=language-]{word-wrap:normal;color:#657b83;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;-webkit-hyphens:none;hyphens:none;line-height:1.5;tab-size:4;text-align:left;white-space:pre;word-break:normal;word-spacing:normal}code[class*=language-] ::selection,code[class*=language-]::selection,pre[class*=language-] ::selection,pre[class*=language-]::selection{background:#073642}pre[class*=language-]{border-radius:.3em;margin:.5em 0;overflow:auto;padding:1em}:not(pre)>code[class*=language-],pre[class*=language-]{background-color:#fdf6e3}:not(pre)>code[class*=language-]{border-radius:.3em;padding:.1em}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#93a1a1}.token.punctuation{color:#586e75}.token.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#268bd2}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string,.token.url{color:#2aa198}.token.entity{background:#eee8d5;color:#657b83}.token.atrule,.token.attr-value,.token.keyword{color:#859900}.token.class-name,.token.function{color:#b58900}.token.important,.token.regex,.token.variable{color:#cb4b16}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}</style><title data-react-helmet="true">A deep dive into children in Vue | wwwhmartins</title></head><body><script>(function() { try {
-  var mode = localStorage.getItem('theme-ui-color-mode');
-  if (!mode) return
-  document.documentElement.classList.add('theme-ui-' + mode);
-} catch (e) {} })();</script><div id="___gatsby"><style data-emotion="css-global 178ef4d">html{--theme-ui-colors-text:#000;--theme-ui-colors-background:#fff;--theme-ui-colors-primary:#07c;--theme-ui-colors-secondary:#30c;--theme-ui-colors-muted:#eeeeee;color:var(--theme-ui-colors-text);background-color:var(--theme-ui-colors-background);}</style><style data-emotion="css-global 1pdwylt">*{box-sizing:border-box;}html{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}body{margin:0;}</style><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><style data-emotion="css 1vtz2d0">.css-1vtz2d0{box-sizing:border-box;margin:0;min-width:0;width:100%;max-width:1024px;margin-left:auto;margin-right:auto;padding:32px;}</style><div class="css-1vtz2d0"><style data-emotion="css 1ukt34d">.css-1ukt34d{font-family:Georgia,serif;line-height:1.5;font-weight:400;}.css-1ukt34d pre{font-family:Menlo,monospace;overflow-x:auto;}.css-1ukt34d pre code{color:inherit;}.css-1ukt34d root{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}.css-1ukt34d h1{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:32px;}.css-1ukt34d h2{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:24px;}.css-1ukt34d h3{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:20px;}.css-1ukt34d h4{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:16px;}.css-1ukt34d h5{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:14px;}.css-1ukt34d h6{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:12px;}.css-1ukt34d p{color:var(--theme-ui-colors-text);font-family:Georgia,serif;font-weight:400;line-height:1.5;}.css-1ukt34d a{color:var(--theme-ui-colors-primary);display:inline-block;}.css-1ukt34d code{font-family:Menlo,monospace;font-size:inherit;}.css-1ukt34d table{width:100%;border-collapse:separate;border-spacing:0;}.css-1ukt34d th{text-align:left;border-bottom-style:solid;}.css-1ukt34d td{text-align:left;border-bottom-style:solid;}.css-1ukt34d img{max-width:100%;}.css-1ukt34d time{color:gray;font-size:14px;}.css-1ukt34d hr{color:var(--theme-ui-colors-muted);}.css-1ukt34d nav{font-size:18px;}</style><div class="css-1ukt34d"><header><style data-emotion="css uk0prh">.css-uk0prh{box-sizing:border-box;margin:0;min-width:0;padding-bottom:32px;}</style><nav class="css-uk0prh"><style data-emotion="css 1d0s3vx">.css-1d0s3vx{box-sizing:border-box;margin:0;min-width:0;padding-right:32px;}</style><a class="css-1d0s3vx" href="/">wwwhmartins</a><a class="css-1d0s3vx" href="/pt-br/">pt-br</a><a class="css-1d0s3vx" href="/tags/">tags</a><a class="css-1d0s3vx" href="/about/">about</a><a class="css-1d0s3vx" href="/contact/">contact</a></nav></header><style data-emotion="css rnntme">.css-rnntme{box-sizing:border-box;margin:0;min-width:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-weight:700;line-height:1.125;}</style><h1 class="css-rnntme">A deep dive into children in Vue</h1><div><p>I got myself inspired by Max Stoiber in his <a href="https://mxstbr.blog/2017/02/react-children-deepdive/"><strong>A deep dive into children in
+<!DOCTYPE html><html lang="en-us"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/fad3d6b35e924199.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/css/c2b8ef241a0bd383.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/css/13f49b5dcd295dae.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-883a73b7470b17b4.js"/><script src="/_next/static/chunks/4bd1b696-5b6c0ccbd3c0c9ab.js" async=""></script><script src="/_next/static/chunks/684-8badcb5715778f09.js" async=""></script><script src="/_next/static/chunks/main-app-a9d4f4dd3643d1cd.js" async=""></script><script src="/_next/static/chunks/874-8968dd5eb7fadb60.js" async=""></script><script src="/_next/static/chunks/app/%5B...slug%5D/page-526665be0f2fd5b4.js" async=""></script><title>A deep dive into children in Vue</title><meta name="description" content="I got myself inspired by Max Stoiber in his A deep dive into children in
+React to create this
+post about Vue children. So, credits on the..."/><meta property="og:title" content="A deep dive into children in Vue"/><meta property="og:description" content="I got myself inspired by Max Stoiber in his A deep dive into children in
+React to create this
+post about Vue children. So, credits on the..."/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="A deep dive into children in Vue"/><meta name="twitter:description" content="I got myself inspired by Max Stoiber in his A deep dive into children in
+React to create this
+post about Vue children. So, credits on the..."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body><div class="container_container__2GGUi"><main><a href="/">← go home</a><article><div class="page_titleContainer__tlZMv"><h1 class="page_title__Tljh5">A deep dive into children in Vue</h1><time class="datetime_datetime__ZMgNO" dateTime="10:53:40 PM">May 16, 2019</time></div><div class="page_post__iBPNz">
+<p>
+  I got myself inspired by Max Stoiber in his <a href="https://mxstbr.blog/2017/02/react-children-deepdive/"><strong>A deep dive into children in
 React</strong></a> to create this
-post about Vue children. So, credits on the title to him. If you're into React,
-check out his post, it has lots of nice information on React children.</p>
+  post about Vue children. So, credits on the title to him. If you're into React,
+  check out his post, it has lots of nice information on React children.
+</p>
 <h2>Motivation</h2>
-<p>I have started working with Vue a few months ago and it has been really nice.
-After working with React for some years, it's nice to experience something new.</p>
-<p>I'm writing this post because there are some patterns that I used in React and I
-miss in Vue. In this case, this post will cover manipulating children elements
-in Vue components.</p>
-<p>This is really straightforward to do with React. So, I'll try to cover some
-parts of Vue that enables us to do something similar as done in React.</p>
-<p>The fantastic part is that Vue is really well thought (congratulations to all
-maintainers for that) and really simple, so, we can manipulate Vue objects in an
-easy way to achieve what we need.</p>
+<p>
+  I have started working with Vue a few months ago and it has been really nice.
+  After working with React for some years, it's nice to experience something new.
+</p>
+<p>
+  I'm writing this post because there are some patterns that I used in React and I
+  miss in Vue. In this case, this post will cover manipulating children elements
+  in Vue components.
+</p>
+<p>
+  This is really straightforward to do with React. So, I'll try to cover some
+  parts of Vue that enables us to do something similar as done in React.
+</p>
+<p>
+  The fantastic part is that Vue is really well thought (congratulations to all
+  maintainers for that) and really simple, so, we can manipulate Vue objects in an
+  easy way to achieve what we need.
+</p>
 <h3>About React children</h3>
-<p>If you come from a non React background and want to know more about its children
-concept, please refer to their documentation on that:</p>
+<p>
+  If you come from a non React background and want to know more about its children
+  concept, please refer to their documentation on that:
+</p>
 <ul>
-<li><a href="https://reactjs.org/docs/react-api.html#reactchildren"><code class="language-text">React.Children</code></a></li>
+  <li><a href="https://reactjs.org/docs/react-api.html#reactchildren"><code>React.Children</code></a></li>
 </ul>
 <h2>What are children</h2>
-<p>First of all, to be on the same page, we'll call <code class="language-text">children</code> elements all
-elements rendered inside any given Vue component. Here are some examples:</p>
-<div class="gatsby-highlight" data-language="vue"><pre class="language-vue"><code class="language-vue">&lt;template&gt;
-    &lt;Parent&gt;
-        &lt;div&gt;This is a child&lt;/div&gt;
-        &lt;Child /&gt; &lt;!-- This is also a child --&gt;
-        &lt;span&gt;Another child&lt;/div&gt;
-    &lt;/Parent&gt;
-&lt;/template&gt;</code></pre></div>
-<p>Every single element that is put inside another one can be considered a child
-element. It doesn't matter if it is a custom component, a tag or some text.</p>
-<p>There's only one detail to the statement above:
-<a href="https://vuejs.org/v2/guide/components-slots.html"><code class="language-text">Vue Slots</code></a> work in a
-different manner based on whether a component is
-<a href="https://vuejs.org/v2/guide/render-function.html#Functional-Components"><code class="language-text">functional</code></a>
-or not (we'll get to that later).</p>
+<p>
+  First of all, to be on the same page, we'll call <code>children</code> elements all
+  elements rendered inside any given Vue component. Here are some examples:
+</p>
+<pre><code class="hljs language-vue">&#x3C;template>
+    &#x3C;Parent>
+        &#x3C;div>This is a child&#x3C;/div>
+        &#x3C;Child /> &#x3C;!-- This is also a child -->
+        &#x3C;span>Another child&#x3C;/div>
+    &#x3C;/Parent>
+&#x3C;/template>
+</code></pre>
+<p>
+  Every single element that is put inside another one can be considered a child
+  element. It doesn't matter if it is a custom component, a tag or some text.
+</p>
+<p>
+  There's only one detail to the statement above:
+  <a href="https://vuejs.org/v2/guide/components-slots.html"><code>Vue Slots</code></a> work in a
+  different manner based on whether a component is
+  <a href="https://vuejs.org/v2/guide/render-function.html#Functional-Components"><code>functional</code></a>
+  or not (we'll get to that later).
+</p>
 <h2>Creating templates with children support</h2>
-<p>To create elements that have children support we can simply use the <code class="language-text">&lt;slot /></code>
-tag in our components.</p>
-<p>For example, imagine we're creating a dynamic <code class="language-text">&lt;Button></code> component that receives
-its children. We can define the component template like this:</p>
-<div class="gatsby-highlight" data-language="vue"><pre class="language-vue"><code class="language-vue">&lt;template&gt;
-    &lt;button&gt;
-        &lt;slot /&gt;
-    &lt;/button&gt;
-&lt;/template&gt;</code></pre></div>
+<p>
+  To create elements that have children support we can simply use the <code>&#x3C;slot /></code>
+  tag in our components.
+</p>
+<p>
+  For example, imagine we're creating a dynamic <code>&#x3C;Button></code> component that receives
+  its children. We can define the component template like this:
+</p>
+<pre><code class="hljs language-vue">&#x3C;template>
+    &#x3C;button>
+        &#x3C;slot />
+    &#x3C;/button>
+&#x3C;/template>
+</code></pre>
 <p>And, use it like this:</p>
-<div class="gatsby-highlight" data-language="vue"><pre class="language-vue"><code class="language-vue">&lt;template&gt;
-    &lt;Button&gt;
+<pre><code class="hljs language-vue">&#x3C;template>
+    &#x3C;Button>
         Content goes here
-    &lt;/Button&gt;
-&lt;/template&gt;</code></pre></div>
-<p>This will render a button with <code class="language-text">Content goes here</code> content.</p>
-<p>Please note that you can add anything "renderable" inside <code class="language-text">&lt;slot></code>. In the
-example above we rendered a simple text, but you can render a <code class="language-text">&lt;div></code>, a
-<code class="language-text">&lt;CustomComponent></code> and so on.</p>
+    &#x3C;/Button>
+&#x3C;/template>
+</code></pre>
+<p>This will render a button with <code>Content goes here</code> content.</p>
+<p>
+  Please note that you can add anything "renderable" inside <code>&#x3C;slot></code>. In the
+  example above we rendered a simple text, but you can render a <code>&#x3C;div></code>, a
+  <code>&#x3C;CustomComponent></code> and so on.
+</p>
 <h2>Vue render process</h2>
-<p>Before we continue, it's interesting to know a little bit how Vue render process
-works. Basically, whenever you write a template, Vue compiles it to a
-<a href="https://vuejs.org/v2/guide/render-function.html">render function</a>. As said in
-<a href="https://vuejs.org/v2/guide/render-function.html#Template-Compilation">template
+<p>
+  Before we continue, it's interesting to know a little bit how Vue render process
+  works. Basically, whenever you write a template, Vue compiles it to a
+  <a href="https://vuejs.org/v2/guide/render-function.html">render function</a>. As said in
+  <a href="https://vuejs.org/v2/guide/render-function.html#Template-Compilation">template
 compilation</a>
-part:</p>
+  part:
+</p>
 <blockquote>
-<p>You may be interested to know that Vue’s templates actually compile to render
-functions. This is an implementation detail you usually don’t need to know
-about, but if you’d like to see how specific template features are compiled,
-you may find it interesting.</p>
+  <p>
+    You may be interested to know that Vue’s templates actually compile to render
+    functions. This is an implementation detail you usually don’t need to know
+    about, but if you’d like to see how specific template features are compiled,
+    you may find it interesting.
+  </p>
 </blockquote>
-<p>This knowledge will be useful from now on, as we can use this to manipulate our
-children elements.</p>
+<p>
+  This knowledge will be useful from now on, as we can use this to manipulate our
+  children elements.
+</p>
 <h2>Manipulating children elements</h2>
-<p>Sadly Vue doesn't provide a way to manipulate children using the <code class="language-text">&lt;template></code>
-tag. For example, using React one would do:</p>
-<div class="gatsby-highlight" data-language="jsx"><pre class="language-jsx"><code class="language-jsx"><span class="token keyword">const</span> <span class="token function-variable function">Component</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> children <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token plain-text">
-        </span><span class="token punctuation">{</span>React<span class="token punctuation">.</span>Children<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>children<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">child<span class="token punctuation">,</span> i</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
-            <span class="token comment">// do whatever I want with `child`</span>
+<p>
+  Sadly Vue doesn't provide a way to manipulate children using the <code>&#x3C;template></code>
+  tag. For example, using React one would do:
+</p>
+<pre><code class="hljs language-jsx"><span class="hljs-keyword">const</span> <span class="hljs-title function_">Component</span> = (<span class="hljs-params">{ children }</span>) => (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+        {React.Children.map(children, (child, i) => {
+            // do whatever I want with `child`
 
-            <span class="token keyword">return</span> child
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token plain-text">
-    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token punctuation">)</span></code></pre></div>
-<p>In Vue, we can leverage the use of
-<a href="https://vuejs.org/v2/guide/render-function.html#createElement-Arguments"><code class="language-text">createElement</code></a>
-and render functions. So, we will <strong>not</strong> write a <code class="language-text">&lt;template></code> for our
-components, as now we'll render the template manually.</p>
-<p>As a minimal boilerplate, if you want to manipulate children with Vue, you
-should do:</p>
-<div class="gatsby-highlight" data-language="vue"><pre class="language-vue"><code class="language-vue">&lt;script&gt;
+            return child
+        })}
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+)
+</code></pre>
+<p>
+  In Vue, we can leverage the use of
+  <a href="https://vuejs.org/v2/guide/render-function.html#createElement-Arguments"><code>createElement</code></a>
+  and render functions. So, we will <strong>not</strong> write a <code>&#x3C;template></code> for our
+  components, as now we'll render the template manually.
+</p>
+<p>
+  As a minimal boilerplate, if you want to manipulate children with Vue, you
+  should do:
+</p>
+<pre><code class="hljs language-vue">&#x3C;script>
 export default {
     functional: true,
 
     render(createElement, context) {
         const $children = context.children
 
-        const children = $children.map((child, i) =&gt; {
+        const children = $children.map((child, i) => {
             // do whatever I want with `child`
 
             return child
         })
 
-        return createElement(&#39;div&#39;, children)
+        return createElement('div', children)
     }
 }
-&lt;/script&gt;</code></pre></div>
-<p>Please note that, as we're using <a href="https://vuejs.org/v2/guide/render-function.html#Functional-Components">functional
+&#x3C;/script>
+</code></pre>
+<p>
+  Please note that, as we're using <a href="https://vuejs.org/v2/guide/render-function.html#Functional-Components">functional
 components</a>,
-in this case <code class="language-text">context.children</code> contains all given children, no matter if user
-specified <code class="language-text">slots</code>. For example, imagine that we're rendering the following
-children inside our component:</p>
-<div class="gatsby-highlight" data-language="vue"><pre class="language-vue"><code class="language-vue">&lt;template&gt;
-    &lt;Component&gt;
-        &lt;div&gt;Child 1&lt;/div&gt;
-        &lt;div slot=&quot;slot1&quot;&gt;Child 2&lt;/div&gt;
-    &lt;/Component&gt;
-&lt;/template&gt;</code></pre></div>
-<p>In this case, <code class="language-text">context.children</code> contains both <code class="language-text">Child 1</code> and <code class="language-text">Child 2</code>. If you
-want to have all slots separated, you can use <code class="language-text">context.slots()</code> function. This
-will return an object like:</p>
-<div class="gatsby-highlight" data-language="js"><pre class="language-js"><code class="language-js"><span class="token punctuation">{</span>
-    <span class="token keyword">default</span><span class="token operator">:</span> Array<span class="token punctuation">[</span>VNode<span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token literal-property property">slot1</span><span class="token operator">:</span> Array<span class="token punctuation">[</span>VNode<span class="token punctuation">]</span>
-<span class="token punctuation">}</span></code></pre></div>
+  in this case <code>context.children</code> contains all given children, no matter if user
+  specified <code>slots</code>. For example, imagine that we're rendering the following
+  children inside our component:
+</p>
+<pre><code class="hljs language-vue">&#x3C;template>
+    &#x3C;Component>
+        &#x3C;div>Child 1&#x3C;/div>
+        &#x3C;div slot="slot1">Child 2&#x3C;/div>
+    &#x3C;/Component>
+&#x3C;/template>
+</code></pre>
+<p>
+  In this case, <code>context.children</code> contains both <code>Child 1</code> and <code>Child 2</code>. If you
+  want to have all slots separated, you can use <code>context.slots()</code> function. This
+  will return an object like:
+</p>
+<pre><code class="hljs language-js">{
+    <span class="hljs-attr">default</span>: <span class="hljs-title class_">Array</span>[<span class="hljs-title class_">VNode</span>],
+    <span class="hljs-attr">slot1</span>: <span class="hljs-title class_">Array</span>[<span class="hljs-title class_">VNode</span>]
+}
+</code></pre>
 <h3>When not using functional components</h3>
-<p>I don't see why not use functional components in those cases, however, if you
-really need to, it becomes a little bit harder and <em>unstable</em> to access children
-components.</p>
-<p>First of all, you'll rely on <code class="language-text">this</code> to access data. Second, you'll need to
-access some private properties of the Vue instance, which is not really good
-(they're not documented in the "public api" -
-<a href="https://vuejs.org/v2/api/#Instance-Properties">https://vuejs.org/v2/api/#Instance-Properties</a>), as if Vue core team decides to
-change them, your code will break. Here's an example:</p>
-<div class="gatsby-highlight" data-language="vue"><pre class="language-vue"><code class="language-vue">export default {
+<p>
+  I don't see why not use functional components in those cases, however, if you
+  really need to, it becomes a little bit harder and <em>unstable</em> to access children
+  components.
+</p>
+<p>
+  First of all, you'll rely on <code>this</code> to access data. Second, you'll need to
+  access some private properties of the Vue instance, which is not really good
+  (they're not documented in the "public api" -
+  https://vuejs.org/v2/api/#Instance-Properties), as if Vue core team decides to
+  change them, your code will break. Here's an example:
+</p>
+<pre><code class="hljs language-vue">export default {
     render(createElement) {
-        const children = this.$options._renderChildren // a &quot;private&quot; property
+        const children = this.$options._renderChildren // a "private" property
 
-        return createElement(&#39;div&#39;, children)
+        return createElement('div', children)
     }
-}</code></pre></div>
-<p>In the same way, you can also access <code class="language-text">this.$slots</code> to get all slots.</p>
+}
+</code></pre>
+<p>In the same way, you can also access <code>this.$slots</code> to get all slots.</p>
 <h2>Working example</h2>
-<p>I created a simple example to illustrate those situations. Please go to
-<a href="https://codesandbox.io/s/vue-template-ny5hg?fontsize=14">https://codesandbox.io/s/vue-template-ny5hg?fontsize=14</a> and check it out. There,
-I'll have two components: one using <code class="language-text">functional</code> components and other using
-regular components.</p>
+<p>
+  I created a simple example to illustrate those situations. Please go to
+  https://codesandbox.io/s/vue-template-ny5hg?fontsize=14 and check it out. There,
+  I'll have two components: one using <code>functional</code> components and other using
+  regular components.
+</p>
 <h2>What can I do with that?</h2>
-<p>Well, mostly of those manipulations will be done in a higher level abstraction.
-For example, imagine you need to filter out all <code class="language-text">&lt;Other></code> component instances,
-you can do something like that:</p>
-<div class="gatsby-highlight" data-language="vue"><pre class="language-vue"><code class="language-vue">&lt;script&gt;
-import Other from &#39;./Other.vue&#39;
+<p>
+  Well, mostly of those manipulations will be done in a higher level abstraction.
+  For example, imagine you need to filter out all <code>&#x3C;Other></code> component instances,
+  you can do something like that:
+</p>
+<pre><code class="hljs language-vue">&#x3C;script>
+import Other from './Other.vue'
 export default {
   functional: true,
 
   render(createElement, { children }) {
-    return createElement(&quot;div&quot;, children.filter(child =&gt; {
+    return createElement("div", children.filter(child => {
       const { componentOptions = {} } = child
       console.log(child, componentOptions.Ctor, Other._Ctor[0])
 
@@ -168,48 +227,53 @@ export default {
     }));
   }
 };
-&lt;/script&gt;</code></pre></div>
+&#x3C;/script>
+</code></pre>
 <p>(It's a little bit ugly, I know)</p>
-<p>Another example is when you need to inject some properties. For example, take
-the great Reach's Tabs component: <a href="https://ui.reach.tech/tabs/">https://ui.reach.tech/tabs/</a>. It's a generic
-Tab component that enables the user to place <code class="language-text">&lt;TabList></code> (the tab navigation)
-and <code class="language-text">&lt;TabPanels></code> wherever user wants. But, to do that, we need to have a smart
-wrapper component to do this for us.</p>
+<p>
+  Another example is when you need to inject some properties. For example, take
+  the great Reach's Tabs component: https://ui.reach.tech/tabs/. It's a generic
+  Tab component that enables the user to place <code>&#x3C;TabList></code> (the tab navigation)
+  and <code>&#x3C;TabPanels></code> wherever user wants. But, to do that, we need to have a smart
+  wrapper component to do this for us.
+</p>
 <p>For example, take this template:</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">&lt;template>
-    &lt;div>
-        &lt;Tabs>
-            &lt;TabList>
-                &lt;Tab>Tab 1&lt;/Tab>
-                &lt;Tab>Tab 2&lt;/Tab>
-            &lt;/TabList>
+<pre><code>&#x3C;template>
+    &#x3C;div>
+        &#x3C;Tabs>
+            &#x3C;TabList>
+                &#x3C;Tab>Tab 1&#x3C;/Tab>
+                &#x3C;Tab>Tab 2&#x3C;/Tab>
+            &#x3C;/TabList>
 
-            &lt;TabPanels>
-                &lt;TabPanel>Tab panel 1&lt;/TabPanel>
-                &lt;TabPanel>Tab panel 2&lt;/TabPanel>
-            &lt;/TabPanels>
-        &lt;/Tabs>
-    &lt;/div>
-&lt;/template></code></pre></div>
-<p>In this case, <code class="language-text">&lt;Tabs></code> can be "smart" and inject properties/callbacks to
-children components, allowing <code class="language-text">&lt;TabList></code> and <code class="language-text">&lt;TabPanels></code> to know which tab is
-currently active, handle tab change and so on.</p>
+            &#x3C;TabPanels>
+                &#x3C;TabPanel>Tab panel 1&#x3C;/TabPanel>
+                &#x3C;TabPanel>Tab panel 2&#x3C;/TabPanel>
+            &#x3C;/TabPanels>
+        &#x3C;/Tabs>
+    &#x3C;/div>
+&#x3C;/template>
+</code></pre>
+<p>
+  In this case, <code>&#x3C;Tabs></code> can be "smart" and inject properties/callbacks to
+  children components, allowing <code>&#x3C;TabList></code> and <code>&#x3C;TabPanels></code> to know which tab is
+  currently active, handle tab change and so on.
+</p>
 <h2>References</h2>
-<p>While browsing for help on that subject, I've found some relevant discussions
-that you may find interesting on further readings:</p>
+<p>
+  While browsing for help on that subject, I've found some relevant discussions
+  that you may find interesting on further readings:
+</p>
 <ul>
-<li><a href="https://forum.vuejs.org/t/loop-through-elements-passed-into-slot/6558">https://forum.vuejs.org/t/loop-through-elements-passed-into-slot/6558</a></li>
-<li><a href="https://forum.vuejs.org/t/loop-with-v-for-slots-default/20646/2">https://forum.vuejs.org/t/loop-with-v-for-slots-default/20646/2</a></li>
+  <li>https://forum.vuejs.org/t/loop-through-elements-passed-into-slot/6558</li>
+  <li>https://forum.vuejs.org/t/loop-with-v-for-slots-default/20646/2</li>
 </ul>
-<p>There's also an abstraction that allows you to move this logic to your
-<code class="language-text">&lt;template></code>, however, I don't really know if I like that, but it might help
-you:</p>
+<p>
+  There's also an abstraction that allows you to move this logic to your
+  <code>&#x3C;template></code>, however, I don't really know if I like that, but it might help
+  you:
+</p>
 <ul>
-<li><a href="https://www.npmjs.com/package/vue-wrap">https://www.npmjs.com/package/vue-wrap</a></li>
-</ul></div><style data-emotion="css 1uw3pr2">.css-1uw3pr2{box-sizing:border-box;margin:0;min-width:0;color:gray;margin:0;margin-top:8px;margin-bottom:8px;border:0;border-bottom:1px solid;color:var(--theme-ui-colors-muted);}</style><hr class="css-1uw3pr2"/><style data-emotion="css byxfcu">.css-byxfcu{box-sizing:border-box;margin:0;min-width:0;padding-right:8px;}</style><span class="css-byxfcu">Tags:</span><a class="css-byxfcu" href="/tags/vue/">vue</a><a class="css-byxfcu" href="/tags/functional-components/">functional components</a><a class="css-byxfcu" href="/tags/vue-children/">vue children</a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/2019/05/a-deep-dive-into-children-in-vue/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
-          <script
-            id="gatsby-chunk-mapping"
-          >
-            window.___chunkMapping="{\"app\":[\"/app-57b003fd7b23c8f2ad18.js\"],\"component---src-pages-index-js\":[\"/component---src-pages-index-js-5dd0bd936a691a402316.js\"],\"component---src-pages-pt-br-js\":[\"/component---src-pages-pt-br-js-1cbd449ba74af0aae89a.js\"],\"component---src-pages-tags-js\":[\"/component---src-pages-tags-js-99f6939fb57601e8199e.js\"],\"component---src-templates-blog-post-js\":[\"/component---src-templates-blog-post-js-d91eeca9d398a9f6feca.js\"],\"component---src-templates-tags-js\":[\"/component---src-templates-tags-js-8983d4e3ed8bf7f4878b.js\"]}";
-          </script>
-        <script>window.___webpackCompilationHash="628fa4490e3bd180ac46";</script><script src="/webpack-runtime-9bbb8793a34204347fc9.js" async></script><script src="/framework-dd512b8a69737a109d3a.js" async></script><script src="/app-57b003fd7b23c8f2ad18.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
+  <li>https://www.npmjs.com/package/vue-wrap</li>
+</ul>
+</div><footer class="page_footer__MFEyq">Tags:<!-- --> <a class="page_tag__9Ktix" href="/tags/vue/">vue</a><a class="page_tag__9Ktix" href="/tags/functional-components/">functional components</a><a class="page_tag__9Ktix" href="/tags/vue-children/">vue children</a></footer></article></main></div><script src="/_next/static/chunks/webpack-883a73b7470b17b4.js" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n3:I[6874,[\"874\",\"static/chunks/874-8968dd5eb7fadb60.js\",\"48\",\"static/chunks/app/%5B...slug%5D/page-526665be0f2fd5b4.js\"],\"\"]\n4:I[7555,[],\"\"]\n5:I[1295,[],\"\"]\n7:I[9665,[],\"OutletBoundary\"]\na:I[9665,[],\"ViewportBoundary\"]\nc:I[9665,[],\"MetadataBoundary\"]\ne:I[6614,[],\"\"]\n:HL[\"/_next/static/css/fad3d6b35e924199.css\",\"style\"]\n:HL[\"/_next/static/css/c2b8ef241a0bd383.css\",\"style\"]\n:HL[\"/_next/static/css/13f49b5dcd295dae.css\",\"style\"]\n0:{\"P\":null,\"b\":\"A_h_n7CBt7_bpyguSodXu\",\"p\":\"\",\"c\":[\"\",\"2019\",\"05\",\"a-deep-dive-into-children-in-vue\",\"\"],\"i\":false,\"f\":[[[\"\",{\"children\":[[\"slug\",\"2019/05/a-deep-dive-into-children-in-vue\",\"c\"],{\"children\":[\"__PAGE__\",{}]}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/fad3d6b35e924199.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],\"$L2\"]}],{\"children\":[[\"slug\",\"2019/05/a-deep-dive-into-children-in-vue\",\"c\"],[\"$\",\"$1\",\"c\",{\"children\":[null,[[\"$\",\"$L3\",null,{\"href\":\"/\",\"children\":\"← go home\"}],[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]]}],{\"children\":[\"__PAGE__\",[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",\"$undefined\",[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/c2b8ef241a0bd383.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/13f49b5dcd295dae.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"$L7\",null,{\"children\":[\"$L8\",\"$L9\",null]}]]}],{},null,false]},null,false]},null,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$1\",\"Xg3JBUtaXjf_nRanJ3kqq\",{\"children\":[[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],null]}],[\"$\",\"$Lc\",null,{\"children\":\"$Ld\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",\"$undefined\"],\"s\":"])</script><script>self.__next_f.push([1,"false,\"S\":true}\n"])</script><script>self.__next_f.push([1,"2:[\"$\",\"html\",null,{\"lang\":\"en-us\",\"children\":[\"$\",\"body\",null,{\"children\":[\"$\",\"div\",null,{\"className\":\"container_container__2GGUi\",\"children\":[\"$\",\"main\",null,{\"children\":[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]}]\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n8:null\n"])</script><script>self.__next_f.push([1,"f:T2933,"])</script><script>self.__next_f.push([1,"\n\u003cp\u003e\n  I got myself inspired by Max Stoiber in his \u003ca href=\"https://mxstbr.blog/2017/02/react-children-deepdive/\"\u003e\u003cstrong\u003eA deep dive into children in\nReact\u003c/strong\u003e\u003c/a\u003e to create this\n  post about Vue children. So, credits on the title to him. If you're into React,\n  check out his post, it has lots of nice information on React children.\n\u003c/p\u003e\n\u003ch2\u003eMotivation\u003c/h2\u003e\n\u003cp\u003e\n  I have started working with Vue a few months ago and it has been really nice.\n  After working with React for some years, it's nice to experience something new.\n\u003c/p\u003e\n\u003cp\u003e\n  I'm writing this post because there are some patterns that I used in React and I\n  miss in Vue. In this case, this post will cover manipulating children elements\n  in Vue components.\n\u003c/p\u003e\n\u003cp\u003e\n  This is really straightforward to do with React. So, I'll try to cover some\n  parts of Vue that enables us to do something similar as done in React.\n\u003c/p\u003e\n\u003cp\u003e\n  The fantastic part is that Vue is really well thought (congratulations to all\n  maintainers for that) and really simple, so, we can manipulate Vue objects in an\n  easy way to achieve what we need.\n\u003c/p\u003e\n\u003ch3\u003eAbout React children\u003c/h3\u003e\n\u003cp\u003e\n  If you come from a non React background and want to know more about its children\n  concept, please refer to their documentation on that:\n\u003c/p\u003e\n\u003cul\u003e\n  \u003cli\u003e\u003ca href=\"https://reactjs.org/docs/react-api.html#reactchildren\"\u003e\u003ccode\u003eReact.Children\u003c/code\u003e\u003c/a\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch2\u003eWhat are children\u003c/h2\u003e\n\u003cp\u003e\n  First of all, to be on the same page, we'll call \u003ccode\u003echildren\u003c/code\u003e elements all\n  elements rendered inside any given Vue component. Here are some examples:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-vue\"\u003e\u0026#x3C;template\u003e\n    \u0026#x3C;Parent\u003e\n        \u0026#x3C;div\u003eThis is a child\u0026#x3C;/div\u003e\n        \u0026#x3C;Child /\u003e \u0026#x3C;!-- This is also a child --\u003e\n        \u0026#x3C;span\u003eAnother child\u0026#x3C;/div\u003e\n    \u0026#x3C;/Parent\u003e\n\u0026#x3C;/template\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  Every single element that is put inside another one can be considered a child\n  element. It doesn't matter if it is a custom component, a tag or some text.\n\u003c/p\u003e\n\u003cp\u003e\n  There's only one detail to the statement above:\n  \u003ca href=\"https://vuejs.org/v2/guide/components-slots.html\"\u003e\u003ccode\u003eVue Slots\u003c/code\u003e\u003c/a\u003e work in a\n  different manner based on whether a component is\n  \u003ca href=\"https://vuejs.org/v2/guide/render-function.html#Functional-Components\"\u003e\u003ccode\u003efunctional\u003c/code\u003e\u003c/a\u003e\n  or not (we'll get to that later).\n\u003c/p\u003e\n\u003ch2\u003eCreating templates with children support\u003c/h2\u003e\n\u003cp\u003e\n  To create elements that have children support we can simply use the \u003ccode\u003e\u0026#x3C;slot /\u003e\u003c/code\u003e\n  tag in our components.\n\u003c/p\u003e\n\u003cp\u003e\n  For example, imagine we're creating a dynamic \u003ccode\u003e\u0026#x3C;Button\u003e\u003c/code\u003e component that receives\n  its children. We can define the component template like this:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-vue\"\u003e\u0026#x3C;template\u003e\n    \u0026#x3C;button\u003e\n        \u0026#x3C;slot /\u003e\n    \u0026#x3C;/button\u003e\n\u0026#x3C;/template\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eAnd, use it like this:\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-vue\"\u003e\u0026#x3C;template\u003e\n    \u0026#x3C;Button\u003e\n        Content goes here\n    \u0026#x3C;/Button\u003e\n\u0026#x3C;/template\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis will render a button with \u003ccode\u003eContent goes here\u003c/code\u003e content.\u003c/p\u003e\n\u003cp\u003e\n  Please note that you can add anything \"renderable\" inside \u003ccode\u003e\u0026#x3C;slot\u003e\u003c/code\u003e. In the\n  example above we rendered a simple text, but you can render a \u003ccode\u003e\u0026#x3C;div\u003e\u003c/code\u003e, a\n  \u003ccode\u003e\u0026#x3C;CustomComponent\u003e\u003c/code\u003e and so on.\n\u003c/p\u003e\n\u003ch2\u003eVue render process\u003c/h2\u003e\n\u003cp\u003e\n  Before we continue, it's interesting to know a little bit how Vue render process\n  works. Basically, whenever you write a template, Vue compiles it to a\n  \u003ca href=\"https://vuejs.org/v2/guide/render-function.html\"\u003erender function\u003c/a\u003e. As said in\n  \u003ca href=\"https://vuejs.org/v2/guide/render-function.html#Template-Compilation\"\u003etemplate\ncompilation\u003c/a\u003e\n  part:\n\u003c/p\u003e\n\u003cblockquote\u003e\n  \u003cp\u003e\n    You may be interested to know that Vue’s templates actually compile to render\n    functions. This is an implementation detail you usually don’t need to know\n    about, but if you’d like to see how specific template features are compiled,\n    you may find it interesting.\n  \u003c/p\u003e\n\u003c/blockquote\u003e\n\u003cp\u003e\n  This knowledge will be useful from now on, as we can use this to manipulate our\n  children elements.\n\u003c/p\u003e\n\u003ch2\u003eManipulating children elements\u003c/h2\u003e\n\u003cp\u003e\n  Sadly Vue doesn't provide a way to manipulate children using the \u003ccode\u003e\u0026#x3C;template\u003e\u003c/code\u003e\n  tag. For example, using React one would do:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-jsx\"\u003e\u003cspan class=\"hljs-keyword\"\u003econst\u003c/span\u003e \u003cspan class=\"hljs-title function_\"\u003eComponent\u003c/span\u003e = (\u003cspan class=\"hljs-params\"\u003e{ children }\u003c/span\u003e) =\u003e (\n    \u003cspan class=\"xml\"\u003e\u003cspan class=\"hljs-tag\"\u003e\u0026#x3C;\u003cspan class=\"hljs-name\"\u003ediv\u003c/span\u003e\u003e\u003c/span\u003e\n        {React.Children.map(children, (child, i) =\u003e {\n            // do whatever I want with `child`\n\n            return child\n        })}\n    \u003cspan class=\"hljs-tag\"\u003e\u0026#x3C;/\u003cspan class=\"hljs-name\"\u003ediv\u003c/span\u003e\u003e\u003c/span\u003e\u003c/span\u003e\n)\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  In Vue, we can leverage the use of\n  \u003ca href=\"https://vuejs.org/v2/guide/render-function.html#createElement-Arguments\"\u003e\u003ccode\u003ecreateElement\u003c/code\u003e\u003c/a\u003e\n  and render functions. So, we will \u003cstrong\u003enot\u003c/strong\u003e write a \u003ccode\u003e\u0026#x3C;template\u003e\u003c/code\u003e for our\n  components, as now we'll render the template manually.\n\u003c/p\u003e\n\u003cp\u003e\n  As a minimal boilerplate, if you want to manipulate children with Vue, you\n  should do:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-vue\"\u003e\u0026#x3C;script\u003e\nexport default {\n    functional: true,\n\n    render(createElement, context) {\n        const $children = context.children\n\n        const children = $children.map((child, i) =\u003e {\n            // do whatever I want with `child`\n\n            return child\n        })\n\n        return createElement('div', children)\n    }\n}\n\u0026#x3C;/script\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  Please note that, as we're using \u003ca href=\"https://vuejs.org/v2/guide/render-function.html#Functional-Components\"\u003efunctional\ncomponents\u003c/a\u003e,\n  in this case \u003ccode\u003econtext.children\u003c/code\u003e contains all given children, no matter if user\n  specified \u003ccode\u003eslots\u003c/code\u003e. For example, imagine that we're rendering the following\n  children inside our component:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-vue\"\u003e\u0026#x3C;template\u003e\n    \u0026#x3C;Component\u003e\n        \u0026#x3C;div\u003eChild 1\u0026#x3C;/div\u003e\n        \u0026#x3C;div slot=\"slot1\"\u003eChild 2\u0026#x3C;/div\u003e\n    \u0026#x3C;/Component\u003e\n\u0026#x3C;/template\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  In this case, \u003ccode\u003econtext.children\u003c/code\u003e contains both \u003ccode\u003eChild 1\u003c/code\u003e and \u003ccode\u003eChild 2\u003c/code\u003e. If you\n  want to have all slots separated, you can use \u003ccode\u003econtext.slots()\u003c/code\u003e function. This\n  will return an object like:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-js\"\u003e{\n    \u003cspan class=\"hljs-attr\"\u003edefault\u003c/span\u003e: \u003cspan class=\"hljs-title class_\"\u003eArray\u003c/span\u003e[\u003cspan class=\"hljs-title class_\"\u003eVNode\u003c/span\u003e],\n    \u003cspan class=\"hljs-attr\"\u003eslot1\u003c/span\u003e: \u003cspan class=\"hljs-title class_\"\u003eArray\u003c/span\u003e[\u003cspan class=\"hljs-title class_\"\u003eVNode\u003c/span\u003e]\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003ch3\u003eWhen not using functional components\u003c/h3\u003e\n\u003cp\u003e\n  I don't see why not use functional components in those cases, however, if you\n  really need to, it becomes a little bit harder and \u003cem\u003eunstable\u003c/em\u003e to access children\n  components.\n\u003c/p\u003e\n\u003cp\u003e\n  First of all, you'll rely on \u003ccode\u003ethis\u003c/code\u003e to access data. Second, you'll need to\n  access some private properties of the Vue instance, which is not really good\n  (they're not documented in the \"public api\" -\n  https://vuejs.org/v2/api/#Instance-Properties), as if Vue core team decides to\n  change them, your code will break. Here's an example:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-vue\"\u003eexport default {\n    render(createElement) {\n        const children = this.$options._renderChildren // a \"private\" property\n\n        return createElement('div', children)\n    }\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eIn the same way, you can also access \u003ccode\u003ethis.$slots\u003c/code\u003e to get all slots.\u003c/p\u003e\n\u003ch2\u003eWorking example\u003c/h2\u003e\n\u003cp\u003e\n  I created a simple example to illustrate those situations. Please go to\n  https://codesandbox.io/s/vue-template-ny5hg?fontsize=14 and check it out. There,\n  I'll have two components: one using \u003ccode\u003efunctional\u003c/code\u003e components and other using\n  regular components.\n\u003c/p\u003e\n\u003ch2\u003eWhat can I do with that?\u003c/h2\u003e\n\u003cp\u003e\n  Well, mostly of those manipulations will be done in a higher level abstraction.\n  For example, imagine you need to filter out all \u003ccode\u003e\u0026#x3C;Other\u003e\u003c/code\u003e component instances,\n  you can do something like that:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-vue\"\u003e\u0026#x3C;script\u003e\nimport Other from './Other.vue'\nexport default {\n  functional: true,\n\n  render(createElement, { children }) {\n    return createElement(\"div\", children.filter(child =\u003e {\n      const { componentOptions = {} } = child\n      console.log(child, componentOptions.Ctor, Other._Ctor[0])\n\n      return componentOptions.Ctor !== Other._Ctor[0]\n    }));\n  }\n};\n\u0026#x3C;/script\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e(It's a little bit ugly, I know)\u003c/p\u003e\n\u003cp\u003e\n  Another example is when you need to inject some properties. For example, take\n  the great Reach's Tabs component: https://ui.reach.tech/tabs/. It's a generic\n  Tab component that enables the user to place \u003ccode\u003e\u0026#x3C;TabList\u003e\u003c/code\u003e (the tab navigation)\n  and \u003ccode\u003e\u0026#x3C;TabPanels\u003e\u003c/code\u003e wherever user wants. But, to do that, we need to have a smart\n  wrapper component to do this for us.\n\u003c/p\u003e\n\u003cp\u003eFor example, take this template:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026#x3C;template\u003e\n    \u0026#x3C;div\u003e\n        \u0026#x3C;Tabs\u003e\n            \u0026#x3C;TabList\u003e\n                \u0026#x3C;Tab\u003eTab 1\u0026#x3C;/Tab\u003e\n                \u0026#x3C;Tab\u003eTab 2\u0026#x3C;/Tab\u003e\n            \u0026#x3C;/TabList\u003e\n\n            \u0026#x3C;TabPanels\u003e\n                \u0026#x3C;TabPanel\u003eTab panel 1\u0026#x3C;/TabPanel\u003e\n                \u0026#x3C;TabPanel\u003eTab panel 2\u0026#x3C;/TabPanel\u003e\n            \u0026#x3C;/TabPanels\u003e\n        \u0026#x3C;/Tabs\u003e\n    \u0026#x3C;/div\u003e\n\u0026#x3C;/template\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  In this case, \u003ccode\u003e\u0026#x3C;Tabs\u003e\u003c/code\u003e can be \"smart\" and inject properties/callbacks to\n  children components, allowing \u003ccode\u003e\u0026#x3C;TabList\u003e\u003c/code\u003e and \u003ccode\u003e\u0026#x3C;TabPanels\u003e\u003c/code\u003e to know which tab is\n  currently active, handle tab change and so on.\n\u003c/p\u003e\n\u003ch2\u003eReferences\u003c/h2\u003e\n\u003cp\u003e\n  While browsing for help on that subject, I've found some relevant discussions\n  that you may find interesting on further readings:\n\u003c/p\u003e\n\u003cul\u003e\n  \u003cli\u003ehttps://forum.vuejs.org/t/loop-through-elements-passed-into-slot/6558\u003c/li\u003e\n  \u003cli\u003ehttps://forum.vuejs.org/t/loop-with-v-for-slots-default/20646/2\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\n  There's also an abstraction that allows you to move this logic to your\n  \u003ccode\u003e\u0026#x3C;template\u003e\u003c/code\u003e, however, I don't really know if I like that, but it might help\n  you:\n\u003c/p\u003e\n\u003cul\u003e\n  \u003cli\u003ehttps://www.npmjs.com/package/vue-wrap\u003c/li\u003e\n\u003c/ul\u003e\n"])</script><script>self.__next_f.push([1,"6:[\"$\",\"article\",null,{\"children\":[[\"$\",\"div\",null,{\"className\":\"page_titleContainer__tlZMv\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"page_title__Tljh5\",\"children\":\"A deep dive into children in Vue\"}],[\"$\",\"time\",null,{\"className\":\"datetime_datetime__ZMgNO\",\"dateTime\":\"10:53:40 PM\",\"children\":\"May 16, 2019\"}]]}],[\"$\",\"div\",null,{\"className\":\"page_post__iBPNz\",\"dangerouslySetInnerHTML\":{\"__html\":\"$f\"}}],[\"$\",\"footer\",null,{\"className\":\"page_footer__MFEyq\",\"children\":[\"Tags:\",\" \",[[\"$\",\"$L3\",\"vue\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/vue\",\"children\":\"vue\"}],[\"$\",\"$L3\",\"functional-components\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/functional-components\",\"children\":\"functional components\"}],[\"$\",\"$L3\",\"vue-children\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/vue-children\",\"children\":\"vue children\"}]]]}]]}]\n9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"A deep dive into children in Vue\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"I got myself inspired by Max Stoiber in his A deep dive into children in\\nReact to create this\\npost about Vue children. So, credits on the...\"}],[\"$\",\"meta\",\"2\",{\"property\":\"og:title\",\"content\":\"A deep dive into children in Vue\"}],[\"$\",\"meta\",\"3\",{\"property\":\"og:description\",\"content\":\"I got myself inspired by Max Stoiber in his A deep dive into children in\\nReact to create this\\npost about Vue children. So, credits on the...\"}],[\"$\",\"meta\",\"4\",{\"name\":\"twitter:card\",\"content\":\"summary\"}],[\"$\",\"meta\",\"5\",{\"name\":\"twitter:title\",\"content\":\"A deep dive into children in Vue\"}],[\"$\",\"meta\",\"6\",{\"name\":\"twitter:description\",\"content\":\"I got myself inspired by Max Stoiber in his A deep dive into children in\\nReact to create this\\npost about Vue children. So, credits on the...\"}]]\n"])</script></body></html>

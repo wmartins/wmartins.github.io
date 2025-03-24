@@ -1,0 +1,210 @@
+1:"$Sreact.fragment"
+3:I[6874,["874","static/chunks/874-8968dd5eb7fadb60.js","48","static/chunks/app/%5B...slug%5D/page-526665be0f2fd5b4.js"],""]
+4:I[7555,[],""]
+5:I[1295,[],""]
+7:I[9665,[],"OutletBoundary"]
+a:I[9665,[],"ViewportBoundary"]
+c:I[9665,[],"MetadataBoundary"]
+e:I[6614,[],""]
+:HL["/_next/static/css/fad3d6b35e924199.css","style"]
+:HL["/_next/static/css/c2b8ef241a0bd383.css","style"]
+:HL["/_next/static/css/13f49b5dcd295dae.css","style"]
+0:{"P":null,"b":"A_h_n7CBt7_bpyguSodXu","p":"","c":["","2020","01","how-to-implement-safetynet-attestation-in-your-application",""],"i":false,"f":[[["",{"children":[["slug","2020/01/how-to-implement-safetynet-attestation-in-your-application","c"],{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/fad3d6b35e924199.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],"$L2"]}],{"children":[["slug","2020/01/how-to-implement-safetynet-attestation-in-your-application","c"],["$","$1","c",{"children":[null,[["$","$L3",null,{"href":"/","children":"← go home"}],["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L6","$undefined",[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/c2b8ef241a0bd383.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/css/13f49b5dcd295dae.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","$L7",null,{"children":["$L8","$L9",null]}]]}],{},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","aNYNoOEYkFLzPow1PHBMX",{"children":[["$","$La",null,{"children":"$Lb"}],null]}],["$","$Lc",null,{"children":"$Ld"}]]}],false]],"m":"$undefined","G":["$e","$undefined"],"s":false,"S":true}
+2:["$","html",null,{"lang":"en-us","children":["$","body",null,{"children":["$","div",null,{"className":"container_container__2GGUi","children":["$","main",null,{"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]}]
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+8:null
+f:T2ec4,
+<p>
+  This post is just a collection of information about how to implement
+  <a href="https://developer.android.com/training/safetynet/attestation">SafetyNet Attestation
+API</a> in
+  your application.
+</p>
+<p>
+  This whole thing started weeks ago after my team was researching a way
+  to block suspicious requests that were occurring in our authentication
+  API. There were lots of different users trying to log in, from different
+  IP addresses/ranges. We already had a
+  <a href="https://en.wikipedia.org/wiki/Web_application_firewall">WAF</a> set up,
+  however, in this scenario, this was not effective. We think that there
+  had been a data breach with lots of users and passwords, therefore,
+  attackers were using these information to try a <em>lucky guess</em> in our
+  API, almost like a brute-force attack.
+</p>
+<p>
+  Our first attempt was to use
+  <a href="https://developer.android.com/training/safetynet/recaptcha">reCAPTCHA</a>
+  as our mechanism to block those requests. However, we've found that user
+  experience using this mechanism was really bad, as reCAPTCHA is an
+  intrusive approach (even though it has an invisible option). After some
+  research, we decided to give a try to use SafetyNet Attestation API.
+</p>
+<h2>How SafetyNet Attestation API replaces reCAPTCHA?</h2>
+<p>
+  In our scenario, the problem we were trying to solve was to separate
+  malicious attacks from real login attempts from our clients. In other
+  words, we wanted to know if a login attempt was occurring from an
+  automation script or from a <em>real</em> device.
+</p>
+<p>
+  Therefore, when we know we have a <em>real</em> device, we allow the user to
+  log in, otherwise, we just block the request.
+</p>
+<h2>SafetyNet Attestation API implementation: device</h2>
+<p>
+  I'll not get into lots of details about the device implementation,
+  however, it's pretty straightforward:
+  https://developer.android.com/training/safetynet/attestation#request-attestation-step.
+</p>
+<h2>SafetyNet Attestation API implementation: token verification</h2>
+<p>
+  First and foremost, you need to have in mind that the token verification
+  <strong>is up to you</strong>. There are some tutorials and even a <a href="https://github.com/googlesamples/android-play-safetynet/blob/d7513a54e2f28c0dcd7f8d8d0fa03adb5d87b91a/server/csharp/OnlineVerify.cs#L45-L46">code in google
+samples</a>
+  that verifies the token for you using an online API. However, this
+  should <strong>not be your production approach</strong>.
+</p>
+<p>
+  In order to verify the token, we must first understand what this token
+  represents. The token is a
+  <a href="https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-36">JWS</a>
+  token. If you want, you'll be able to parse this token using simple
+  <code>jwt</code> tools. For example, one may use https://jwt.io/ debugger to get
+  the token information, or use any standard <code>jwt</code> implementation.
+</p>
+<p>A valid SafetyNet token will have a header that looks like this:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"alg"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"RS256"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"x5c"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">"signing certificate as base64 goes here"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">"issuer certificate as base64 goes here"</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>And it will have a payload that looks like this:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"timestampMs"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9860437986543</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"nonce"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"R2Rra24fVm5xa2Mg"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"apkPackageName"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"com.package.name.of.requesting.app"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"apkCertificateDigestSha256"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"base64 encoded, SHA-256 hash of the
+                                  certificate used to sign requesting app"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"ctsProfileMatch"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"basicIntegrity"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>
+  If you want, you can have the payload representation as follows (in
+  Go):
+</p>
+<pre><code class="hljs language-go"><span class="hljs-comment">// Attestation response from Google SafetyNet Attestation API</span>
+<span class="hljs-keyword">type</span> Attestation <span class="hljs-keyword">struct</span> {
+	TimestampMs                <span class="hljs-type">int64</span>    <span class="hljs-string">`json:"timestampMs"`</span>                <span class="hljs-comment">// time when response was generated by Google's servers</span>
+	Nonce                      <span class="hljs-type">string</span>   <span class="hljs-string">`json:"nonce"`</span>                      <span class="hljs-comment">// single use token</span>
+	ApkPackageName             <span class="hljs-type">string</span>   <span class="hljs-string">`json:"apkPackageName"`</span>             <span class="hljs-comment">// calling app's package name</span>
+	ApkCertificateDigestSha256 []<span class="hljs-type">string</span> <span class="hljs-string">`json:"apkCertificateDigestSha256"`</span> <span class="hljs-comment">// base64 encoded representation of SHA-256 hash of the calling app signing certificate</span>
+	CtsProfileMatch            <span class="hljs-type">bool</span>     <span class="hljs-string">`json:"ctsProfileMatch"`</span>            <span class="hljs-comment">// stricter veredict of device integrity</span>
+	BasicIntegrity             <span class="hljs-type">bool</span>     <span class="hljs-string">`json:"basicIntegrity"`</span>             <span class="hljs-comment">// a more lenient veredict of device integrity</span>
+	Error                      <span class="hljs-type">string</span>   <span class="hljs-string">`json:"error"`</span>                      <span class="hljs-comment">// error occured from API request</span>
+	Advice                     <span class="hljs-type">string</span>   <span class="hljs-string">`json:"advice"`</span>                     <span class="hljs-comment">// suggestion on how to get device back into a good state</span>
+}
+</code></pre>
+<p>
+  Now you're wondering what you should do with that information. <a href="https://github.com/googlesamples/android-play-safetynet/issues/21">And
+you're not
+alone</a>.
+  There are many pieces of information and you must decide what to use.
+</p>
+<p>
+  One thing that is really important to be done is to verify if the
+  token is valid. You can do that using standard <code>jws</code> tools. If you
+  search for terms like <em>jws</em> and <em>jose</em> you might find some tools for
+  your preferred language. If you're using Go, you can use
+  <a href="https://godoc.org/gopkg.in/square/go-jose.v2"><code>go-jose</code></a>. Here goes an
+  example on how to check the validity of a JWS token:
+</p>
+<pre><code class="hljs language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Validate</span><span class="hljs-params">(token <span class="hljs-type">string</span>)</span></span> {
+	signedAttestation, err := jose.ParseSigned(token)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatalf(<span class="hljs-string">"error on parse signed attestation: %s"</span>, err)
+	}
+}
+</code></pre>
+<p>
+  After that, you need to check if that message was signed by Google
+  itself. If you saw before, we have a
+  <a href="https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-36#section-4.1.6"><code>x5c</code></a>
+  property on the header. This information says two things: first, who
+  signed the JWS token itself. Second, who signed the certificate that
+  signed the JWS token. In other words, it's a <a href="https://tools.ietf.org/html/rfc5280">certificate
+chain</a>.
+</p>
+<p>
+  There are lots of solutions for validating a certificate chain. If
+  you're using Go and <code>go-jose</code>, it's pretty straightforward to do that:
+</p>
+<pre><code class="hljs language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ValidateSafetyNetAttesationToken</span><span class="hljs-params">(token <span class="hljs-type">string</span>)</span></span> {
+	<span class="hljs-comment">// remaining code</span>
+
+	<span class="hljs-comment">// uses default system root CAs to validate</span>
+	opts := x509.VerifyOptions{}
+	certs, err := signedAttestation.Signatures[<span class="hljs-number">0</span>].Header.Certificates(opts)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatalf(<span class="hljs-string">"error on validating certificates: %s"</span>, err)
+	}
+}
+</code></pre>
+<p>
+  Now that you know that the message is really sent by Google, the next
+  step is to get its payload. The payload can be used to check device
+  integrity (for example, to check if the phone is not rooted). Here is an
+  example on how to do that:
+</p>
+<pre><code class="hljs language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ValidateSafetyNetAttesationToken</span><span class="hljs-params">(token <span class="hljs-type">string</span>)</span></span> {
+	<span class="hljs-comment">// remaining code</span>
+
+	attestationPayload, err := signedAttestation.Verify(certs[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>].PublicKey)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatalf(<span class="hljs-string">"error on verifying attestation: %s"</span>, err)
+	}
+
+	attestation := &#x26;Attestation{}
+
+	json.Unmarshal(attestationPayload, &#x26;attestation)
+
+	fmt.Printf(<span class="hljs-string">"%+v\n"</span>, attestation)
+}
+</code></pre>
+<p>
+  Now, it's up to you to do whatever you want. I recommend to check if all
+  the fields match the values you expect. Some ideas:
+</p>
+<ul>
+  <li>
+    Verify if <code>apkCertificateDigestSha256</code> matches the fingerprint of the
+    certificate that was used to sign the app (only your team should have
+    the private key to do that)
+  </li>
+  <li>
+    Verify if <code>apkPackageName</code> matches the package that should call the
+    Attestation API
+  </li>
+  <li>Verify the value from <a href="https://developer.android.com/training/safetynet/attestation#potential-integrity-verdicts"><code>basicIntegrity</code> and
+<code>ctsProfileMatch</code></a></li>
+  <li>
+    Verify if the provided timestamp is in a specific range/time limit
+    (for example, consider it expired if generated 10 minutes ago)
+  </li>
+  <li>
+    I couldn't find a practical case for using the <code>nonce</code>, however, you
+    can use it to match if the information given by the client is what you
+    expected. This, combined with some cryptography strategy, makes it
+    even harder for an attacker to "guess" the nonce
+  </li>
+</ul>
+<p>Hope you find it helpful!</p>
+6:["$","article",null,{"children":[["$","div",null,{"className":"page_titleContainer__tlZMv","children":[["$","h1",null,{"className":"page_title__Tljh5","children":"How to Implement SafetyNet Attestation in Your Application"}],["$","time",null,{"className":"datetime_datetime__ZMgNO","dateTime":"10:50:00 PM","children":"Jan 13, 2020"}]]}],["$","div",null,{"className":"page_post__iBPNz","dangerouslySetInnerHTML":{"__html":"$f"}}],["$","footer",null,{"className":"page_footer__MFEyq","children":["Tags:"," ",[["$","$L3","android",{"className":"page_tag__9Ktix","href":"/tags/android","children":"Android"}],["$","$L3","safety-net",{"className":"page_tag__9Ktix","href":"/tags/safety-net","children":"SafetyNet"}],["$","$L3","attestation",{"className":"page_tag__9Ktix","href":"/tags/attestation","children":"Attestation"}],["$","$L3","re-catpcha-alternative",{"className":"page_tag__9Ktix","href":"/tags/re-catpcha-alternative","children":"ReCATPCHA Alternative"}],["$","$L3","security",{"className":"page_tag__9Ktix","href":"/tags/security","children":"Security"}]]]}]]}]
+9:null
+d:[["$","title","0",{"children":"How to Implement SafetyNet Attestation in Your Application"}],["$","meta","1",{"name":"description","content":"This post is just a collection of information about how to implement\nSafetyNet Attestation\nAPI in\nyour application."}],["$","meta","2",{"property":"og:title","content":"How to Implement SafetyNet Attestation in Your Application"}],["$","meta","3",{"property":"og:description","content":"This post is just a collection of information about how to implement\nSafetyNet Attestation\nAPI in\nyour application."}],["$","meta","4",{"name":"twitter:card","content":"summary"}],["$","meta","5",{"name":"twitter:title","content":"How to Implement SafetyNet Attestation in Your Application"}],["$","meta","6",{"name":"twitter:description","content":"This post is just a collection of information about how to implement\nSafetyNet Attestation\nAPI in\nyour application."}]]

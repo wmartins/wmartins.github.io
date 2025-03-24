@@ -1,0 +1,80 @@
+1:"$Sreact.fragment"
+3:I[6874,["874","static/chunks/874-8968dd5eb7fadb60.js","48","static/chunks/app/%5B...slug%5D/page-526665be0f2fd5b4.js"],""]
+4:I[7555,[],""]
+5:I[1295,[],""]
+7:I[9665,[],"OutletBoundary"]
+a:I[9665,[],"ViewportBoundary"]
+c:I[9665,[],"MetadataBoundary"]
+e:I[6614,[],""]
+:HL["/_next/static/css/fad3d6b35e924199.css","style"]
+:HL["/_next/static/css/c2b8ef241a0bd383.css","style"]
+:HL["/_next/static/css/13f49b5dcd295dae.css","style"]
+0:{"P":null,"b":"A_h_n7CBt7_bpyguSodXu","p":"","c":["","2023","02","pt-br","internacionalizando-esse-site",""],"i":false,"f":[[["",{"children":[["slug","2023/02/pt-br/internacionalizando-esse-site","c"],{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/fad3d6b35e924199.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],"$L2"]}],{"children":[["slug","2023/02/pt-br/internacionalizando-esse-site","c"],["$","$1","c",{"children":[null,[["$","$L3",null,{"href":"/","children":"← go home"}],["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L6","$undefined",[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/c2b8ef241a0bd383.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/css/13f49b5dcd295dae.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","$L7",null,{"children":["$L8","$L9",null]}]]}],{},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","Nmw0vLJcHa_AYSOcpMBzL",{"children":[["$","$La",null,{"children":"$Lb"}],null]}],["$","$Lc",null,{"children":"$Ld"}]]}],false]],"m":"$undefined","G":["$e","$undefined"],"s":false,"S":true}
+2:["$","html",null,{"lang":"en-us","children":["$","body",null,{"children":["$","div",null,{"className":"container_container__2GGUi","children":["$","main",null,{"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]}]
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+8:null
+f:Tc8b,
+<p>
+  No momento que escrevo essa postagem, meu site pessoal usa Gatsby como gerador
+  de site estático. Há tempos que gostaria de escrever um pouco mais em português
+  por aqui, porém, nunca tive tempo e paciência para mexer nesse site de forma que
+  eu possa, com uma certa facilidade, escrever tanto em inglês quanto em
+  português.
+</p>
+<p>
+  Tirei um tempinho para tentar fazer isso de uma maneira simples. O que
+  encontrei, primeiramente, foram várias dependências desatualizadas e uma versão
+  de Gatsby que, aparentemente, só funciona em versões mais antigas de Node.js.
+  Minha primeira tarefa foi atualizar essas dependências, o que funcionou super
+  bem, porém, já vi que tenho vários <em>Warnings</em> para olhar. O que me impressionou
+  muito foi o fato de tudo funcionar, mesmo passando por 3 atualizações <em>major</em>
+  (atualizando da versão 2 para 5)!
+</p>
+<p>
+  O próximo passo até que foi simples. Criei uma nova página chamada <code>pt-br</code> para
+  ser a versão em português desse site. Essa página faz duas coisas bastante
+  simples:
+</p>
+<ul>
+  <li>Consulta todos os posts escritos em português (<code>content/post/pt-br</code>)</li>
+  <li>Informa ao componente <code>Layout</code> que o mesmo deve renderizar em português
+    <ul>
+      <li>Lá, existe uma abstração bem simples para o menu em duas línguas</li>
+    </ul>
+  </li>
+</ul>
+<p>
+  Isso por si só já fez várias coisas funcionar. Porém, os posts já escritos
+  passaram a ter o <em>slug</em> com <code>en-us</code> em função de eu ter criado uma pasta para
+  posts de cada língua. A solução também acabou sendo bem simples: na função
+  <a href="https://www.gatsbyjs.com/plugins/gatsby-source-filesystem/?=files#createfilepath"><code>createFilePath</code></a>,
+  posso especificar que, caso a lingua seja <code>en-us</code>, o <code>basePath</code> passa a ser
+  <code>post/en-us</code>.
+</p>
+<p>
+  Um outro pequeno problema é o fato de que, quando fazia o acesso do post escrito
+  em português, o menu estava sendo renderizado em inglês. Resolver isso também é
+  relativamente simples. Adicionei um novo campo (<code>createNodeField</code>) para cada
+  post contendo a língua escrita. Esse valor é extraído com uma expressão regular
+  em cima do caminho do post. Com isso, quando fazemos a renderização do post,
+  agora sabemos a língua e podemos passar essa informação para o componente de
+  Layout.
+</p>
+<p><em>Voilà</em>, agora temos agora posts escritos em português.</p>
+<p>
+  Talvez essa não seja a melhor forma de fazer isso e entendo que existem plugins
+  que resolvem esse tipo de problema. Porém, os plugins normalmente fazem muitas
+  mágicas. Prefiro iniciar com algo que tenho controle e contexto e,
+  posteriormente, caso faça sentido, posso migrar para algum plugin.
+</p>
+<p>Uma nota mental para mim mesmo para o futuro desse site é:</p>
+<ul>
+  <li>Resolver os <em>warnings</em></li>
+  <li>Considerar migrar de Gatsby para Next</li>
+  <li>Reorganizar os arquivos e pastas</li>
+  <li>Considerar migrar a codebase para TypeScript</li>
+  <li>Verificar como formatar as datas para as postagens também terem as datas internacionalizadas</li>
+</ul>
+6:["$","article",null,{"children":[["$","div",null,{"className":"page_titleContainer__tlZMv","children":[["$","h1",null,{"className":"page_title__Tljh5","children":"Internacionalizando esse site"}],["$","time",null,{"className":"datetime_datetime__ZMgNO","dateTime":"10:08:34 PM","children":"Feb 27, 2023"}]]}],["$","div",null,{"className":"page_post__iBPNz","dangerouslySetInnerHTML":{"__html":"$f"}}],false]}]
+9:null
+d:[["$","title","0",{"children":"Internacionalizando esse site"}],["$","meta","1",{"name":"description","content":"No momento que escrevo essa postagem, meu site pessoal usa Gatsby como gerador\nde site estático. Há tempos que gostaria de escrever um..."}],["$","meta","2",{"property":"og:title","content":"Internacionalizando esse site"}],["$","meta","3",{"property":"og:description","content":"No momento que escrevo essa postagem, meu site pessoal usa Gatsby como gerador\nde site estático. Há tempos que gostaria de escrever um..."}],["$","meta","4",{"name":"twitter:card","content":"summary"}],["$","meta","5",{"name":"twitter:title","content":"Internacionalizando esse site"}],["$","meta","6",{"name":"twitter:description","content":"No momento que escrevo essa postagem, meu site pessoal usa Gatsby como gerador\nde site estático. Há tempos que gostaria de escrever um..."}]]

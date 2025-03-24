@@ -1,129 +1,175 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 5.7.0"/><meta data-react-helmet="true" name="description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:title" content="What I Learned by Early Adopting Docker"/><meta data-react-helmet="true" property="og:description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:type" content="website"/><style data-href="/styles.57de05492b7d786fd5ad.css" data-identity="gatsby-global-css">code[class*=language-],pre[class*=language-]{word-wrap:normal;color:#657b83;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;-webkit-hyphens:none;hyphens:none;line-height:1.5;tab-size:4;text-align:left;white-space:pre;word-break:normal;word-spacing:normal}code[class*=language-] ::selection,code[class*=language-]::selection,pre[class*=language-] ::selection,pre[class*=language-]::selection{background:#073642}pre[class*=language-]{border-radius:.3em;margin:.5em 0;overflow:auto;padding:1em}:not(pre)>code[class*=language-],pre[class*=language-]{background-color:#fdf6e3}:not(pre)>code[class*=language-]{border-radius:.3em;padding:.1em}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#93a1a1}.token.punctuation{color:#586e75}.token.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#268bd2}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string,.token.url{color:#2aa198}.token.entity{background:#eee8d5;color:#657b83}.token.atrule,.token.attr-value,.token.keyword{color:#859900}.token.class-name,.token.function{color:#b58900}.token.important,.token.regex,.token.variable{color:#cb4b16}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}</style><title data-react-helmet="true">What I Learned by Early Adopting Docker | wwwhmartins</title></head><body><script>(function() { try {
-  var mode = localStorage.getItem('theme-ui-color-mode');
-  if (!mode) return
-  document.documentElement.classList.add('theme-ui-' + mode);
-} catch (e) {} })();</script><div id="___gatsby"><style data-emotion="css-global 178ef4d">html{--theme-ui-colors-text:#000;--theme-ui-colors-background:#fff;--theme-ui-colors-primary:#07c;--theme-ui-colors-secondary:#30c;--theme-ui-colors-muted:#eeeeee;color:var(--theme-ui-colors-text);background-color:var(--theme-ui-colors-background);}</style><style data-emotion="css-global 1pdwylt">*{box-sizing:border-box;}html{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}body{margin:0;}</style><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><style data-emotion="css 1vtz2d0">.css-1vtz2d0{box-sizing:border-box;margin:0;min-width:0;width:100%;max-width:1024px;margin-left:auto;margin-right:auto;padding:32px;}</style><div class="css-1vtz2d0"><style data-emotion="css 1ukt34d">.css-1ukt34d{font-family:Georgia,serif;line-height:1.5;font-weight:400;}.css-1ukt34d pre{font-family:Menlo,monospace;overflow-x:auto;}.css-1ukt34d pre code{color:inherit;}.css-1ukt34d root{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}.css-1ukt34d h1{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:32px;}.css-1ukt34d h2{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:24px;}.css-1ukt34d h3{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:20px;}.css-1ukt34d h4{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:16px;}.css-1ukt34d h5{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:14px;}.css-1ukt34d h6{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:12px;}.css-1ukt34d p{color:var(--theme-ui-colors-text);font-family:Georgia,serif;font-weight:400;line-height:1.5;}.css-1ukt34d a{color:var(--theme-ui-colors-primary);display:inline-block;}.css-1ukt34d code{font-family:Menlo,monospace;font-size:inherit;}.css-1ukt34d table{width:100%;border-collapse:separate;border-spacing:0;}.css-1ukt34d th{text-align:left;border-bottom-style:solid;}.css-1ukt34d td{text-align:left;border-bottom-style:solid;}.css-1ukt34d img{max-width:100%;}.css-1ukt34d time{color:gray;font-size:14px;}.css-1ukt34d hr{color:var(--theme-ui-colors-muted);}.css-1ukt34d nav{font-size:18px;}</style><div class="css-1ukt34d"><header><style data-emotion="css uk0prh">.css-uk0prh{box-sizing:border-box;margin:0;min-width:0;padding-bottom:32px;}</style><nav class="css-uk0prh"><style data-emotion="css 1d0s3vx">.css-1d0s3vx{box-sizing:border-box;margin:0;min-width:0;padding-right:32px;}</style><a class="css-1d0s3vx" href="/">wwwhmartins</a><a class="css-1d0s3vx" href="/pt-br/">pt-br</a><a class="css-1d0s3vx" href="/tags/">tags</a><a class="css-1d0s3vx" href="/about/">about</a><a class="css-1d0s3vx" href="/contact/">contact</a></nav></header><style data-emotion="css rnntme">.css-rnntme{box-sizing:border-box;margin:0;min-width:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-weight:700;line-height:1.125;}</style><h1 class="css-rnntme">What I Learned by Early Adopting Docker</h1><div><p>The year is 2015, I started working as software engineer in this new team that
-was focused on delivering new experiences with top notch technology. This was
-also an year when microservices began to be a thing, and, with that, Docker
-being the <em>de facto</em> containerization tool.</p>
-<p>At this time, Docker was on release <code class="language-text">1.6</code> or <code class="language-text">1.7</code>, and few people were using it
-to deploy applications. Lots of those were POCs, and most of the blog posts
-included some "strange" things (not the Netflix title) there, like the <code class="language-text">fig</code>
-command (which became <code class="language-text">docker-compose</code>), and lots of lines in <code class="language-text">yml</code> code.</p>
-<p>It was a time where most of the "real world problems" were still being found for
-Docker deployments. Things like networking, orchestration, high availability,
-and so on. So, we made a few bad decisions that made us learn a lot (at least
-what not to do), but that we would like someone had told us that were bad ideas.</p>
-<p>This blog post will cover some of those bad decisions, explaining why they're
-bad, and what we should've done.</p>
+<!DOCTYPE html><html lang="en-us"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/fad3d6b35e924199.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/css/c2b8ef241a0bd383.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/css/13f49b5dcd295dae.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-883a73b7470b17b4.js"/><script src="/_next/static/chunks/4bd1b696-5b6c0ccbd3c0c9ab.js" async=""></script><script src="/_next/static/chunks/684-8badcb5715778f09.js" async=""></script><script src="/_next/static/chunks/main-app-a9d4f4dd3643d1cd.js" async=""></script><script src="/_next/static/chunks/874-8968dd5eb7fadb60.js" async=""></script><script src="/_next/static/chunks/app/%5B...slug%5D/page-526665be0f2fd5b4.js" async=""></script><title>What I Learned by Early Adopting Docker</title><meta name="description" content="The year is 2015, I started working as software engineer in this new team that
+was focused on delivering new experiences with top notch..."/><meta property="og:title" content="What I Learned by Early Adopting Docker"/><meta property="og:description" content="The year is 2015, I started working as software engineer in this new team that
+was focused on delivering new experiences with top notch..."/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="What I Learned by Early Adopting Docker"/><meta name="twitter:description" content="The year is 2015, I started working as software engineer in this new team that
+was focused on delivering new experiences with top notch..."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body><div class="container_container__2GGUi"><main><a href="/">← go home</a><article><div class="page_titleContainer__tlZMv"><h1 class="page_title__Tljh5">What I Learned by Early Adopting Docker</h1><time class="datetime_datetime__ZMgNO" dateTime="10:09:43 PM">Nov 28, 2017</time></div><div class="page_post__iBPNz">
+<p>
+  The year is 2015, I started working as software engineer in this new team that
+  was focused on delivering new experiences with top notch technology. This was
+  also an year when microservices began to be a thing, and, with that, Docker
+  being the <em>de facto</em> containerization tool.
+</p>
+<p>
+  At this time, Docker was on release <code>1.6</code> or <code>1.7</code>, and few people were using it
+  to deploy applications. Lots of those were POCs, and most of the blog posts
+  included some "strange" things (not the Netflix title) there, like the <code>fig</code>
+  command (which became <code>docker-compose</code>), and lots of lines in <code>yml</code> code.
+</p>
+<p>
+  It was a time where most of the "real world problems" were still being found for
+  Docker deployments. Things like networking, orchestration, high availability,
+  and so on. So, we made a few bad decisions that made us learn a lot (at least
+  what not to do), but that we would like someone had told us that were bad ideas.
+</p>
+<p>
+  This blog post will cover some of those bad decisions, explaining why they're
+  bad, and what we should've done.
+</p>
 <h2>Outlining the Application</h2>
-<p>Our application, in a high level, was designed to be high available, which means
-that, at least, we needed to run our application in more than one machine. That
-said, we needed to be able to run replicas of containers, and provide a
-mechanism to use those replicas in the best way we can.</p>
+<p>
+  Our application, in a high level, was designed to be high available, which means
+  that, at least, we needed to run our application in more than one machine. That
+  said, we needed to be able to run replicas of containers, and provide a
+  mechanism to use those replicas in the best way we can.
+</p>
 <p>In our case, we decided to use <a href="https://openresty.org/en/"><strong>OpenResty</strong></a> (Nginx</p>
 <ul>
-<li>Lua Scripts) as a reverse proxy/API gateway/load balancer, balancing the</li>
+  <li>
+    Lua Scripts) as a reverse proxy/API gateway/load balancer, balancing the
+    traffic between the containers. Something like that:
+  </li>
 </ul>
-<p>traffic between the containers. Something like that:</p>
-<div class="gatsby-highlight" data-language="conf"><pre class="language-conf"><code class="language-conf">upstream first-microservice {
-    server &lt;FIRST-SERVER-IP&gt;:8877;
-    server &lt;SECOND-SERVER-IP&gt;:8877;
-}</code></pre></div>
-<p>After we decided what goes where, we then took two bad decisions: orchestrate
-the application using <a href="https://jenkins.io/"><strong>Jenkins</strong></a> and creating a
-<code class="language-text">configuration</code> volume, which I'll cover in next sections.</p>
+<pre><code class="hljs language-conf">upstream first-microservice {
+    server &#x3C;FIRST-SERVER-IP>:8877;
+    server &#x3C;SECOND-SERVER-IP>:8877;
+}
+</code></pre>
+<p>
+  After we decided what goes where, we then took two bad decisions: orchestrate
+  the application using <a href="https://jenkins.io/"><strong>Jenkins</strong></a> and creating a
+  <code>configuration</code> volume, which I'll cover in next sections.
+</p>
 <h2>Orchestrating Using Jenkins</h2>
 <p><strong>Jenkins</strong> is an awesome tool. It does its job really well:</p>
 <blockquote>
-<p>The leading open source <strong>automation</strong> server, Jenkins provides hundreds of
-plugins to support building, deploying and automating any project.</p>
+  <p>
+    The leading open source <strong>automation</strong> server, Jenkins provides hundreds of
+    plugins to support building, deploying and automating any project.
+  </p>
 </blockquote>
-<p>As you see, it's an <strong>automation</strong> server. Putting it in another way, it's
-<strong>not</strong> an orchestration server. But, for some reason, we thought it was.</p>
-<p>So, our deployment jobs now had the IPs of all our machines, containing a Groovy
-script to associate an IP with container names (in order to know what to
-deploy). Then, a generic deploy job just grabbed the IP, the names, ssh'd into
-the machines and <em>voila</em>, let <code class="language-text">docker-compose up -d &lt;CONTAINERS></code> do its job.</p>
-<p>It seems good, right? It felt good. It really did, but it started to become hard
-to manage. Every new microservice we added, we needed to edit this Jenkins job
-and add the new microservice in <strong>all</strong> environments (we have 2 QA environments,
-1 <em>production like</em> environment and 1 production environment). And, there was <strong>no
+<p>
+  As you see, it's an <strong>automation</strong> server. Putting it in another way, it's
+  <strong>not</strong> an orchestration server. But, for some reason, we thought it was.
+</p>
+<p>
+  So, our deployment jobs now had the IPs of all our machines, containing a Groovy
+  script to associate an IP with container names (in order to know what to
+  deploy). Then, a generic deploy job just grabbed the IP, the names, ssh'd into
+  the machines and <em>voila</em>, let <code>docker-compose up -d &#x3C;CONTAINERS></code> do its job.
+</p>
+<p>
+  It seems good, right? It felt good. It really did, but it started to become hard
+  to manage. Every new microservice we added, we needed to edit this Jenkins job
+  and add the new microservice in <strong>all</strong> environments (we have 2 QA environments,
+  1 <em>production like</em> environment and 1 production environment). And, there was <strong>no
 space for mistakes</strong> here. If you edit it wrong, your service will go to the
-wrong machine, and the application might not work. Also, if you put, for
-example, two applications that consume lots of memory in the same machine, you
-might compromise this machine, just because you chose the wrong place to put
-your microservice.</p>
-<p>So, as I said before, we found out that Jenkins is not an orchestration tool.
-It doesn't handle unhealthy services/machines, it doesn't handle dynamic
-adding/removing replicas, it doesn't monitor your replicas. It just automates
-stuff.</p>
-<p>Now, the plan is to move this responsibility from Jenkins to <strong>Docker Swarm</strong>,
-which will also gives us other cool features that fix more of our problems.</p>
-<p>There are other tools, like <strong>Kubernetes</strong> and <strong>Nomad</strong>, that also solves this
-in a fashion way.</p>
+  wrong machine, and the application might not work. Also, if you put, for
+  example, two applications that consume lots of memory in the same machine, you
+  might compromise this machine, just because you chose the wrong place to put
+  your microservice.
+</p>
+<p>
+  So, as I said before, we found out that Jenkins is not an orchestration tool.
+  It doesn't handle unhealthy services/machines, it doesn't handle dynamic
+  adding/removing replicas, it doesn't monitor your replicas. It just automates
+  stuff.
+</p>
+<p>
+  Now, the plan is to move this responsibility from Jenkins to <strong>Docker Swarm</strong>,
+  which will also gives us other cool features that fix more of our problems.
+</p>
+<p>
+  There are other tools, like <strong>Kubernetes</strong> and <strong>Nomad</strong>, that also solves this
+  in a fashion way.
+</p>
 <h2>No Service Discovery/Hardcoded IPs</h2>
-<p>Service discovery is one of the most important aspects of a successful
-microservices architecture. Without it, you'll struggle when adding/removing
-replicas from the application.</p>
-<p>We found out that after having some problems on some of our machines (our
-infrastructure team had an outage on a datacenter, which took half of our
-machines down). In that time, we wanted to add more replicas to make the
-application high available again. It was really hard to do:</p>
+<p>
+  Service discovery is one of the most important aspects of a successful
+  microservices architecture. Without it, you'll struggle when adding/removing
+  replicas from the application.
+</p>
+<p>
+  We found out that after having some problems on some of our machines (our
+  infrastructure team had an outage on a datacenter, which took half of our
+  machines down). In that time, we wanted to add more replicas to make the
+  application high available again. It was really hard to do:
+</p>
 <ol>
-<li>Editing IPs in Jenkins and config files</li>
-<li>Going in Jenkins jobs to modify where to deploy stuff</li>
-<li>Deploy and check if everything is running fine</li>
+  <li>Editing IPs in Jenkins and config files</li>
+  <li>Going in Jenkins jobs to modify where to deploy stuff</li>
+  <li>Deploy and check if everything is running fine</li>
 </ol>
-<p>Then, after the machines went up again, we needed to do the reverse process,
-editing files, modifying Jenkins and deploying, all over again.</p>
-<p>It's not that hard to setup a <code class="language-text">DNS</code> or a service discovery system. So, don't let
-the "lets ship it soon" make you do things that will only cause you trouble. Or,
-if you do, at least know what you need to do to make it right.</p>
+<p>
+  Then, after the machines went up again, we needed to do the reverse process,
+  editing files, modifying Jenkins and deploying, all over again.
+</p>
+<p>
+  It's not that hard to setup a <code>DNS</code> or a service discovery system. So, don't let
+  the "lets ship it soon" make you do things that will only cause you trouble. Or,
+  if you do, at least know what you need to do to make it right.
+</p>
 <h2>Configuration as a Shared Volume</h2>
-<p>All applications, at some point, need some kind of configuration. Most likely,
-the application, when in production, will need to behave differently than in the
-local machine, or in a low level (testing) environment. This requires us to have
-some level of <strong>configuration management</strong>.</p>
-<p>Back at that time, the way we solved it was to create a <strong>configuration
+<p>
+  All applications, at some point, need some kind of configuration. Most likely,
+  the application, when in production, will need to behave differently than in the
+  local machine, or in a low level (testing) environment. This requires us to have
+  some level of <strong>configuration management</strong>.
+</p>
+<p>
+  Back at that time, the way we solved it was to create a <strong>configuration
 volume</strong>, that is a simple Docker container that we use to store configuration
-files per environment. Then, at deployment time, we just grab the correct
-configuration container and we deploy it using <code class="language-text">--volumes-from</code> directive.</p>
-<p>It seemed to be a good idea, but we started realizing that it doesn't scale.
-First of all, we were coupling all microservices with this configuration
-container, and we needed to always remember to edit the files in it. Second, our
-microservices weren't really standalone, as we couldn't run it without running
-this other container together. Third, if two containers used the version
-<code class="language-text">2.1.0</code> of the configuration container, they would end up using exactly the same
-files. Putting it in another way, if, by mistake, one container edits the wrong
-file, it could affect the other container. To finish, it starts to be really
-hard to manage which is the correct configuration version to run with each
-microservice.</p>
-<p>There are some ways to do it correctly. One of the easiest is to use
-<strong>environment variables</strong> for all those configuration objects. If the
-application requires a string to connect to the database, provide a
-<code class="language-text">DB_CONNECTION_STRING</code> env var and so on.</p>
-<p>The other way of using it is to use a <strong>configuration management tool</strong> that let
-you externalize your configuration. Tools like <strong>Consul</strong> with its key-value
-storage solve that for you. The only downside is that you'll need to modify your
-applications to connect to that tool to grab the values. The cool thing about
-it is that you can, in the middle of the day, change some configuration and,
-if your code supports it, your application will notice that and will adapt
-itself. It's really nice.</p>
+  files per environment. Then, at deployment time, we just grab the correct
+  configuration container and we deploy it using <code>--volumes-from</code> directive.
+</p>
+<p>
+  It seemed to be a good idea, but we started realizing that it doesn't scale.
+  First of all, we were coupling all microservices with this configuration
+  container, and we needed to always remember to edit the files in it. Second, our
+  microservices weren't really standalone, as we couldn't run it without running
+  this other container together. Third, if two containers used the version
+  <code>2.1.0</code> of the configuration container, they would end up using exactly the same
+  files. Putting it in another way, if, by mistake, one container edits the wrong
+  file, it could affect the other container. To finish, it starts to be really
+  hard to manage which is the correct configuration version to run with each
+  microservice.
+</p>
+<p>
+  There are some ways to do it correctly. One of the easiest is to use
+  <strong>environment variables</strong> for all those configuration objects. If the
+  application requires a string to connect to the database, provide a
+  <code>DB_CONNECTION_STRING</code> env var and so on.
+</p>
+<p>
+  The other way of using it is to use a <strong>configuration management tool</strong> that let
+  you externalize your configuration. Tools like <strong>Consul</strong> with its key-value
+  storage solve that for you. The only downside is that you'll need to modify your
+  applications to connect to that tool to grab the values. The cool thing about
+  it is that you can, in the middle of the day, change some configuration and,
+  if your code supports it, your application will notice that and will adapt
+  itself. It's really nice.
+</p>
 <h2>Wrapping Up</h2>
-<p>It was really hard to early adopt Docker. We made a few poor decisions that
-we're not proud of. Also, those decisions made our jobs pretty hard. If, at that
-time, we discussed more and researched more, we would probably doing things
-better.</p>
-<p>That said, my advice if you're adopting Docker (but that can be used to
-anything) is to study a lot, discuss in forums and experiment with it. Try to
-implement all your use cases and think what you'll need when running in
-production, and check if you have the tools and knowledge to make you go
-comfortably to production.</p>
-<p>Hope it was useful!</p></div><style data-emotion="css 1uw3pr2">.css-1uw3pr2{box-sizing:border-box;margin:0;min-width:0;color:gray;margin:0;margin-top:8px;margin-bottom:8px;border:0;border-bottom:1px solid;color:var(--theme-ui-colors-muted);}</style><hr class="css-1uw3pr2"/><style data-emotion="css byxfcu">.css-byxfcu{box-sizing:border-box;margin:0;min-width:0;padding-right:8px;}</style><span class="css-byxfcu">Tags:</span><a class="css-byxfcu" href="/tags/docker/">docker</a><a class="css-byxfcu" href="/tags/orchestration/">orchestration</a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/2017/11/what-i-learned-by-early-adopting-docker/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
-          <script
-            id="gatsby-chunk-mapping"
-          >
-            window.___chunkMapping="{\"app\":[\"/app-57b003fd7b23c8f2ad18.js\"],\"component---src-pages-index-js\":[\"/component---src-pages-index-js-5dd0bd936a691a402316.js\"],\"component---src-pages-pt-br-js\":[\"/component---src-pages-pt-br-js-1cbd449ba74af0aae89a.js\"],\"component---src-pages-tags-js\":[\"/component---src-pages-tags-js-99f6939fb57601e8199e.js\"],\"component---src-templates-blog-post-js\":[\"/component---src-templates-blog-post-js-d91eeca9d398a9f6feca.js\"],\"component---src-templates-tags-js\":[\"/component---src-templates-tags-js-8983d4e3ed8bf7f4878b.js\"]}";
-          </script>
-        <script>window.___webpackCompilationHash="628fa4490e3bd180ac46";</script><script src="/webpack-runtime-9bbb8793a34204347fc9.js" async></script><script src="/framework-dd512b8a69737a109d3a.js" async></script><script src="/app-57b003fd7b23c8f2ad18.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
+<p>
+  It was really hard to early adopt Docker. We made a few poor decisions that
+  we're not proud of. Also, those decisions made our jobs pretty hard. If, at that
+  time, we discussed more and researched more, we would probably doing things
+  better.
+</p>
+<p>
+  That said, my advice if you're adopting Docker (but that can be used to
+  anything) is to study a lot, discuss in forums and experiment with it. Try to
+  implement all your use cases and think what you'll need when running in
+  production, and check if you have the tools and knowledge to make you go
+  comfortably to production.
+</p>
+<p>Hope it was useful!</p>
+</div><footer class="page_footer__MFEyq">Tags:<!-- --> <a class="page_tag__9Ktix" href="/tags/docker/">docker</a><a class="page_tag__9Ktix" href="/tags/orchestration/">orchestration</a></footer></article></main></div><script src="/_next/static/chunks/webpack-883a73b7470b17b4.js" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n3:I[6874,[\"874\",\"static/chunks/874-8968dd5eb7fadb60.js\",\"48\",\"static/chunks/app/%5B...slug%5D/page-526665be0f2fd5b4.js\"],\"\"]\n4:I[7555,[],\"\"]\n5:I[1295,[],\"\"]\n7:I[9665,[],\"OutletBoundary\"]\na:I[9665,[],\"ViewportBoundary\"]\nc:I[9665,[],\"MetadataBoundary\"]\ne:I[6614,[],\"\"]\n:HL[\"/_next/static/css/fad3d6b35e924199.css\",\"style\"]\n:HL[\"/_next/static/css/c2b8ef241a0bd383.css\",\"style\"]\n:HL[\"/_next/static/css/13f49b5dcd295dae.css\",\"style\"]\n0:{\"P\":null,\"b\":\"A_h_n7CBt7_bpyguSodXu\",\"p\":\"\",\"c\":[\"\",\"2017\",\"11\",\"what-i-learned-by-early-adopting-docker\",\"\"],\"i\":false,\"f\":[[[\"\",{\"children\":[[\"slug\",\"2017/11/what-i-learned-by-early-adopting-docker\",\"c\"],{\"children\":[\"__PAGE__\",{}]}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/fad3d6b35e924199.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],\"$L2\"]}],{\"children\":[[\"slug\",\"2017/11/what-i-learned-by-early-adopting-docker\",\"c\"],[\"$\",\"$1\",\"c\",{\"children\":[null,[[\"$\",\"$L3\",null,{\"href\":\"/\",\"children\":\"← go home\"}],[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]]}],{\"children\":[\"__PAGE__\",[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",\"$undefined\",[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/c2b8ef241a0bd383.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/13f49b5dcd295dae.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"$L7\",null,{\"children\":[\"$L8\",\"$L9\",null]}]]}],{},null,false]},null,false]},null,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$1\",\"6Kh74bfVafqdvLco5-nWp\",{\"children\":[[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],null]}],[\"$\",\"$Lc\",null,{\"children\":\"$Ld\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$"])</script><script>self.__next_f.push([1,"e\",\"$undefined\"],\"s\":false,\"S\":true}\n"])</script><script>self.__next_f.push([1,"2:[\"$\",\"html\",null,{\"lang\":\"en-us\",\"children\":[\"$\",\"body\",null,{\"children\":[\"$\",\"div\",null,{\"className\":\"container_container__2GGUi\",\"children\":[\"$\",\"main\",null,{\"children\":[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]}]\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n8:null\n"])</script><script>self.__next_f.push([1,"f:T20b2,"])</script><script>self.__next_f.push([1,"\n\u003cp\u003e\n  The year is 2015, I started working as software engineer in this new team that\n  was focused on delivering new experiences with top notch technology. This was\n  also an year when microservices began to be a thing, and, with that, Docker\n  being the \u003cem\u003ede facto\u003c/em\u003e containerization tool.\n\u003c/p\u003e\n\u003cp\u003e\n  At this time, Docker was on release \u003ccode\u003e1.6\u003c/code\u003e or \u003ccode\u003e1.7\u003c/code\u003e, and few people were using it\n  to deploy applications. Lots of those were POCs, and most of the blog posts\n  included some \"strange\" things (not the Netflix title) there, like the \u003ccode\u003efig\u003c/code\u003e\n  command (which became \u003ccode\u003edocker-compose\u003c/code\u003e), and lots of lines in \u003ccode\u003eyml\u003c/code\u003e code.\n\u003c/p\u003e\n\u003cp\u003e\n  It was a time where most of the \"real world problems\" were still being found for\n  Docker deployments. Things like networking, orchestration, high availability,\n  and so on. So, we made a few bad decisions that made us learn a lot (at least\n  what not to do), but that we would like someone had told us that were bad ideas.\n\u003c/p\u003e\n\u003cp\u003e\n  This blog post will cover some of those bad decisions, explaining why they're\n  bad, and what we should've done.\n\u003c/p\u003e\n\u003ch2\u003eOutlining the Application\u003c/h2\u003e\n\u003cp\u003e\n  Our application, in a high level, was designed to be high available, which means\n  that, at least, we needed to run our application in more than one machine. That\n  said, we needed to be able to run replicas of containers, and provide a\n  mechanism to use those replicas in the best way we can.\n\u003c/p\u003e\n\u003cp\u003eIn our case, we decided to use \u003ca href=\"https://openresty.org/en/\"\u003e\u003cstrong\u003eOpenResty\u003c/strong\u003e\u003c/a\u003e (Nginx\u003c/p\u003e\n\u003cul\u003e\n  \u003cli\u003e\n    Lua Scripts) as a reverse proxy/API gateway/load balancer, balancing the\n    traffic between the containers. Something like that:\n  \u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-conf\"\u003eupstream first-microservice {\n    server \u0026#x3C;FIRST-SERVER-IP\u003e:8877;\n    server \u0026#x3C;SECOND-SERVER-IP\u003e:8877;\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  After we decided what goes where, we then took two bad decisions: orchestrate\n  the application using \u003ca href=\"https://jenkins.io/\"\u003e\u003cstrong\u003eJenkins\u003c/strong\u003e\u003c/a\u003e and creating a\n  \u003ccode\u003econfiguration\u003c/code\u003e volume, which I'll cover in next sections.\n\u003c/p\u003e\n\u003ch2\u003eOrchestrating Using Jenkins\u003c/h2\u003e\n\u003cp\u003e\u003cstrong\u003eJenkins\u003c/strong\u003e is an awesome tool. It does its job really well:\u003c/p\u003e\n\u003cblockquote\u003e\n  \u003cp\u003e\n    The leading open source \u003cstrong\u003eautomation\u003c/strong\u003e server, Jenkins provides hundreds of\n    plugins to support building, deploying and automating any project.\n  \u003c/p\u003e\n\u003c/blockquote\u003e\n\u003cp\u003e\n  As you see, it's an \u003cstrong\u003eautomation\u003c/strong\u003e server. Putting it in another way, it's\n  \u003cstrong\u003enot\u003c/strong\u003e an orchestration server. But, for some reason, we thought it was.\n\u003c/p\u003e\n\u003cp\u003e\n  So, our deployment jobs now had the IPs of all our machines, containing a Groovy\n  script to associate an IP with container names (in order to know what to\n  deploy). Then, a generic deploy job just grabbed the IP, the names, ssh'd into\n  the machines and \u003cem\u003evoila\u003c/em\u003e, let \u003ccode\u003edocker-compose up -d \u0026#x3C;CONTAINERS\u003e\u003c/code\u003e do its job.\n\u003c/p\u003e\n\u003cp\u003e\n  It seems good, right? It felt good. It really did, but it started to become hard\n  to manage. Every new microservice we added, we needed to edit this Jenkins job\n  and add the new microservice in \u003cstrong\u003eall\u003c/strong\u003e environments (we have 2 QA environments,\n  1 \u003cem\u003eproduction like\u003c/em\u003e environment and 1 production environment). And, there was \u003cstrong\u003eno\nspace for mistakes\u003c/strong\u003e here. If you edit it wrong, your service will go to the\n  wrong machine, and the application might not work. Also, if you put, for\n  example, two applications that consume lots of memory in the same machine, you\n  might compromise this machine, just because you chose the wrong place to put\n  your microservice.\n\u003c/p\u003e\n\u003cp\u003e\n  So, as I said before, we found out that Jenkins is not an orchestration tool.\n  It doesn't handle unhealthy services/machines, it doesn't handle dynamic\n  adding/removing replicas, it doesn't monitor your replicas. It just automates\n  stuff.\n\u003c/p\u003e\n\u003cp\u003e\n  Now, the plan is to move this responsibility from Jenkins to \u003cstrong\u003eDocker Swarm\u003c/strong\u003e,\n  which will also gives us other cool features that fix more of our problems.\n\u003c/p\u003e\n\u003cp\u003e\n  There are other tools, like \u003cstrong\u003eKubernetes\u003c/strong\u003e and \u003cstrong\u003eNomad\u003c/strong\u003e, that also solves this\n  in a fashion way.\n\u003c/p\u003e\n\u003ch2\u003eNo Service Discovery/Hardcoded IPs\u003c/h2\u003e\n\u003cp\u003e\n  Service discovery is one of the most important aspects of a successful\n  microservices architecture. Without it, you'll struggle when adding/removing\n  replicas from the application.\n\u003c/p\u003e\n\u003cp\u003e\n  We found out that after having some problems on some of our machines (our\n  infrastructure team had an outage on a datacenter, which took half of our\n  machines down). In that time, we wanted to add more replicas to make the\n  application high available again. It was really hard to do:\n\u003c/p\u003e\n\u003col\u003e\n  \u003cli\u003eEditing IPs in Jenkins and config files\u003c/li\u003e\n  \u003cli\u003eGoing in Jenkins jobs to modify where to deploy stuff\u003c/li\u003e\n  \u003cli\u003eDeploy and check if everything is running fine\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003e\n  Then, after the machines went up again, we needed to do the reverse process,\n  editing files, modifying Jenkins and deploying, all over again.\n\u003c/p\u003e\n\u003cp\u003e\n  It's not that hard to setup a \u003ccode\u003eDNS\u003c/code\u003e or a service discovery system. So, don't let\n  the \"lets ship it soon\" make you do things that will only cause you trouble. Or,\n  if you do, at least know what you need to do to make it right.\n\u003c/p\u003e\n\u003ch2\u003eConfiguration as a Shared Volume\u003c/h2\u003e\n\u003cp\u003e\n  All applications, at some point, need some kind of configuration. Most likely,\n  the application, when in production, will need to behave differently than in the\n  local machine, or in a low level (testing) environment. This requires us to have\n  some level of \u003cstrong\u003econfiguration management\u003c/strong\u003e.\n\u003c/p\u003e\n\u003cp\u003e\n  Back at that time, the way we solved it was to create a \u003cstrong\u003econfiguration\nvolume\u003c/strong\u003e, that is a simple Docker container that we use to store configuration\n  files per environment. Then, at deployment time, we just grab the correct\n  configuration container and we deploy it using \u003ccode\u003e--volumes-from\u003c/code\u003e directive.\n\u003c/p\u003e\n\u003cp\u003e\n  It seemed to be a good idea, but we started realizing that it doesn't scale.\n  First of all, we were coupling all microservices with this configuration\n  container, and we needed to always remember to edit the files in it. Second, our\n  microservices weren't really standalone, as we couldn't run it without running\n  this other container together. Third, if two containers used the version\n  \u003ccode\u003e2.1.0\u003c/code\u003e of the configuration container, they would end up using exactly the same\n  files. Putting it in another way, if, by mistake, one container edits the wrong\n  file, it could affect the other container. To finish, it starts to be really\n  hard to manage which is the correct configuration version to run with each\n  microservice.\n\u003c/p\u003e\n\u003cp\u003e\n  There are some ways to do it correctly. One of the easiest is to use\n  \u003cstrong\u003eenvironment variables\u003c/strong\u003e for all those configuration objects. If the\n  application requires a string to connect to the database, provide a\n  \u003ccode\u003eDB_CONNECTION_STRING\u003c/code\u003e env var and so on.\n\u003c/p\u003e\n\u003cp\u003e\n  The other way of using it is to use a \u003cstrong\u003econfiguration management tool\u003c/strong\u003e that let\n  you externalize your configuration. Tools like \u003cstrong\u003eConsul\u003c/strong\u003e with its key-value\n  storage solve that for you. The only downside is that you'll need to modify your\n  applications to connect to that tool to grab the values. The cool thing about\n  it is that you can, in the middle of the day, change some configuration and,\n  if your code supports it, your application will notice that and will adapt\n  itself. It's really nice.\n\u003c/p\u003e\n\u003ch2\u003eWrapping Up\u003c/h2\u003e\n\u003cp\u003e\n  It was really hard to early adopt Docker. We made a few poor decisions that\n  we're not proud of. Also, those decisions made our jobs pretty hard. If, at that\n  time, we discussed more and researched more, we would probably doing things\n  better.\n\u003c/p\u003e\n\u003cp\u003e\n  That said, my advice if you're adopting Docker (but that can be used to\n  anything) is to study a lot, discuss in forums and experiment with it. Try to\n  implement all your use cases and think what you'll need when running in\n  production, and check if you have the tools and knowledge to make you go\n  comfortably to production.\n\u003c/p\u003e\n\u003cp\u003eHope it was useful!\u003c/p\u003e\n"])</script><script>self.__next_f.push([1,"6:[\"$\",\"article\",null,{\"children\":[[\"$\",\"div\",null,{\"className\":\"page_titleContainer__tlZMv\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"page_title__Tljh5\",\"children\":\"What I Learned by Early Adopting Docker\"}],[\"$\",\"time\",null,{\"className\":\"datetime_datetime__ZMgNO\",\"dateTime\":\"10:09:43 PM\",\"children\":\"Nov 28, 2017\"}]]}],[\"$\",\"div\",null,{\"className\":\"page_post__iBPNz\",\"dangerouslySetInnerHTML\":{\"__html\":\"$f\"}}],[\"$\",\"footer\",null,{\"className\":\"page_footer__MFEyq\",\"children\":[\"Tags:\",\" \",[[\"$\",\"$L3\",\"docker\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/docker\",\"children\":\"docker\"}],[\"$\",\"$L3\",\"orchestration\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/orchestration\",\"children\":\"orchestration\"}]]]}]]}]\n9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"What I Learned by Early Adopting Docker\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"The year is 2015, I started working as software engineer in this new team that\\nwas focused on delivering new experiences with top notch...\"}],[\"$\",\"meta\",\"2\",{\"property\":\"og:title\",\"content\":\"What I Learned by Early Adopting Docker\"}],[\"$\",\"meta\",\"3\",{\"property\":\"og:description\",\"content\":\"The year is 2015, I started working as software engineer in this new team that\\nwas focused on delivering new experiences with top notch...\"}],[\"$\",\"meta\",\"4\",{\"name\":\"twitter:card\",\"content\":\"summary\"}],[\"$\",\"meta\",\"5\",{\"name\":\"twitter:title\",\"content\":\"What I Learned by Early Adopting Docker\"}],[\"$\",\"meta\",\"6\",{\"name\":\"twitter:description\",\"content\":\"The year is 2015, I started working as software engineer in this new team that\\nwas focused on delivering new experiences with top notch...\"}]]\n"])</script></body></html>

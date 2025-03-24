@@ -1,33 +1,45 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 5.7.0"/><meta data-react-helmet="true" name="description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:title" content="Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf"/><meta data-react-helmet="true" property="og:description" content="William Martins on the web, I guess"/><meta data-react-helmet="true" property="og:type" content="website"/><style data-href="/styles.57de05492b7d786fd5ad.css" data-identity="gatsby-global-css">code[class*=language-],pre[class*=language-]{word-wrap:normal;color:#657b83;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;-webkit-hyphens:none;hyphens:none;line-height:1.5;tab-size:4;text-align:left;white-space:pre;word-break:normal;word-spacing:normal}code[class*=language-] ::selection,code[class*=language-]::selection,pre[class*=language-] ::selection,pre[class*=language-]::selection{background:#073642}pre[class*=language-]{border-radius:.3em;margin:.5em 0;overflow:auto;padding:1em}:not(pre)>code[class*=language-],pre[class*=language-]{background-color:#fdf6e3}:not(pre)>code[class*=language-]{border-radius:.3em;padding:.1em}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#93a1a1}.token.punctuation{color:#586e75}.token.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#268bd2}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string,.token.url{color:#2aa198}.token.entity{background:#eee8d5;color:#657b83}.token.atrule,.token.attr-value,.token.keyword{color:#859900}.token.class-name,.token.function{color:#b58900}.token.important,.token.regex,.token.variable{color:#cb4b16}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}</style><title data-react-helmet="true">Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf | wwwhmartins</title></head><body><script>(function() { try {
-  var mode = localStorage.getItem('theme-ui-color-mode');
-  if (!mode) return
-  document.documentElement.classList.add('theme-ui-' + mode);
-} catch (e) {} })();</script><div id="___gatsby"><style data-emotion="css-global 178ef4d">html{--theme-ui-colors-text:#000;--theme-ui-colors-background:#fff;--theme-ui-colors-primary:#07c;--theme-ui-colors-secondary:#30c;--theme-ui-colors-muted:#eeeeee;color:var(--theme-ui-colors-text);background-color:var(--theme-ui-colors-background);}</style><style data-emotion="css-global 1pdwylt">*{box-sizing:border-box;}html{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}body{margin:0;}</style><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><style data-emotion="css 1vtz2d0">.css-1vtz2d0{box-sizing:border-box;margin:0;min-width:0;width:100%;max-width:1024px;margin-left:auto;margin-right:auto;padding:32px;}</style><div class="css-1vtz2d0"><style data-emotion="css 1ukt34d">.css-1ukt34d{font-family:Georgia,serif;line-height:1.5;font-weight:400;}.css-1ukt34d pre{font-family:Menlo,monospace;overflow-x:auto;}.css-1ukt34d pre code{color:inherit;}.css-1ukt34d root{font-family:Georgia,serif;line-height:1.5;font-weight:400;font-size:20px;}.css-1ukt34d h1{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:32px;}.css-1ukt34d h2{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:24px;}.css-1ukt34d h3{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:20px;}.css-1ukt34d h4{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:16px;}.css-1ukt34d h5{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:14px;}.css-1ukt34d h6{color:var(--theme-ui-colors-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;line-height:1.125;font-weight:700;font-size:12px;}.css-1ukt34d p{color:var(--theme-ui-colors-text);font-family:Georgia,serif;font-weight:400;line-height:1.5;}.css-1ukt34d a{color:var(--theme-ui-colors-primary);display:inline-block;}.css-1ukt34d code{font-family:Menlo,monospace;font-size:inherit;}.css-1ukt34d table{width:100%;border-collapse:separate;border-spacing:0;}.css-1ukt34d th{text-align:left;border-bottom-style:solid;}.css-1ukt34d td{text-align:left;border-bottom-style:solid;}.css-1ukt34d img{max-width:100%;}.css-1ukt34d time{color:gray;font-size:14px;}.css-1ukt34d hr{color:var(--theme-ui-colors-muted);}.css-1ukt34d nav{font-size:18px;}</style><div class="css-1ukt34d"><header><style data-emotion="css uk0prh">.css-uk0prh{box-sizing:border-box;margin:0;min-width:0;padding-bottom:32px;}</style><nav class="css-uk0prh"><style data-emotion="css 1d0s3vx">.css-1d0s3vx{box-sizing:border-box;margin:0;min-width:0;padding-right:32px;}</style><a class="css-1d0s3vx" href="/">wwwhmartins</a><a class="css-1d0s3vx" href="/pt-br/">pt-br</a><a class="css-1d0s3vx" href="/tags/">tags</a><a class="css-1d0s3vx" href="/about/">about</a><a class="css-1d0s3vx" href="/contact/">contact</a></nav></header><style data-emotion="css rnntme">.css-rnntme{box-sizing:border-box;margin:0;min-width:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-weight:700;line-height:1.125;}</style><h1 class="css-rnntme">Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf</h1><div><p>Monitoring your infrastructure is one of the most important aspects of
-successfully launching a product. It's really important to know when your
-machines/applications are under heavy load. Moreover, if it happens, you would
-want to quickly know what's going on and what you can do to recover your
-infrastructure.</p>
-<p>This blog post explains how you can configure setup a monitoring stack easily
-using <a href="https://docs.docker.com/engine/swarm/"><strong>Docker Swarm</strong></a>,
-<a href="https://github.com/grafana/grafana"><strong>Grafana</strong></a>,
-<a href="https://github.com/influxdata/influxdb"><strong>InfluxDB</strong></a> and
-<a href="https://github.com/influxdata/telegraf"><strong>Telegraf</strong></a>.</p>
+<!DOCTYPE html><html lang="en-us"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/fad3d6b35e924199.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/css/c2b8ef241a0bd383.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/css/13f49b5dcd295dae.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-883a73b7470b17b4.js"/><script src="/_next/static/chunks/4bd1b696-5b6c0ccbd3c0c9ab.js" async=""></script><script src="/_next/static/chunks/684-8badcb5715778f09.js" async=""></script><script src="/_next/static/chunks/main-app-a9d4f4dd3643d1cd.js" async=""></script><script src="/_next/static/chunks/874-8968dd5eb7fadb60.js" async=""></script><script src="/_next/static/chunks/app/%5B...slug%5D/page-526665be0f2fd5b4.js" async=""></script><title>Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf</title><meta name="description" content="Monitoring your infrastructure is one of the most important aspects of
+successfully launching a product. It&#x27;s really important to know when..."/><meta property="og:title" content="Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf"/><meta property="og:description" content="Monitoring your infrastructure is one of the most important aspects of
+successfully launching a product. It&#x27;s really important to know when..."/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf"/><meta name="twitter:description" content="Monitoring your infrastructure is one of the most important aspects of
+successfully launching a product. It&#x27;s really important to know when..."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body><div class="container_container__2GGUi"><main><a href="/">← go home</a><article><div class="page_titleContainer__tlZMv"><h1 class="page_title__Tljh5">Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf</h1><time class="datetime_datetime__ZMgNO" dateTime="9:00:00 PM">Oct 3, 2017</time></div><div class="page_post__iBPNz">
+<p>
+  Monitoring your infrastructure is one of the most important aspects of
+  successfully launching a product. It's really important to know when your
+  machines/applications are under heavy load. Moreover, if it happens, you would
+  want to quickly know what's going on and what you can do to recover your
+  infrastructure.
+</p>
+<p>
+  This blog post explains how you can configure setup a monitoring stack easily
+  using <a href="https://docs.docker.com/engine/swarm/"><strong>Docker Swarm</strong></a>,
+  <a href="https://github.com/grafana/grafana"><strong>Grafana</strong></a>,
+  <a href="https://github.com/influxdata/influxdb"><strong>InfluxDB</strong></a> and
+  <a href="https://github.com/influxdata/telegraf"><strong>Telegraf</strong></a>.
+</p>
 <h2>Docker Swarm</h2>
-<p>This tutorial requires you to be running a <strong>Swarm cluster</strong>. You can also setup
-this monitoring infrastructure without using Swarm, but it might become hard to
-manage when you add or remove nodes on your cluster.</p>
+<p>
+  This tutorial requires you to be running a <strong>Swarm cluster</strong>. You can also setup
+  this monitoring infrastructure without using Swarm, but it might become hard to
+  manage when you add or remove nodes on your cluster.
+</p>
 <blockquote>
-<p>You can achieve the same using another deployment/orchestration tool, like
-<a href="https://www.nomadproject.io/"><strong>Nomad</strong></a>.</p>
+  <p>
+    You can achieve the same using another deployment/orchestration tool, like
+    <a href="https://www.nomadproject.io/"><strong>Nomad</strong></a>.
+  </p>
 </blockquote>
-<p>We'll be using the version <strong>3.3</strong> of <code class="language-text">docker-compose.yml</code> file.</p>
+<p>We'll be using the version <strong>3.3</strong> of <code>docker-compose.yml</code> file.</p>
 <h2>Telegraf</h2>
-<p><a href="https://github.com/influxdata/telegraf"><strong>Telegraf</strong></a> is an awesome tool to
-extract metrics.</p>
-<p>You can customize what data to extract and how <strong>Telegraf</strong> will do that by
-providing a <code class="language-text">telegraf.conf</code> file. The one we'll be using is this one:</p>
-<div class="gatsby-highlight" data-language="conf"><pre class="language-conf"><code class="language-conf">[[inputs.net]]
-  interfaces = [&quot;eth0,eth1,lo&quot;]
+<p>
+  <a href="https://github.com/influxdata/telegraf"><strong>Telegraf</strong></a> is an awesome tool to
+  extract metrics.
+</p>
+<p>
+  You can customize what data to extract and how <strong>Telegraf</strong> will do that by
+  providing a <code>telegraf.conf</code> file. The one we'll be using is this one:
+</p>
+<pre><code class="hljs language-conf">[[inputs.net]]
+  interfaces = ["eth0,eth1,lo"]
 
 [[inputs.cpu]]
   percpu = true
@@ -35,7 +47,7 @@ providing a <code class="language-text">telegraf.conf</code> file. The one we'll
   collect_cpu_time = false
 
 [[inputs.disk]]
-  ignore_fs = [&quot;tmpfs&quot;, &quot;devtmpfs&quot;]
+  ignore_fs = ["tmpfs", "devtmpfs"]
 
 [[inputs.diskio]]
 
@@ -50,97 +62,119 @@ providing a <code class="language-text">telegraf.conf</code> file. The one we'll
 [[inputs.netstat]]
 
 [[inputs.docker]]
-  endpoint = &quot;unix:///var/run/docker.sock&quot;
+  endpoint = "unix:///var/run/docker.sock"
   container_names = []
-  timeout = &quot;5s&quot;
+  timeout = "5s"
   perdevice = true
   total = false
   docker_label_include = []
   docker_label_exclude = []
 
 [[outputs.influxdb]]
-  urls = [&quot;http://influxdb:8086&quot;]
-  database = &quot;telegraf&quot;
-  retention_policy = &quot;&quot;
-  write_consistency = &quot;any&quot;
-  timeout = &quot;5s&quot;</code></pre></div>
-<p>If you want to get the default <strong>Telegraf</strong> config (with all options commented)
-you can use the following command to get it:</p>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> pull telegraf:1.4.0-alpine
-<span class="token function">docker</span> run <span class="token parameter variable">--rm</span> telegraf:1.4.0-alpine telegraf config <span class="token operator">></span> telegraf.conf</code></pre></div>
-<p>After getting a <code class="language-text">telegraf.conf</code> file, we're able to define our service
-configuration in <code class="language-text">docker-compose.yml</code>:</p>
-<div class="gatsby-highlight" data-language="yml"><pre class="language-yml"><code class="language-yml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3.3"</span>
+  urls = ["http://influxdb:8086"]
+  database = "telegraf"
+  retention_policy = ""
+  write_consistency = "any"
+  timeout = "5s"
+</code></pre>
+<p>
+  If you want to get the default <strong>Telegraf</strong> config (with all options commented)
+  you can use the following command to get it:
+</p>
+<pre><code class="hljs language-bash">docker pull telegraf:1.4.0-alpine
+docker run --<span class="hljs-built_in">rm</span> telegraf:1.4.0-alpine telegraf config > telegraf.conf
+</code></pre>
+<p>
+  After getting a <code>telegraf.conf</code> file, we're able to define our service
+  configuration in <code>docker-compose.yml</code>:
+</p>
+<pre><code class="hljs language-yml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.3"</span>
 
-<span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">telegraf</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> telegraf<span class="token punctuation">:</span>1.4.0
-    <span class="token key atrule">hostname</span><span class="token punctuation">:</span> <span class="token string">"{{.Node.ID}}"</span>
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> /var/run/docker.sock<span class="token punctuation">:</span>/var/run/docker.sock
-    <span class="token key atrule">configs</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> <span class="token key atrule">source</span><span class="token punctuation">:</span> telegraf.conf
-        <span class="token key atrule">target</span><span class="token punctuation">:</span> /etc/telegraf/telegraf.conf
-    <span class="token key atrule">deploy</span><span class="token punctuation">:</span>
-      <span class="token key atrule">mode</span><span class="token punctuation">:</span> global
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">telegraf:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">telegraf:1.4.0</span>
+    <span class="hljs-attr">hostname:</span> <span class="hljs-string">"<span class="hljs-template-variable">{{.Node.ID}}</span>"</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/run/docker.sock:/var/run/docker.sock</span>
+    <span class="hljs-attr">configs:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">source:</span> <span class="hljs-string">telegraf.conf</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">/etc/telegraf/telegraf.conf</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">mode:</span> <span class="hljs-string">global</span>
 
-<span class="token key atrule">configs</span><span class="token punctuation">:</span>
-  <span class="token key atrule">telegraf.conf</span><span class="token punctuation">:</span>
-    <span class="token key atrule">file</span><span class="token punctuation">:</span> ./telegraf/telegraf.conf</code></pre></div>
-<p>It's pretty simple. The trick here is to add <code class="language-text">deploy mode</code> as <strong><code class="language-text">global</code></strong>. This
-will make <strong>Telegraf</strong> run on every machine in <strong>Swarm</strong> cluster, and that's how
-we're going to be able to monitor the cluster machines.</p>
+<span class="hljs-attr">configs:</span>
+  <span class="hljs-attr">telegraf.conf:</span>
+    <span class="hljs-attr">file:</span> <span class="hljs-string">./telegraf/telegraf.conf</span>
+</code></pre>
+<p>
+  It's pretty simple. The trick here is to add <code>deploy mode</code> as <strong><code>global</code></strong>. This
+  will make <strong>Telegraf</strong> run on every machine in <strong>Swarm</strong> cluster, and that's how
+  we're going to be able to monitor the cluster machines.
+</p>
 <blockquote>
-<p>We're not using Telegraf's Alpine image because Alpine doesn't include
-all the dependencies to be able to collect <code class="language-text">[[inputs.system]]</code>.</p>
+  <p>
+    We're not using Telegraf's Alpine image because Alpine doesn't include
+    all the dependencies to be able to collect <code>[[inputs.system]]</code>.
+  </p>
 </blockquote>
 <h2>InfluxDB</h2>
-<p><a href="https://github.com/influxdata/influxdb"><strong>InfluxDB</strong></a> is a time series database
-that allows us to store the metrics provided by <strong>Telegraf</strong>.</p>
-<p>As <strong>InfluxDB</strong> is our database, we'll first need to define where it would be
-located. As we'll need the data to be persistent, it's a bad idea to have the
-database popping out in different places (and, as a consequence, losing the
-data if it's deployed to a newer place). So, grab one of your swarm nodes and
-add a label to it:</p>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> <span class="token function">node</span> update --label-add <span class="token assign-left variable">influxdb</span><span class="token operator">=</span>true <span class="token operator">&lt;</span>NODE-ID<span class="token operator">></span></code></pre></div>
-<p>This will add the node <code class="language-text">influxdb</code> with value as <code class="language-text">true</code> to the node <code class="language-text">NODE-ID</code>.
-It'll be used to know where we can add <code class="language-text">influxdb</code> container.</p>
-<p>Then, we'll also be able to provide a configuration file, named <code class="language-text">influxdb.conf</code>.
-<strong>InfluxDB</strong> also provides a way to get a config file template by running:</p>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">--rm</span> influxdb:1.3.5-alpine influxd config <span class="token operator">></span> influxdb.conf</code></pre></div>
-<p>Then, we can declare the <code class="language-text">influxdb</code> service:</p>
-<div class="gatsby-highlight" data-language="yml"><pre class="language-yml"><code class="language-yml"><span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">influxdb</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> influxdb<span class="token punctuation">:</span>1.3.5<span class="token punctuation">-</span>alpine
-    <span class="token key atrule">configs</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> <span class="token key atrule">source</span><span class="token punctuation">:</span> influxdb.conf
-        <span class="token key atrule">target</span><span class="token punctuation">:</span> /etc/influxdb/influxdb.conf
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> /data/influxdb<span class="token punctuation">:</span>/var/lib/influxdb
-    <span class="token key atrule">deploy</span><span class="token punctuation">:</span>
-      <span class="token key atrule">placement</span><span class="token punctuation">:</span>
-        <span class="token key atrule">constraints</span><span class="token punctuation">:</span>
-          <span class="token punctuation">-</span> node.labels.influxdb == true
+<p>
+  <a href="https://github.com/influxdata/influxdb"><strong>InfluxDB</strong></a> is a time series database
+  that allows us to store the metrics provided by <strong>Telegraf</strong>.
+</p>
+<p>
+  As <strong>InfluxDB</strong> is our database, we'll first need to define where it would be
+  located. As we'll need the data to be persistent, it's a bad idea to have the
+  database popping out in different places (and, as a consequence, losing the
+  data if it's deployed to a newer place). So, grab one of your swarm nodes and
+  add a label to it:
+</p>
+<pre><code class="hljs language-bash">docker node update --label-add influxdb=<span class="hljs-literal">true</span> &#x3C;NODE-ID>
+</code></pre>
+<p>
+  This will add the node <code>influxdb</code> with value as <code>true</code> to the node <code>NODE-ID</code>.
+  It'll be used to know where we can add <code>influxdb</code> container.
+</p>
+<p>
+  Then, we'll also be able to provide a configuration file, named <code>influxdb.conf</code>.
+  <strong>InfluxDB</strong> also provides a way to get a config file template by running:
+</p>
+<pre><code class="hljs language-bash">docker run --<span class="hljs-built_in">rm</span> influxdb:1.3.5-alpine influxd config > influxdb.conf
+</code></pre>
+<p>Then, we can declare the <code>influxdb</code> service:</p>
+<pre><code class="hljs language-yml"><span class="hljs-attr">services:</span>
+  <span class="hljs-attr">influxdb:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">influxdb:1.3.5-alpine</span>
+    <span class="hljs-attr">configs:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">source:</span> <span class="hljs-string">influxdb.conf</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">/etc/influxdb/influxdb.conf</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/data/influxdb:/var/lib/influxdb</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">placement:</span>
+        <span class="hljs-attr">constraints:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">node.labels.influxdb</span> <span class="hljs-string">==</span> <span class="hljs-literal">true</span>
 
-<span class="token key atrule">configs</span><span class="token punctuation">:</span>
-  <span class="token key atrule">influxdb.conf</span><span class="token punctuation">:</span>
-    <span class="token key atrule">file</span><span class="token punctuation">:</span> ./influxdb/influxdb.conf</code></pre></div>
-<p>We'll use the following <code class="language-text">influxdb.conf</code> file:</p>
-<div class="gatsby-highlight" data-language="conf"><pre class="language-conf"><code class="language-conf">[meta]
-  dir = &quot;/var/lib/influxdb/meta&quot;
+<span class="hljs-attr">configs:</span>
+  <span class="hljs-attr">influxdb.conf:</span>
+    <span class="hljs-attr">file:</span> <span class="hljs-string">./influxdb/influxdb.conf</span>
+</code></pre>
+<p>We'll use the following <code>influxdb.conf</code> file:</p>
+<pre><code class="hljs language-conf">[meta]
+  dir = "/var/lib/influxdb/meta"
   retention-autocreate = true
   logging-enabled = true
 
 [data]
-  dir = &quot;/var/lib/influxdb/data&quot;
-  index-version = &quot;inmem&quot;
-  wal-dir = &quot;/var/lib/influxdb/wal&quot;
-  wal-fsync-delay = &quot;0s&quot;
+  dir = "/var/lib/influxdb/data"
+  index-version = "inmem"
+  wal-dir = "/var/lib/influxdb/wal"
+  wal-fsync-delay = "0s"
   query-log-enabled = true
   cache-max-memory-size = 1073741824
   cache-snapshot-memory-size = 26214400
-  cache-snapshot-write-cold-duration = &quot;10m0s&quot;
-  compact-full-write-cold-duration = &quot;4h0m0s&quot;
+  cache-snapshot-write-cold-duration = "10m0s"
+  compact-full-write-cold-duration = "4h0m0s"
   max-series-per-database = 1000000
   max-values-per-tag = 100000
   max-concurrent-compactions = 0
@@ -148,81 +182,94 @@ It'll be used to know where we can add <code class="language-text">influxdb</cod
 
 [http]
   enabled = true
-  bind-address = &quot;:8086&quot;
+  bind-address = ":8086"
   auth-enabled = false
   log-enabled = true
   write-tracing = false
   pprof-enabled = true
   https-enabled = false
-  https-certificate = &quot;/etc/ssl/influxdb.pem&quot;
-  https-private-key = &quot;&quot;
+  https-certificate = "/etc/ssl/influxdb.pem"
+  https-private-key = ""
   max-row-limit = 0
   max-connection-limit = 0
-  shared-secret = &quot;&quot;
-  realm = &quot;InfluxDB&quot;
+  shared-secret = ""
+  realm = "InfluxDB"
   unix-socket-enabled = false
-  bind-socket = &quot;/var/run/influxdb.sock&quot;</code></pre></div>
+  bind-socket = "/var/run/influxdb.sock"
+</code></pre>
 <h2>Grafana</h2>
 <p>We'll use <strong>Grafana</strong> to visualize data coming from <strong>InfluxDB</strong>.</p>
-<p>First, we'll need to choose a node where we'll be running <strong>Grafana</strong>. After that,
-we need to update its label in order to deploy grafana to the correct host:</p>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> <span class="token function">node</span> update --label-add <span class="token assign-left variable">grafana</span><span class="token operator">=</span>true <span class="token operator">&lt;</span>NODE-ID<span class="token operator">></span></code></pre></div>
-<p><strong>Grafana</strong> service is pretty straightforward to configure, we just need to add its
-service to <code class="language-text">docker-compose.yml</code>:</p>
-<div class="gatsby-highlight" data-language="yml"><pre class="language-yml"><code class="language-yml"><span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">grafana</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> grafana/grafana<span class="token punctuation">:</span>4.5.2
-    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> 3000<span class="token punctuation">:</span><span class="token number">3000</span>
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> /data/grafana<span class="token punctuation">:</span>/var/lib/grafana
-    <span class="token key atrule">deploy</span><span class="token punctuation">:</span>
-      <span class="token key atrule">placement</span><span class="token punctuation">:</span>
-        <span class="token key atrule">constraints</span><span class="token punctuation">:</span>
-          <span class="token punctuation">-</span> node.labels.grafana == true</code></pre></div>
+<p>
+  First, we'll need to choose a node where we'll be running <strong>Grafana</strong>. After that,
+  we need to update its label in order to deploy grafana to the correct host:
+</p>
+<pre><code class="hljs language-bash">docker node update --label-add grafana=<span class="hljs-literal">true</span> &#x3C;NODE-ID>
+</code></pre>
+<p>
+  <strong>Grafana</strong> service is pretty straightforward to configure, we just need to add its
+  service to <code>docker-compose.yml</code>:
+</p>
+<pre><code class="hljs language-yml"><span class="hljs-attr">services:</span>
+  <span class="hljs-attr">grafana:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">grafana/grafana:4.5.2</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-number">3000</span><span class="hljs-string">:3000</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/data/grafana:/var/lib/grafana</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">placement:</span>
+        <span class="hljs-attr">constraints:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">node.labels.grafana</span> <span class="hljs-string">==</span> <span class="hljs-literal">true</span>
+</code></pre>
 <h2>Deployment Time!</h2>
-<p>It's time to deploy our monitoring stack. To do so, we'll use <code class="language-text">docker stack</code>
-command:</p>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> stack deploy <span class="token parameter variable">-c</span> docker-compose.yml MONITORING</code></pre></div>
+<p>
+  It's time to deploy our monitoring stack. To do so, we'll use <code>docker stack</code>
+  command:
+</p>
+<pre><code class="hljs language-bash">docker stack deploy -c docker-compose.yml MONITORING
+</code></pre>
 <p>You can check if your stack is running by typing:</p>
-<div class="gatsby-highlight" data-language="bash"><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> stack services MONITORING</code></pre></div>
+<pre><code class="hljs language-bash">docker stack services MONITORING
+</code></pre>
 <p>You should see something like the following:</p>
-<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">ID                  NAME                  MODE                REPLICAS            IMAGE                   PORTS
+<pre><code>ID                  NAME                  MODE                REPLICAS            IMAGE                   PORTS
 a9l5bzodswai        MONITORING_grafana    replicated          1/1                 grafana/grafana:4.5.2   *:3000->3000/tcp
 vmrob3iveofr        MONITORING_telegraf   global              1/1                 telegraf:1.4.0-alpine
-wllxmffrsxd7        MONITORING_influxdb   replicated          1/1                 influxdb:1.3.5-alpine</code></pre></div>
+wllxmffrsxd7        MONITORING_influxdb   replicated          1/1                 influxdb:1.3.5-alpine
+</code></pre>
 <h3>Configuring Grafana</h3>
-<p>Now, it's time to configure a new <code class="language-text">Data Source</code>. Go to <strong>Grafana</strong> admin page
-(<a href="http://localhost:3000">http://localhost:3000</a>) and create a new <code class="language-text">Data Source</code> with the following
-fields:</p>
+<p>
+  Now, it's time to configure a new <code>Data Source</code>. Go to <strong>Grafana</strong> admin page
+  (http://localhost:3000) and create a new <code>Data Source</code> with the following
+  fields:
+</p>
 <ul>
-<li>Name: <code class="language-text">InfluxDB</code></li>
-<li>Type: <code class="language-text">InfluxDB</code></li>
-<li>Http settings:
+  <li>Name: <code>InfluxDB</code></li>
+  <li>Type: <code>InfluxDB</code></li>
+  <li>Http settings:
+    <ul>
+      <li>Url: <code>http://influxdb:8086</code> (<code>Swarm</code> provides a DNS for us)</li>
+      <li>Access: <code>proxy</code></li>
+    </ul>
+  </li>
+  <li>InfluxDB Details:
+    <ul>
+      <li>Database: <code>telegraf</code></li>
+    </ul>
+  </li>
+</ul>
+<p>
+  Then, we can create our dashboards and add data to them. If you don't know where
+  to start, there are some nice dashboards in https://grafana.com/dashboards. The
+  following dashboards are nice ones to use with <strong>Docker Swarm</strong>:
+</p>
 <ul>
-<li>Url: <code class="language-text">http://influxdb:8086</code> (<code class="language-text">Swarm</code> provides a DNS for us)</li>
-<li>Access: <code class="language-text">proxy</code></li>
+  <li>https://grafana.com/dashboards/1443</li>
+  <li>https://grafana.com/dashboards/1150</li>
 </ul>
-</li>
-<li>InfluxDB Details:
-<ul>
-<li>Database: <code class="language-text">telegraf</code></li>
-</ul>
-</li>
-</ul>
-<p>Then, we can create our dashboards and add data to them. If you don't know where
-to start, there are some nice dashboards in <a href="https://grafana.com/dashboards">https://grafana.com/dashboards</a>. The
-following dashboards are nice ones to use with <strong>Docker Swarm</strong>:</p>
-<ul>
-<li><a href="https://grafana.com/dashboards/1443">https://grafana.com/dashboards/1443</a></li>
-<li><a href="https://grafana.com/dashboards/1150">https://grafana.com/dashboards/1150</a></li>
-</ul>
-<p>Now, you'll have a nice and powerful monitoring stack for your Docker containers
-and for your machines!</p>
-<p>Hope you enjoyed!</p></div><style data-emotion="css 1uw3pr2">.css-1uw3pr2{box-sizing:border-box;margin:0;min-width:0;color:gray;margin:0;margin-top:8px;margin-bottom:8px;border:0;border-bottom:1px solid;color:var(--theme-ui-colors-muted);}</style><hr class="css-1uw3pr2"/><style data-emotion="css byxfcu">.css-byxfcu{box-sizing:border-box;margin:0;min-width:0;padding-right:8px;}</style><span class="css-byxfcu">Tags:</span><a class="css-byxfcu" href="/tags/docker/">docker</a><a class="css-byxfcu" href="/tags/docker-swarm/">docker swarm</a><a class="css-byxfcu" href="/tags/grafana/">grafana</a><a class="css-byxfcu" href="/tags/influxdb/">influxdb</a><a class="css-byxfcu" href="/tags/telegraf/">telegraf</a><a class="css-byxfcu" href="/tags/monitoring/">monitoring</a></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
-          <script
-            id="gatsby-chunk-mapping"
-          >
-            window.___chunkMapping="{\"app\":[\"/app-57b003fd7b23c8f2ad18.js\"],\"component---src-pages-index-js\":[\"/component---src-pages-index-js-5dd0bd936a691a402316.js\"],\"component---src-pages-pt-br-js\":[\"/component---src-pages-pt-br-js-1cbd449ba74af0aae89a.js\"],\"component---src-pages-tags-js\":[\"/component---src-pages-tags-js-99f6939fb57601e8199e.js\"],\"component---src-templates-blog-post-js\":[\"/component---src-templates-blog-post-js-d91eeca9d398a9f6feca.js\"],\"component---src-templates-tags-js\":[\"/component---src-templates-tags-js-8983d4e3ed8bf7f4878b.js\"]}";
-          </script>
-        <script>window.___webpackCompilationHash="628fa4490e3bd180ac46";</script><script src="/webpack-runtime-9bbb8793a34204347fc9.js" async></script><script src="/framework-dd512b8a69737a109d3a.js" async></script><script src="/app-57b003fd7b23c8f2ad18.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
+<p>
+  Now, you'll have a nice and powerful monitoring stack for your Docker containers
+  and for your machines!
+</p>
+<p>Hope you enjoyed!</p>
+</div><footer class="page_footer__MFEyq">Tags:<!-- --> <a class="page_tag__9Ktix" href="/tags/docker/">docker</a><a class="page_tag__9Ktix" href="/tags/docker-swarm/">docker swarm</a><a class="page_tag__9Ktix" href="/tags/grafana/">grafana</a><a class="page_tag__9Ktix" href="/tags/influxdb/">influxdb</a><a class="page_tag__9Ktix" href="/tags/telegraf/">telegraf</a><a class="page_tag__9Ktix" href="/tags/monitoring/">monitoring</a></footer></article></main></div><script src="/_next/static/chunks/webpack-883a73b7470b17b4.js" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n3:I[6874,[\"874\",\"static/chunks/874-8968dd5eb7fadb60.js\",\"48\",\"static/chunks/app/%5B...slug%5D/page-526665be0f2fd5b4.js\"],\"\"]\n4:I[7555,[],\"\"]\n5:I[1295,[],\"\"]\n7:I[9665,[],\"OutletBoundary\"]\na:I[9665,[],\"ViewportBoundary\"]\nc:I[9665,[],\"MetadataBoundary\"]\ne:I[6614,[],\"\"]\n:HL[\"/_next/static/css/fad3d6b35e924199.css\",\"style\"]\n:HL[\"/_next/static/css/c2b8ef241a0bd383.css\",\"style\"]\n:HL[\"/_next/static/css/13f49b5dcd295dae.css\",\"style\"]\n0:{\"P\":null,\"b\":\"A_h_n7CBt7_bpyguSodXu\",\"p\":\"\",\"c\":[\"\",\"2017\",\"10\",\"creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf\",\"\"],\"i\":false,\"f\":[[[\"\",{\"children\":[[\"slug\",\"2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf\",\"c\"],{\"children\":[\"__PAGE__\",{}]}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/fad3d6b35e924199.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],\"$L2\"]}],{\"children\":[[\"slug\",\"2017/10/creating-a-monitoring-stack-with-docker-swarm-grafana-influxdb-and-telegraf\",\"c\"],[\"$\",\"$1\",\"c\",{\"children\":[null,[[\"$\",\"$L3\",null,{\"href\":\"/\",\"children\":\"← go home\"}],[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]]}],{\"children\":[\"__PAGE__\",[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",\"$undefined\",[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/c2b8ef241a0bd383.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/13f49b5dcd295dae.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"$L7\",null,{\"children\":[\"$L8\",\"$L9\",null]}]]}],{},null,false]},null,false]},null,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$1\",\"UN-8DwMOneHUKYcx2Tyao\",{\"children\":[[\"$\",\"$"])</script><script>self.__next_f.push([1,"La\",null,{\"children\":\"$Lb\"}],null]}],[\"$\",\"$Lc\",null,{\"children\":\"$Ld\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",\"$undefined\"],\"s\":false,\"S\":true}\n"])</script><script>self.__next_f.push([1,"2:[\"$\",\"html\",null,{\"lang\":\"en-us\",\"children\":[\"$\",\"body\",null,{\"children\":[\"$\",\"div\",null,{\"className\":\"container_container__2GGUi\",\"children\":[\"$\",\"main\",null,{\"children\":[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]}]\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n8:null\n"])</script><script>self.__next_f.push([1,"f:T2d12,"])</script><script>self.__next_f.push([1,"\n\u003cp\u003e\n  Monitoring your infrastructure is one of the most important aspects of\n  successfully launching a product. It's really important to know when your\n  machines/applications are under heavy load. Moreover, if it happens, you would\n  want to quickly know what's going on and what you can do to recover your\n  infrastructure.\n\u003c/p\u003e\n\u003cp\u003e\n  This blog post explains how you can configure setup a monitoring stack easily\n  using \u003ca href=\"https://docs.docker.com/engine/swarm/\"\u003e\u003cstrong\u003eDocker Swarm\u003c/strong\u003e\u003c/a\u003e,\n  \u003ca href=\"https://github.com/grafana/grafana\"\u003e\u003cstrong\u003eGrafana\u003c/strong\u003e\u003c/a\u003e,\n  \u003ca href=\"https://github.com/influxdata/influxdb\"\u003e\u003cstrong\u003eInfluxDB\u003c/strong\u003e\u003c/a\u003e and\n  \u003ca href=\"https://github.com/influxdata/telegraf\"\u003e\u003cstrong\u003eTelegraf\u003c/strong\u003e\u003c/a\u003e.\n\u003c/p\u003e\n\u003ch2\u003eDocker Swarm\u003c/h2\u003e\n\u003cp\u003e\n  This tutorial requires you to be running a \u003cstrong\u003eSwarm cluster\u003c/strong\u003e. You can also setup\n  this monitoring infrastructure without using Swarm, but it might become hard to\n  manage when you add or remove nodes on your cluster.\n\u003c/p\u003e\n\u003cblockquote\u003e\n  \u003cp\u003e\n    You can achieve the same using another deployment/orchestration tool, like\n    \u003ca href=\"https://www.nomadproject.io/\"\u003e\u003cstrong\u003eNomad\u003c/strong\u003e\u003c/a\u003e.\n  \u003c/p\u003e\n\u003c/blockquote\u003e\n\u003cp\u003eWe'll be using the version \u003cstrong\u003e3.3\u003c/strong\u003e of \u003ccode\u003edocker-compose.yml\u003c/code\u003e file.\u003c/p\u003e\n\u003ch2\u003eTelegraf\u003c/h2\u003e\n\u003cp\u003e\n  \u003ca href=\"https://github.com/influxdata/telegraf\"\u003e\u003cstrong\u003eTelegraf\u003c/strong\u003e\u003c/a\u003e is an awesome tool to\n  extract metrics.\n\u003c/p\u003e\n\u003cp\u003e\n  You can customize what data to extract and how \u003cstrong\u003eTelegraf\u003c/strong\u003e will do that by\n  providing a \u003ccode\u003etelegraf.conf\u003c/code\u003e file. The one we'll be using is this one:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-conf\"\u003e[[inputs.net]]\n  interfaces = [\"eth0,eth1,lo\"]\n\n[[inputs.cpu]]\n  percpu = true\n  totalcpu = true\n  collect_cpu_time = false\n\n[[inputs.disk]]\n  ignore_fs = [\"tmpfs\", \"devtmpfs\"]\n\n[[inputs.diskio]]\n\n[[inputs.kernel]]\n\n[[inputs.mem]]\n\n[[inputs.processes]]\n\n[[inputs.swap]]\n[[inputs.system]]\n[[inputs.netstat]]\n\n[[inputs.docker]]\n  endpoint = \"unix:///var/run/docker.sock\"\n  container_names = []\n  timeout = \"5s\"\n  perdevice = true\n  total = false\n  docker_label_include = []\n  docker_label_exclude = []\n\n[[outputs.influxdb]]\n  urls = [\"http://influxdb:8086\"]\n  database = \"telegraf\"\n  retention_policy = \"\"\n  write_consistency = \"any\"\n  timeout = \"5s\"\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  If you want to get the default \u003cstrong\u003eTelegraf\u003c/strong\u003e config (with all options commented)\n  you can use the following command to get it:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003edocker pull telegraf:1.4.0-alpine\ndocker run --\u003cspan class=\"hljs-built_in\"\u003erm\u003c/span\u003e telegraf:1.4.0-alpine telegraf config \u003e telegraf.conf\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  After getting a \u003ccode\u003etelegraf.conf\u003c/code\u003e file, we're able to define our service\n  configuration in \u003ccode\u003edocker-compose.yml\u003c/code\u003e:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-yml\"\u003e\u003cspan class=\"hljs-attr\"\u003eversion:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\"3.3\"\u003c/span\u003e\n\n\u003cspan class=\"hljs-attr\"\u003eservices:\u003c/span\u003e\n  \u003cspan class=\"hljs-attr\"\u003etelegraf:\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003eimage:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003etelegraf:1.4.0\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003ehostname:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e\"\u003cspan class=\"hljs-template-variable\"\u003e{{.Node.ID}}\u003c/span\u003e\"\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003evolumes:\u003c/span\u003e\n      \u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e/var/run/docker.sock:/var/run/docker.sock\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003econfigs:\u003c/span\u003e\n      \u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003esource:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003etelegraf.conf\u003c/span\u003e\n        \u003cspan class=\"hljs-attr\"\u003etarget:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e/etc/telegraf/telegraf.conf\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003edeploy:\u003c/span\u003e\n      \u003cspan class=\"hljs-attr\"\u003emode:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003eglobal\u003c/span\u003e\n\n\u003cspan class=\"hljs-attr\"\u003econfigs:\u003c/span\u003e\n  \u003cspan class=\"hljs-attr\"\u003etelegraf.conf:\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003efile:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e./telegraf/telegraf.conf\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  It's pretty simple. The trick here is to add \u003ccode\u003edeploy mode\u003c/code\u003e as \u003cstrong\u003e\u003ccode\u003eglobal\u003c/code\u003e\u003c/strong\u003e. This\n  will make \u003cstrong\u003eTelegraf\u003c/strong\u003e run on every machine in \u003cstrong\u003eSwarm\u003c/strong\u003e cluster, and that's how\n  we're going to be able to monitor the cluster machines.\n\u003c/p\u003e\n\u003cblockquote\u003e\n  \u003cp\u003e\n    We're not using Telegraf's Alpine image because Alpine doesn't include\n    all the dependencies to be able to collect \u003ccode\u003e[[inputs.system]]\u003c/code\u003e.\n  \u003c/p\u003e\n\u003c/blockquote\u003e\n\u003ch2\u003eInfluxDB\u003c/h2\u003e\n\u003cp\u003e\n  \u003ca href=\"https://github.com/influxdata/influxdb\"\u003e\u003cstrong\u003eInfluxDB\u003c/strong\u003e\u003c/a\u003e is a time series database\n  that allows us to store the metrics provided by \u003cstrong\u003eTelegraf\u003c/strong\u003e.\n\u003c/p\u003e\n\u003cp\u003e\n  As \u003cstrong\u003eInfluxDB\u003c/strong\u003e is our database, we'll first need to define where it would be\n  located. As we'll need the data to be persistent, it's a bad idea to have the\n  database popping out in different places (and, as a consequence, losing the\n  data if it's deployed to a newer place). So, grab one of your swarm nodes and\n  add a label to it:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003edocker node update --label-add influxdb=\u003cspan class=\"hljs-literal\"\u003etrue\u003c/span\u003e \u0026#x3C;NODE-ID\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  This will add the node \u003ccode\u003einfluxdb\u003c/code\u003e with value as \u003ccode\u003etrue\u003c/code\u003e to the node \u003ccode\u003eNODE-ID\u003c/code\u003e.\n  It'll be used to know where we can add \u003ccode\u003einfluxdb\u003c/code\u003e container.\n\u003c/p\u003e\n\u003cp\u003e\n  Then, we'll also be able to provide a configuration file, named \u003ccode\u003einfluxdb.conf\u003c/code\u003e.\n  \u003cstrong\u003eInfluxDB\u003c/strong\u003e also provides a way to get a config file template by running:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003edocker run --\u003cspan class=\"hljs-built_in\"\u003erm\u003c/span\u003e influxdb:1.3.5-alpine influxd config \u003e influxdb.conf\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThen, we can declare the \u003ccode\u003einfluxdb\u003c/code\u003e service:\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-yml\"\u003e\u003cspan class=\"hljs-attr\"\u003eservices:\u003c/span\u003e\n  \u003cspan class=\"hljs-attr\"\u003einfluxdb:\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003eimage:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003einfluxdb:1.3.5-alpine\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003econfigs:\u003c/span\u003e\n      \u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-attr\"\u003esource:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003einfluxdb.conf\u003c/span\u003e\n        \u003cspan class=\"hljs-attr\"\u003etarget:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e/etc/influxdb/influxdb.conf\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003evolumes:\u003c/span\u003e\n      \u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e/data/influxdb:/var/lib/influxdb\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003edeploy:\u003c/span\u003e\n      \u003cspan class=\"hljs-attr\"\u003eplacement:\u003c/span\u003e\n        \u003cspan class=\"hljs-attr\"\u003econstraints:\u003c/span\u003e\n          \u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003enode.labels.influxdb\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e==\u003c/span\u003e \u003cspan class=\"hljs-literal\"\u003etrue\u003c/span\u003e\n\n\u003cspan class=\"hljs-attr\"\u003econfigs:\u003c/span\u003e\n  \u003cspan class=\"hljs-attr\"\u003einfluxdb.conf:\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003efile:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e./influxdb/influxdb.conf\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eWe'll use the following \u003ccode\u003einfluxdb.conf\u003c/code\u003e file:\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-conf\"\u003e[meta]\n  dir = \"/var/lib/influxdb/meta\"\n  retention-autocreate = true\n  logging-enabled = true\n\n[data]\n  dir = \"/var/lib/influxdb/data\"\n  index-version = \"inmem\"\n  wal-dir = \"/var/lib/influxdb/wal\"\n  wal-fsync-delay = \"0s\"\n  query-log-enabled = true\n  cache-max-memory-size = 1073741824\n  cache-snapshot-memory-size = 26214400\n  cache-snapshot-write-cold-duration = \"10m0s\"\n  compact-full-write-cold-duration = \"4h0m0s\"\n  max-series-per-database = 1000000\n  max-values-per-tag = 100000\n  max-concurrent-compactions = 0\n  trace-logging-enabled = false\n\n[http]\n  enabled = true\n  bind-address = \":8086\"\n  auth-enabled = false\n  log-enabled = true\n  write-tracing = false\n  pprof-enabled = true\n  https-enabled = false\n  https-certificate = \"/etc/ssl/influxdb.pem\"\n  https-private-key = \"\"\n  max-row-limit = 0\n  max-connection-limit = 0\n  shared-secret = \"\"\n  realm = \"InfluxDB\"\n  unix-socket-enabled = false\n  bind-socket = \"/var/run/influxdb.sock\"\n\u003c/code\u003e\u003c/pre\u003e\n\u003ch2\u003eGrafana\u003c/h2\u003e\n\u003cp\u003eWe'll use \u003cstrong\u003eGrafana\u003c/strong\u003e to visualize data coming from \u003cstrong\u003eInfluxDB\u003c/strong\u003e.\u003c/p\u003e\n\u003cp\u003e\n  First, we'll need to choose a node where we'll be running \u003cstrong\u003eGrafana\u003c/strong\u003e. After that,\n  we need to update its label in order to deploy grafana to the correct host:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003edocker node update --label-add grafana=\u003cspan class=\"hljs-literal\"\u003etrue\u003c/span\u003e \u0026#x3C;NODE-ID\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\n  \u003cstrong\u003eGrafana\u003c/strong\u003e service is pretty straightforward to configure, we just need to add its\n  service to \u003ccode\u003edocker-compose.yml\u003c/code\u003e:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-yml\"\u003e\u003cspan class=\"hljs-attr\"\u003eservices:\u003c/span\u003e\n  \u003cspan class=\"hljs-attr\"\u003egrafana:\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003eimage:\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003egrafana/grafana:4.5.2\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003eports:\u003c/span\u003e\n      \u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-number\"\u003e3000\u003c/span\u003e\u003cspan class=\"hljs-string\"\u003e:3000\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003evolumes:\u003c/span\u003e\n      \u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e/data/grafana:/var/lib/grafana\u003c/span\u003e\n    \u003cspan class=\"hljs-attr\"\u003edeploy:\u003c/span\u003e\n      \u003cspan class=\"hljs-attr\"\u003eplacement:\u003c/span\u003e\n        \u003cspan class=\"hljs-attr\"\u003econstraints:\u003c/span\u003e\n          \u003cspan class=\"hljs-bullet\"\u003e-\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003enode.labels.grafana\u003c/span\u003e \u003cspan class=\"hljs-string\"\u003e==\u003c/span\u003e \u003cspan class=\"hljs-literal\"\u003etrue\u003c/span\u003e\n\u003c/code\u003e\u003c/pre\u003e\n\u003ch2\u003eDeployment Time!\u003c/h2\u003e\n\u003cp\u003e\n  It's time to deploy our monitoring stack. To do so, we'll use \u003ccode\u003edocker stack\u003c/code\u003e\n  command:\n\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003edocker stack deploy -c docker-compose.yml MONITORING\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eYou can check if your stack is running by typing:\u003c/p\u003e\n\u003cpre\u003e\u003ccode class=\"hljs language-bash\"\u003edocker stack services MONITORING\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eYou should see something like the following:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eID                  NAME                  MODE                REPLICAS            IMAGE                   PORTS\na9l5bzodswai        MONITORING_grafana    replicated          1/1                 grafana/grafana:4.5.2   *:3000-\u003e3000/tcp\nvmrob3iveofr        MONITORING_telegraf   global              1/1                 telegraf:1.4.0-alpine\nwllxmffrsxd7        MONITORING_influxdb   replicated          1/1                 influxdb:1.3.5-alpine\n\u003c/code\u003e\u003c/pre\u003e\n\u003ch3\u003eConfiguring Grafana\u003c/h3\u003e\n\u003cp\u003e\n  Now, it's time to configure a new \u003ccode\u003eData Source\u003c/code\u003e. Go to \u003cstrong\u003eGrafana\u003c/strong\u003e admin page\n  (http://localhost:3000) and create a new \u003ccode\u003eData Source\u003c/code\u003e with the following\n  fields:\n\u003c/p\u003e\n\u003cul\u003e\n  \u003cli\u003eName: \u003ccode\u003eInfluxDB\u003c/code\u003e\u003c/li\u003e\n  \u003cli\u003eType: \u003ccode\u003eInfluxDB\u003c/code\u003e\u003c/li\u003e\n  \u003cli\u003eHttp settings:\n    \u003cul\u003e\n      \u003cli\u003eUrl: \u003ccode\u003ehttp://influxdb:8086\u003c/code\u003e (\u003ccode\u003eSwarm\u003c/code\u003e provides a DNS for us)\u003c/li\u003e\n      \u003cli\u003eAccess: \u003ccode\u003eproxy\u003c/code\u003e\u003c/li\u003e\n    \u003c/ul\u003e\n  \u003c/li\u003e\n  \u003cli\u003eInfluxDB Details:\n    \u003cul\u003e\n      \u003cli\u003eDatabase: \u003ccode\u003etelegraf\u003c/code\u003e\u003c/li\u003e\n    \u003c/ul\u003e\n  \u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\n  Then, we can create our dashboards and add data to them. If you don't know where\n  to start, there are some nice dashboards in https://grafana.com/dashboards. The\n  following dashboards are nice ones to use with \u003cstrong\u003eDocker Swarm\u003c/strong\u003e:\n\u003c/p\u003e\n\u003cul\u003e\n  \u003cli\u003ehttps://grafana.com/dashboards/1443\u003c/li\u003e\n  \u003cli\u003ehttps://grafana.com/dashboards/1150\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\n  Now, you'll have a nice and powerful monitoring stack for your Docker containers\n  and for your machines!\n\u003c/p\u003e\n\u003cp\u003eHope you enjoyed!\u003c/p\u003e\n"])</script><script>self.__next_f.push([1,"6:[\"$\",\"article\",null,{\"children\":[[\"$\",\"div\",null,{\"className\":\"page_titleContainer__tlZMv\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"page_title__Tljh5\",\"children\":\"Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf\"}],[\"$\",\"time\",null,{\"className\":\"datetime_datetime__ZMgNO\",\"dateTime\":\"9:00:00 PM\",\"children\":\"Oct 3, 2017\"}]]}],[\"$\",\"div\",null,{\"className\":\"page_post__iBPNz\",\"dangerouslySetInnerHTML\":{\"__html\":\"$f\"}}],[\"$\",\"footer\",null,{\"className\":\"page_footer__MFEyq\",\"children\":[\"Tags:\",\" \",[[\"$\",\"$L3\",\"docker\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/docker\",\"children\":\"docker\"}],[\"$\",\"$L3\",\"docker-swarm\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/docker-swarm\",\"children\":\"docker swarm\"}],[\"$\",\"$L3\",\"grafana\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/grafana\",\"children\":\"grafana\"}],[\"$\",\"$L3\",\"influxdb\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/influxdb\",\"children\":\"influxdb\"}],[\"$\",\"$L3\",\"telegraf\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/telegraf\",\"children\":\"telegraf\"}],[\"$\",\"$L3\",\"monitoring\",{\"className\":\"page_tag__9Ktix\",\"href\":\"/tags/monitoring\",\"children\":\"monitoring\"}]]]}]]}]\n9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Monitoring your infrastructure is one of the most important aspects of\\nsuccessfully launching a product. It's really important to know when...\"}],[\"$\",\"meta\",\"2\",{\"property\":\"og:title\",\"content\":\"Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf\"}],[\"$\",\"meta\",\"3\",{\"property\":\"og:description\",\"content\":\"Monitoring your infrastructure is one of the most important aspects of\\nsuccessfully launching a product. It's really important to know when...\"}],[\"$\",\"meta\",\"4\",{\"name\":\"twitter:card\",\"content\":\"summary\"}],[\"$\",\"meta\",\"5\",{\"name\":\"twitter:title\",\"content\":\"Creating a Monitoring Stack With Docker Swarm, Grafana, InfluxDB and Telegraf\"}],[\"$\",\"meta\",\"6\",{\"name\":\"twitter:description\",\"content\""])</script><script>self.__next_f.push([1,":\"Monitoring your infrastructure is one of the most important aspects of\\nsuccessfully launching a product. It's really important to know when...\"}]]\n"])</script></body></html>
